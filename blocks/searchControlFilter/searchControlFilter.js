@@ -8,6 +8,21 @@
         self._$state = $state;
         self._$rootScope = $rootScope;
 
+        $scope.placeholder = "Ашан, икея, джинсы...";
+        if ($state.current.name) {
+            if ($state.current.name.includes("shop")) {
+                $scope.placeholder = "Ашан, стокман ...";
+            }
+            if ($state.current.name.includes("proposal")) {
+                $scope.placeholder = "Название акции...";
+            }
+            if ($state.current.name.includes("event")) {
+                $scope.placeholder = "Название события...";
+            }
+            if ($state.current.name.includes("restaurant")) {
+                $scope.placeholder = "KFC, Кофе, суши...";
+            }
+        }
         //self._$rootScope.currentFilter = $state.Filter;
 
         $scope.$watch("currentFilter", function (n, o) {
@@ -15,7 +30,7 @@
                 return;
             if ($state.current.name == "navigation.mainMenu" && $rootScope.currentFilter == undefined)
                 return;
-            if(!$state.current.name.includes("searchResult")) {
+            if (!$state.current.name.includes("searchResult")) {
                 $state.go('.searchResult', {
                     CategoryID: $state.params.CategoryID,
                     Filter: $rootScope.currentFilter

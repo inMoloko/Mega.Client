@@ -13,8 +13,12 @@
                         element.attr("src", settings.webApiBaseUrl + attributes.url.replace(':id', scope.model));
                     }
                 });
+                // attributes.$observe('default', function(actual_value) {
+                //     scope.def = actual_value;
+                // });
                 element.bind('error', function (error) {
-                    if (attributes.url && scope.model) {
+                    //var attr = scope.def;
+                    if (attributes.default && scope.model) {
                         if (!attributes.default)
                             element.attr('src', 'data:image/jpeg;base64,' + $rootScope.customer.Logo);
                         else

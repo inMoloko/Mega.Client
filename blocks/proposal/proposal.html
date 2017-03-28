@@ -1,18 +1,24 @@
 <div class="proposal">
     <div class="proposal__logo-container">
-        <img src="" alt="" class="proposal__logo-container__img" moloko-image-api="controller.item.ProposalID" url="/Proposal/:id/WideLogo"
+        <img src="" alt="" class="proposal__logo-container__img" moloko-image-api="controller.item.ProposalID"
+             url="/Proposal/:id/WideLogo"
              default="/Content/images/card_sales_cover_holder.png">
-        <img src="" alt="" class="proposal__logo-container__organization-image" moloko-image-api="controller.item.Organization.OrganizationID" url="/Organization/:id/Logo">
-        <img class="proposal__logo-container__megacard" src="/Content/images/megacard2.png" ng-if="controller.item.Organization.Megacard">
+        <img src="" alt="" class="proposal__logo-container__organization-image"
+             ui-sref="navigation.shops.organization({OrganizationID:controller.item.Organization.OrganizationID, CategoryID: menuItems['Магазины']})"
+             moloko-image-api="controller.item.Organization.OrganizationID" url="/Organization/:id/Logo">
+        <img class="proposal__logo-container__megacard" src="/Content/images/megacard2.png"
+             ng-if="controller.item.Organization.Megacard" >
     </div>
 
     <div class="proposal__container">
-        <div class="proposal__container__remain">
+        <div class="proposal__container__remain" ng-if="controller.item.DateEnd">
             <img src="/Content/images/icn_alarm_red.png">
             <span ng-bind="controller.item.DateEnd|remainDays"></span>
         </div>
-        <div class="proposal__container__organization" ng-bind="controller.item.Organization.Name">
-
+        <div class="proposal__container__organization"
+             ui-sref="navigation.shops.organization({OrganizationID:controller.item.Organization.OrganizationID, CategoryID: menuItems['Магазины']})">
+            <span ng-bind="controller.item.Organization.Name"></span>
+            <img src="/Content/images/arrow_black.png">
         </div>
         <div class="proposal__container__summary" ng-bind="controller.item.Name">
 

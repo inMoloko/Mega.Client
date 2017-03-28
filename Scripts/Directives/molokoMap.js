@@ -13,7 +13,7 @@
     };
 
     angular.module('app').directive("molokoMap", [
-        '$rootScope', '$http', '$q', 'settings', '$linq', '$state', '$stateParams', '$timeout', function ($rootScope, $http, $q, settings, $linq, $state, $stateParams, $timeout) {
+        '$rootScope', '$http', '$q', 'settings', '$linq', '$state', '$stateParams', '$timeout', 'mainMenuService', function ($rootScope, $http, $q, settings, $linq, $state, $stateParams, $timeout, mainMenuService) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -46,6 +46,9 @@
                         bounceAtZoomLimits: true,
                         fadeAnimation: false,
                         zoomSnap: 0
+                    });
+                    mainMenuService.get().then(function (result) {
+                        $scope.menuItems = result;
                     });
                     //console.log('Create map');
                     map.setView([0, 0], 1);
@@ -184,55 +187,39 @@
                     });
 
                     function clickToOrganization(orgID, mapObjectID) {
-                        switch ($state.current.name) {
-                            case "navigation.searchResult":
-                                $state.go("navigation.searchResult.organization", {
+
+                        let organization = $rootScope.organizations.find(i => i.OrganizationID == orgID);
+
+                        if (organization.CategoryOrganization.length > 1) {
+                            $state.go("navigation.organization", {
+                                OrganizationID: orgID,
+                                MapObjectID: mapObjectID
+                            });
+                        }
+                        else {
+                            let categoryID = organization.CategoryOrganization[0].CategoryID;
+                            var value = $scope.menuItems['Рестораны и кафе'];
+                            let cats = $rootScope.categories.find(i => i.CategoryID == value).ChildrenIds;
+                            if (cats.includes(categoryID)) {
+                                $state.go("navigation.restaurant", {
                                     OrganizationID: orgID,
-                                    Filter: $stateParams.Filter,
-                                    CategoryID: $stateParams.CategoryID,
                                     MapObjectID: mapObjectID
-                                }, {inherit: true, reload: true});
-                                break;
-                            case "navigation.searchResult.organization":
-                                $state.go("navigation.searchResult.organization", {
+                                });
+                                return;
+                            }
+                            value = $scope.menuItems['Развлечения и услуги'];
+                            cats = $rootScope.categories.find(i => i.CategoryID == value).ChildrenIds;
+                            if (cats.includes(categoryID)) {
+                                $state.go("navigation.entertainment", {
                                     OrganizationID: orgID,
-                                    Filter: $stateParams.Filter,
-                                    CategoryID: $stateParams.CategoryID,
                                     MapObjectID: mapObjectID
-                                }, {inherit: true, notify: false, reload: true});
-                                break;
-                            case "navigation.mainMenu":
-                                $state.go("navigation.mainMenu.organization", {
-                                    OrganizationID: orgID,
-                                    Filter: $stateParams.Filter,
-                                    CategoryID: $stateParams.CategoryID,
-                                    MapObjectID: mapObjectID
-                                }, {inherit: true, reload: true});
-                                break;
-                            case "navigation.mainMenu.organization":
-                                $state.go("navigation.mainMenu.organization", {
-                                    OrganizationID: orgID,
-                                    Filter: $stateParams.Filter,
-                                    CategoryID: $stateParams.CategoryID,
-                                    MapObjectID: mapObjectID
-                                }, {inherit: true, notify: true, reload: true});
-                                break;
-                            case "navigation.closedResult":
-                                $state.go("navigation.closedResult.organization", {
-                                    OrganizationID: orgID,
-                                    Filter: $stateParams.Filter,
-                                    CategoryID: $stateParams.CategoryID,
-                                    MapObjectID: mapObjectID
-                                }, {inherit: true, reload: true});
-                                break;
-                            default:
-                                $state.go("navigation.organization", {
-                                    OrganizationID: orgID,
-                                    Filter: $stateParams.Filter,
-                                    CategoryID: $stateParams.CategoryID,
-                                    MapObjectID: mapObjectID
-                                }, {inherit: true, reload: true});
-                                break;
+                                });
+                                return;
+                            }
+                            $state.go("navigation.organization", {
+                                OrganizationID: orgID,
+                                MapObjectID: mapObjectID
+                            });
                         }
                     };
                     //Изменение маршрута
@@ -469,101 +456,6 @@
                         });
                     }
 
-                    //Выбранна организация
-                    // var currentOrganizationHandler = $rootScope.$watch('currentOrganization', function (nw, old) {
-                    //     if ($scope.selectedOrganizations !== undefined) {
-                    //         // $scope.selectedOrganizations.forEach(org => {
-                    //         //     document.querySelectorAll('[data-org-id="' + org.OrganizationID + '"]').forEach(m => {
-                    //         //         m.classList.remove('_selected');
-                    //         //     });
-                    //         // });
-                    //         // angular.forEach($scope.mapFloors, function (value) {
-                    //         //     let container = value.layer.getPane();
-                    //         //     container.querySelectorAll('._selected').forEach(m => {
-                    //         //         m.classList.remove('_selected');
-                    //         //     });
-                    //         // });
-                    //         clearSelect();
-                    //
-                    //         // document.querySelectorAll('._selected').forEach(m => {
-                    //         //     m.classList.remove('_selected');
-                    //         // });
-                    //         $scope.selectedOrganizations = undefined;
-                    //     }
-                    //
-                    //     if ($rootScope.currentOrganization) {
-                    //         //let markerIcon = getIcon($rootScope.currentOrganization, true);
-                    //         //if ($scope.mapOrganizations[$rootScope.currentOrganization.OrganizationID] !== undefined) {
-                    //         let mapObjects;
-                    //         if ($stateParams.MapObjectID) {
-                    //             document.querySelectorAll('[data-map-id="' + $stateParams.MapObjectID + '"]').forEach(m => {
-                    //                 m.classList.add('_selected');
-                    //             });
-                    //             mapObjects = [$scope.mapObjects[$stateParams.MapObjectID]];
-                    //         }
-                    //         else {
-                    //             document.querySelectorAll('[data-org-id="' + $rootScope.currentOrganization + '"]').forEach(m => {
-                    //                 m.classList.add('_selected');
-                    //             });
-                    //             mapObjects = $rootScope.currentOrganization.OrganizationMapObject.map(i => i.MapObject);
-                    //         }
-                    //         // $scope.mapOrganizations[$rootScope.currentOrganization.OrganizationID].marker.setIcon(markerIcon);
-                    //
-                    //         $scope.selectedOrganizations = [$rootScope.currentOrganization];
-                    //         //Отрисовка бегушего человека
-                    //         //$rootScope.currentPath = $rootScope.mapGraph.findPath($rootScope.currentTerminal.OrganizationTerminal.Longitude, $rootScope.currentTerminal.OrganizationTerminal.Latitude, $rootScope.currentTerminal.Organization.Floor.FloorID, $rootScope.currentOrganization.Longitude, $rootScope.currentOrganization.Latitude, $rootScope.currentOrganization.FloorID);
-                    //
-                    //         let result = getOptimalPath(mapObjects);
-                    //         //Может быть клик на надпись, но нет входа
-                    //         if (!result) {
-                    //             delete $rootScope.currentPath;
-                    //         }
-                    //         else {
-                    //             $rootScope.currentPath = result.path;
-                    //             $scope.setFloor(result.object.FloorID);
-                    //         }
-                    //
-                    //
-                    //     } else {
-                    //         //Может быть когда мы переходим из детального представления в список
-                    //         selectOrganizations();
-                    //         delete $rootScope.currentPath;
-                    //     }
-                    // });
-                    //Отфильтрованны организации
-                    //var _currentOrganizations = $rootScope.$watchCollection('currentOrganizations', selectOrganizations);
-
-                    // function selectOrganizations(nw, old) {
-                    //     //Если выбранна организация то нельзя выбирать несколько
-                    //     if ($rootScope.currentOrganizations !== undefined && $rootScope.currentOrganization !== undefined) {
-                    //         return;
-                    //     }
-                    //     if (nw == undefined && old == undefined)
-                    //         return;
-                    //     if ($scope.selectedOrganizations !== undefined) {
-                    //         $scope.selectedOrganizations.forEach(org => {
-                    //             // let markerIcon = getIcon(org, false);
-                    //             // if ($scope.mapOrganizations)
-                    //             //     $scope.mapOrganizations[org.OrganizationID].marker.setIcon(markerIcon);
-                    //             clearSelect();
-                    //             // document.querySelectorAll('[data-org-id="' + org.OrganizationID + '"]').forEach(m => {
-                    //             //     m.classList.remove('_selected');
-                    //             // });
-                    //         });
-                    //         $scope.selectedOrganizations = undefined;
-                    //     }
-                    //     if ($rootScope.currentOrganizations !== undefined) {
-                    //         $rootScope.currentOrganizations.forEach(org => {
-                    //             // let markerIcon = getIcon(org, true);
-                    //             // if ($scope.mapOrganizations)
-                    //             //     $scope.mapOrganizations[org.OrganizationID].marker.setIcon(markerIcon);
-                    //             document.querySelectorAll('[data-org-id="' + org.OrganizationID + '"]').forEach(m => {
-                    //                 m.classList.add('_selected');
-                    //             });
-                    //         });
-                    //         $scope.selectedOrganizations = $rootScope.currentOrganizations;
-                    //     }
-                    // };
                     //Выбран маршрут
                     var currentPathHandler = $rootScope.$watch('currentPath', function (n, o) {
 

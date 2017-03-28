@@ -22,7 +22,7 @@
         });
     };
     service.prototype.getFilter = function (term) {
-        return this.$http.get(this.settings.webApiBaseUrl + `/Proposal/GetFilter?CustomerID=${this.settings.customerID}&term=${term}`).then(function (data) {
+        return this.$http.get(this.settings.webApiBaseUrl + `/Proposal/GetFilter?CustomerID=${this.settings.customerID}&term=${term}`, {cache: true}).then(function (data) {
             return data.data;
         });
     };

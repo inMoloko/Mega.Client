@@ -115,31 +115,6 @@
             let cos = Math.cos(radians);
             let sin = Math.sin(radians);
 
-            $rootScope.organizations.forEach(i => {
-                i.megacard = i.CategoryOrganization.find(j => j.CategoryID == 1704) !== undefined;
-                i.CategoryOrganization = i.CategoryOrganization.filter(j => j.Category.IsUsed == true);
-                //TODO
-                // let x = i.Longitude;
-                // let y = i.Latitude;
-                // i.Longitude = cos * x + sin * y;
-                // i.Latitude = cos * y - sin * x;
-                // if (i.SignPointLongitude && i.SignPointLatitude) {
-                //     let x = i.SignPointLongitude;
-                //     let y = i.SignPointLatitude;
-                //
-                //     i.SignPointLongitude = cos * x + sin * y;
-                //     i.SignPointLatitude = cos * y - sin * x;
-                // }
-                i.OrganizationMapObject.forEach(function (mapObject) {
-                    let x = mapObject.MapObject.Longitude;
-                    let y = mapObject.MapObject.Latitude;
-                    mapObject.MapObject.Longitude = cos * x + sin * y;
-                    mapObject.MapObject.Latitude = cos * y - sin * x;
-                    if (mapObject.MapObject.Params)
-                        mapObject.MapObject.ParamsAsJson = angular.isObject(mapObject.MapObject.Params) ? mapObject.MapObject.Params : angular.fromJson(mapObject.MapObject.Params);
-                });
-            });
-
             $rootScope.currentTerminal = terminal;
             $rootScope.currentTerminal.OrganizationTerminal = $rootScope.organizations.find(i => i.OrganizationID === $rootScope.currentTerminal.OrganizationID);
             $rootScope.currentTerminal.LookDirectionAngleDegrees = 0;
@@ -175,9 +150,41 @@
             //         $rootScope.verticalBanners.push(i);
             // });
 
+            let megacard;
             $rootScope.categories.forEach(i => {
                 i.Children.splice(i.Children.indexOf(i.Children.find(i => i.CategoryID == 1570)), 1);
+                if(i.Name == 'Партнер MEGACARD'){
+                    megacard = i.CategoryID;
+                }
             });
+
+
+
+            $rootScope.organizations.forEach(i => {
+                i.megacard = i.CategoryOrganization.find(j => j.CategoryID == megacard) !== undefined;
+                i.CategoryOrganization = i.CategoryOrganization.filter(j => j.Category.IsUsed == true);
+                //TODO
+                // let x = i.Longitude;
+                // let y = i.Latitude;
+                // i.Longitude = cos * x + sin * y;
+                // i.Latitude = cos * y - sin * x;
+                // if (i.SignPointLongitude && i.SignPointLatitude) {
+                //     let x = i.SignPointLongitude;
+                //     let y = i.SignPointLatitude;
+                //
+                //     i.SignPointLongitude = cos * x + sin * y;
+                //     i.SignPointLatitude = cos * y - sin * x;
+                // }
+                i.OrganizationMapObject.forEach(function (mapObject) {
+                    let x = mapObject.MapObject.Longitude;
+                    let y = mapObject.MapObject.Latitude;
+                    mapObject.MapObject.Longitude = cos * x + sin * y;
+                    mapObject.MapObject.Latitude = cos * y - sin * x;
+                    if (mapObject.MapObject.Params)
+                        mapObject.MapObject.ParamsAsJson = angular.isObject(mapObject.MapObject.Params) ? mapObject.MapObject.Params : angular.fromJson(mapObject.MapObject.Params);
+                });
+            });
+
             $rootScope.feedbackCategories = response[6].data;
 
             $rootScope.events = response[7].data;

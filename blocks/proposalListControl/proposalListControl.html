@@ -14,11 +14,12 @@
                 </div>
             </div>
 
-            <div class="proposalsListControlListElement__imageBlock"
-                 style="background-image: url({{controller.getUrl(item.ProposalID)}})">
-                <!--<img moloko-image-api="item.ProposalID" url="/Proposal/:id/Logo" class="img-responsive" alt="{{item.Organization.Name}}"-->
-                <!--style='height: 100%; width: 100%; object-fit: cover'>-->
-            </div>
+            <img class="proposalsListControlListElement__imageBlock" moloko-image-api="item.ProposalID" url="/Proposal/:id/WideLogo" default="/Content/images/card_sales_cover_holder.png">
+            <!--<div class="proposalsListControlListElement__imageBlock"-->
+                 <!--style="background-image: url({{controller.getUrl(item.ProposalID)}})">-->
+                <!--&lt;!&ndash;<img moloko-image-api="item.ProposalID" url="/Proposal/:id/Logo" class="img-responsive" alt="{{item.Organization.Name}}"&ndash;&gt;-->
+                <!--&lt;!&ndash;style='height: 100%; width: 100%; object-fit: cover'>&ndash;&gt;-->
+            <!--</div>-->
 
 
         </li>

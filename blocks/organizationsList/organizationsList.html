@@ -36,14 +36,16 @@
                         {{::item.Name}}
                     </div>
                     <div class="organizationsSearchResultItem__categoryBlock" style="">
-                        {{::item.CategoryOrganization|limitTo:6|joinBy:', ':'Category.Name'}}
+                        <span>{{::item.Categories|limitTo:6|joinBy:', ':'Name'}}</span>
+                        <img ng-if="item.HasProposal" src="/Content/images/icn_sales_shop_list.png">
+                        <img ng-if="item.HasMegacard" src="/Content/images/icn_mgcard_shoplist.png">
                     </div>
                     <div class="organizationsSearchResultItem__floorBlock" style="">
-                        <span ng-bind="getFloors(item)"></span> ЭТАЖ
+                        <span ng-bind="item.Floors.join(', ')"></span> ЭТАЖ
                     </div>
-                    <div ng-if="item.megacard" class="organizationsSearchResultItem__megacardBlock" style="">
-                        Принимает MEGACARD
-                    </div>                    
+                    <!--<div ng-if="item.megacard" class="organizationsSearchResultItem__megacardBlock" style="">-->
+                        <!--<img src="/Content/images/icn_more_mgcard.png">-->
+                    <!--</div>                    -->
                 </div>
             </div>
         </li>

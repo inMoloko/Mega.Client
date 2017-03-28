@@ -1,9 +1,13 @@
 (function () {
     "use strict";
-    var controller = function ($scope, $rootScope, $state, $http, settings, $stateParams, proposalService) {
+    var controller = function ($scope, $rootScope, $state, $http, settings, $stateParams, proposalService, mainMenuService) {
         var self = this;
         proposalService.get($stateParams.ProposalID).then(i => {
             self.item = i;
+        });
+        mainMenuService.get().then(function (result) {
+            $scope.menuItems = result;
+
         });
 
     };
@@ -25,6 +29,6 @@
         }
         return result;
     };
-    controller.$inject = ['$scope', '$rootScope', '$state', '$http', 'settings', '$stateParams', 'proposalService'];
+    controller.$inject = ['$scope', '$rootScope', '$state', '$http', 'settings', '$stateParams', 'proposalService','mainMenuService'];
     angular.module('app').controller('proposalController', controller);
 })();

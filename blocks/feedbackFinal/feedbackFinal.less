@@ -46,8 +46,8 @@
     }
   }
   &__content {
-    width: 80%;
-    margin-left: 40px;
+    width: 400px;
+    margin-left: 130px;
     margin-bottom: 40px;
     //background: url("/Content/images/feedback_mega_message.9.png") bottom left/ 100% 200px no-repeat;
     //background-repeat: no-repeat;
@@ -56,9 +56,10 @@
     position: relative;
     border-radius: 5px;
     border-bottom-right-radius: 0;
-    > div {
+    &__text {
       margin: 20px;
       font-size: 1.5em;
+      white-space: pre;
     }
     > h2 {
       margin-left: 20px;
@@ -87,9 +88,15 @@
       border-color: transparent transparent @light-blue @light-blue;
     }
     &__stars {
+      margin-top:10px;
+      margin-left: 20px;
       > img {
-        height: 40px;
+        height: 20px;
+        margin-right: 10px;
       }
+    }
+    > span {
+      margin: 20px;
     }
   }
 }

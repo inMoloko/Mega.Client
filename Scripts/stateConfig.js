@@ -118,6 +118,19 @@
                     }
                 }
             })
+            .state('navigation.shops.organization.proposals', {
+                url: '/proposals/:OrganizationID',
+                views: {
+                    'search@': {
+                        templateUrl: 'blocks/proposalsHeading/proposalsHeading.html'
+                    },
+                    'searchResult@': {
+                        templateUrl: 'blocks/proposalListControl/proposalListControl.html',
+                        controller: 'proposalListController',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
             //=====================Proposal=====================
             .state('navigation.proposals', {
                 url: '/proposals',
@@ -178,6 +191,19 @@
                 }
             })
             //=====================Restaurants=====================
+            .state('navigation.restaurant', {
+                url: '/restaurant/:OrganizationID',
+                views: {
+                    'search@': {
+                        templateUrl: 'blocks/restaurantHeading/restaurantHeading.html'
+                    },
+                    'searchResult@': {
+                        templateUrl: 'blocks/organization/organization.html',
+                        controller: 'organizationController',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
             .state('navigation.restaurants', {
                 url: '/restaurants?CategoryID',
                 params: {
@@ -240,6 +266,20 @@
                         controllerAs: 'controller'
                     }
 
+                }
+            })
+            //=====================Entertaiments=====================
+            .state('navigation.entertainment', {
+                url: '/entertainment/:OrganizationID',
+                views: {
+                    'search@': {
+                        templateUrl: 'blocks/entertainmentsHeading/entertainmentsHeading.html',
+                    },
+                    'searchResult@': {
+                        templateUrl: 'blocks/organization/organization.html',
+                        controller: 'organizationController',
+                        controllerAs: 'controller'
+                    }
                 }
             })
             .state('navigation.entertainments', {
@@ -409,6 +449,11 @@
                 },
                 reloadOnSearch: true
             })
+            .state('navigation.services.searchResult.organization', {
+                url: '/organization/:OrganizationID',
+                params: {},
+                views: {}
+            })
             //=====================more=====================
             .state('navigation.more', {
                 url: '/more',
@@ -512,7 +557,9 @@
                         templateUrl: 'blocks/eventsHeading/eventsHeading.html'
                     },
                     'searchResult@': {
-                        templateUrl: 'blocks/event/event.html'
+                        templateUrl: 'blocks/event/event.html',
+                        controller: 'eventController',
+                        controllerAs: 'controller'
                     }
                 },
             });
