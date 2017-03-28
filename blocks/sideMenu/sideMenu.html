@@ -1,0 +1,157 @@
+<div id="sideMenu" class="sideMenu" ng-controller="sideMenuController">
+    <!--<div class="sideMenu__head">-->
+    <!--<div style="background: transparent;-->
+    <!--z-index: 5; position:absolute;-->
+    <!--width: 60px;-->
+    <!--height: 60px;">-->
+    <!--&lt;!&ndash;<button style="width: 60px;height: 60px; background:transparent;border-radius:4px;border-width:0px;padding: 0px;">-->
+    <!--<i class="iconMall-iconHome" style="font-size: 2em;color:black"></i>-->
+    <!--</button>&ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash;<div class="horizontal" style="background: transparent;-->
+    <!--z-index: 5; position:absolute;-->
+    <!--width: 500px;-->
+    <!--height: 60px;-->
+    <!--left:60px;-->
+    <!--/*padding:0px 10px 0px 10px;*/-->
+    <!--font-size: 40px;-->
+    <!--text-transform:uppercase;">-->
+    <!--<div style="height: 60px;-->
+    <!--top: 50%;position:absolute;-->
+    <!--margin-top: -25px;">-->
+    <!--{{::customer.Name}}-->
+    <!--</div>-->
+    <!--</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="sideMenu__sheduleButton vertical" ng-click="goScheduleControl()">-->
+    <!--<div class="sideMenu__sheduleButtonText">-->
+    <!--<span ng-class="listAnchorLength" style="text-decoration: none;-->
+    <!--display: inline-block;-->
+    <!--border-bottom-width:1px; ">Сегодня с {{::customer.ScheduleFrom}} до {{::customer.ScheduleTo}}</span>-->
+    <!--</div>-->
+    <!--</div>&ndash;&gt;-->
+    <!--<div style="background: transparent;-->
+    <!--z-index: 5; position:absolute;-->
+    <!--width: 60px;-->
+    <!--height: 60px;-->
+    <!--right:0px">-->
+    <!--&lt;!&ndash;<button style="width: 60px;height: 60px; background:transparent;border-radius:4px;border-width:0px;padding: 0px;" ui-sref="navigation">                -->
+    <!--<i class="iconMall-iconClose" style="font-size: 3em;color:#28303b"></i>-->
+    <!--</button>&ndash;&gt;-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="horizontal" style="background: transparent;
+                z-index: 5;
+                width: 100%;
+                height: 60px;
+                margin-bottom: 10px;">
+        <div style="background: transparent;
+                    z-index: 5; position:absolute;
+                    width: 60px;
+                    height: 60px;">
+
+        </div>
+        <div class="sideMenu__sheduleButton "  ng-click="goScheduleControl()">
+            <div class="sideMenu__sheduleButtonText">
+                <span ng-class="listAnchorLength" style="text-decoration: none;
+                    display: inline-block;
+                    border-bottom-width:1px; ">Сегодня с {{::customer.ScheduleFrom}} до {{::customer.ScheduleTo}}</span>
+            </div>
+        </div>
+    </div>-->
+
+    <div class="sideMenu__swiper swiper-container" id="swiper-container">
+        <div class="swiper-wrapper">
+            <!--<div class="swiper-slide"></div><div class="swiper-slide"></div><div class="swiper-slide"></div>-->
+        </div>
+
+    </div>
+
+    <div class="sideMenuItemBlock">
+        <!--<div ng-class="sizeMenuItem()" ng-repeat="menuItem in menuItems" class="sideMenuItemBlock__itemButton" ng-click="selectItem(menuItem)">
+            <button class="sideMenuItemBlock__itemButtonImage" >
+                <i ng-class="{'iconMall-shop':menuItem.Name==='Магазины','iconMall-burger':menuItem.Name==='Рестораны и кафе','iconMall-service':menuItem.Name.indexOf('Развлечения')!=-1,'iconMall-iconCinema':menuItem.Name==='Кино'||menuItem.Name.indexOf('Синема')!=-1}"></i>
+            </button>
+            <span ng-hide="visibleMenuItemName()" class="sideMenuItemBlock__itemButtonText">{{menuItem.Name}}</span>
+            <i class="sideMenuItemBlock__icon iconMall-iconArrowRight"></i>
+        </div>-->
+        <div class="sideMenuItemBlock__itemButton" ng-click="selectItem('shops')">
+            <!--<button class="sideMenuItemBlock__itemButtonImage">-->
+            <!--</button>-->
+            <div>
+                <span ng-hide="visibleMenuItemName()" class="sideMenuItemBlock__itemButtonText">Магазины</span>
+                <p>Найди свои любимые марки</p>
+            </div>
+            <img class="sideMenuItemBlock__image" src="/Content/images/bag-m.png">
+            <i class="sideMenuItemBlock__icon iconMall-iconArrowRight"></i>
+        </div>
+        <div class="sideMenuItemBlock__itemButton" ng-click="selectItem('restaurants')">
+            <!--<button class="sideMenuItemBlock__itemButtonImage">-->
+            <!--</button>-->
+            <div>
+                <span class="sideMenuItemBlock__itemButtonText">Еда</span>
+                <p></p>
+            </div>
+            <i class="sideMenuItemBlock__icon iconMall-iconArrowRight"></i>
+        </div>
+        <div class="sideMenuItemBlock__itemButton" ng-click="selectItem('entertainments')">
+            <!--<button class="sideMenuItemBlock__itemButtonImage">-->
+            <!--</button>-->
+            <div>
+                <span class="sideMenuItemBlock__itemButtonText">Развлечения</span>
+                <p>Собирай впечатления</p>
+            </div>
+            <img class="sideMenuItemBlock__image" src="/Content/images/pop-corn-m.png">
+            <i class="sideMenuItemBlock__icon iconMall-iconArrowRight"></i>
+        </div>
+        <div ng-click="selectItem('proposals')" class="sideMenuItemBlock__itemButton">
+            <!--<button class="sideMenuItemBlock__itemButtonImage">-->
+            <!--<i class="iconMall-sale"></i>-->
+            <!--</button>-->
+            <div>
+                <span class="sideMenuItemBlock__itemButtonText">Акции</span>
+                <p>Самые выгодные покупки</p>
+            </div>
+            <img class="sideMenuItemBlock__image" src="/Content/images/rack-m.png">
+            <i class="sideMenuItemBlock__icon iconMall-iconArrowRight"></i>
+        </div>
+
+        <div ng-click="selectItem('services')" class="sideMenuItemBlock__itemButton">
+            <!--<button class="sideMenuItemBlock__itemButtonImage">-->
+            <!--<i class="iconMall-iconEvent"></i>-->
+            <!--</button>-->
+            <div>
+                <span class="sideMenuItemBlock__itemButtonText">Сервисы</span>
+            </div>
+            <img class="sideMenuItemBlock__image" src="/Content/images/suit-m.png">
+            <i class="sideMenuItemBlock__icon iconMall-iconArrowRight"></i>
+        </div>
+        <!--<div ng-class="sizeMenuItem()" ng-click="selectMenuItem('events')" class="sideMenuItemBlock__itemButton">
+            <button class="sideMenuItemBlock__itemButtonImage">
+                <i class="iconMall-iconEvent"></i>
+            </button>
+            <span ng-hide="visibleMenuItemName()" class="sideMenuItemBlock__itemButtonText">Афиша и новости</span>
+            <i class="sideMenuItemBlock__icon iconMall-iconArrowRight"></i>
+        </div>
+
+        <div ng-class="sizeMenuItem()" ui-sref="transport" class="sideMenuItemBlock__itemButton">
+            <button class="sideMenuItemBlock__itemButtonImage">
+                <i class="iconMall-busStop"></i>
+            </button>
+            <span ng-hide="visibleMenuItemName()" class="sideMenuItemBlock__itemButtonText">Как добраться</span>
+            <i class="sideMenuItemBlock__icon iconMall-iconArrowRight"></i>
+        </div>-->
+    </div>
+
+    <!--<div ui-sref="feedback.category" class="feedback" style="">-->
+    <!--<div class="feedback__feedbackItem">-->
+    <!--<div class="feedback__feedbackItem__text">-->
+    <!--Обратная связь-->
+    <!--</div>-->
+    <!--<div class="feedback__feedbackItem__image">-->
+    <!--<button style="width: 60px;height: 60px; background:transparent;border-radius:0px;border-width:0px;padding: 0px;">-->
+    <!--<i class="iconMall-iconMessage" style="font-size: 2em;color:#28303b"></i>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+</div>

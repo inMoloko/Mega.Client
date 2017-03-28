@@ -1,0 +1,60 @@
+@import "../../Styles/style.less";
+
+.organization {
+  background: white;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  overflow-y: scroll;
+  &__logo-container {
+    position: relative;
+    &__img {
+      width: 100%;
+    }
+    &__organization-image {
+      border: solid 1px gray;
+      position: absolute;
+      bottom: -30px;
+      left: 50px;
+      width: 150px;
+      background-size: contain;
+      background: no-repeat center;
+    }
+  }
+
+  &__container {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 85px;
+
+    &__categories {
+      display: flex;
+      flex-wrap: wrap;
+      > div {
+        padding: 10px;
+        height: 40px;
+        border-radius: 20px;
+        font-size: 1.1em;
+        color: @dark-blue;
+        background-color: @light-blue;
+        margin: 5px;
+      }
+      > img {
+        margin-left: auto;
+        height: 40px;
+      }
+    }
+    &__organization {
+      margin-top: 10px;
+      font-size: 2em;
+    }
+    &__summary {
+      margin-top: 10px;
+      font-size: 2em;
+    }
+    &__description {
+      margin-top: 10px;
+      font-size: 1.3em;
+    }
+  }
+}
