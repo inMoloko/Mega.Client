@@ -9,7 +9,7 @@
             </div>
         </div>
     </div>
-    <ul class="list-group organizationsList__organizationsSearchResultBlock" >
+    <ul class="list-group organizationsList__organizationsSearchResultBlock" ng-scrollbars>
         <li class="list-group-item organizationsSearchResultBlock__organizationsSearchResultItem"
             ng-class="{'active':controller.isActive(item.OrganizationID)}"
             ng-repeat="item in $root.currentOrganizations" ui-sref=".organization({OrganizationID:item.OrganizationID})">

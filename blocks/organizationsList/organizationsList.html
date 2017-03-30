@@ -8,50 +8,26 @@
                 Найдено {{$root.otherCurrentOrganizations.length}}
             </div>
         </div>
-        <!--<div class="organizationsHeadBlock__closeButtonBlock" ng-click="home()" style="">-->
-            <!--<button class="closeButtonBlock_closeButton" style="">-->
-                <!--<i class="iconMall-iconClose closeButton_icon" style=""></i>-->
-            <!--</button>-->
-        <!--</div>-->
-        <!--<div class="organizationsHeadBlock__closeButtonBlock" ng-click="hide()" style="right:60px;">-->
-            <!--<button class="closeButtonBlock_closeButton" style="">-->
-                <!--<i class="iconMall-iconArrowUp closeButton_icon" style=""></i>-->
-            <!--</button>-->
-        <!--</div>-->
     </div>
-    <ul class="list-group organizationsList__organizationsSearchResultBlock" >
-        <li class="list-group-item organizationsSearchResultBlock__organizationsSearchResultItem" route-class="{'searchResultFull.result':'searchResultFull'}" ng-repeat="item in $root.currentOrganizations" ui-sref=".organization({OrganizationID:item.OrganizationID})">
+    <ul class="list-group organizationsList__organizationsSearchResultBlock" ng-scrollbars>
+        <li class="list-group-item organizationsSearchResultBlock__organizationsSearchResultItem" ng-repeat="item in $root.currentOrganizations" ng-click="select(item)">
             <!--ng-click="select(item)">-->
             <div style="position: relative;">
-                <!--<div class="organizationsSearchResultItem__logoBlock" style="background: #{{item.LogoBaseColor.substring(3)}};">-->
-                    <!--&lt;!&ndash;<img moloko-image-api="item.OrganizationID" url="/Organization/:id/Logo" default-src="/Customer/Logo" class="logoBlock__logo" alt="{{::item.Organization.Name}}"&ndash;&gt;-->
-                        <!--&lt;!&ndash;style=''>&ndash;&gt;-->
-                    <!--<div ng-if="item.megacard" style="width:59px;height:30px;background:white;position:absolute;bottom:0;right:0;">-->
-                        <!--<i class="iconMall-iconMegacard logoBlock__icon" style="font-size:60px;margin-bottom:-15px;color:black" ></i>-->
-                    <!--</div>-->
-                <!--</div>-->
-
                 <div class="organizationsSearchResultItem__infoBlock" style="">
-                    <div class="organizationsSearchResultItem__nameBlock" style="">
-                        {{::item.Name}}
+                    <div class="organizationsSearchResultItem__nameBlock" style="" ng-bind="item.Name">
                     </div>
                     <div class="organizationsSearchResultItem__categoryBlock" style="">
-                        <span>{{::item.Categories|limitTo:6|joinBy:', ':'Name'}}</span>
-                        <img ng-if="item.HasProposal" src="/Content/images/icn_sales_shop_list.png">
+                        <span ng-bind="item.Categories|limitTo:6|joinBy:', ':'Name'"></span>
                         <img ng-if="item.HasMegacard" src="/Content/images/icn_mgcard_shoplist.png">
+                        <img ng-if="item.HasProposal" src="/Content/images/icn_sales_shop_list.png">
                     </div>
-                    <div class="organizationsSearchResultItem__floorBlock" style="">
-                        <span ng-bind="item.Floors.join(', ')"></span> ЭТАЖ
-                    </div>
-                    <!--<div ng-if="item.megacard" class="organizationsSearchResultItem__megacardBlock" style="">-->
-                        <!--<img src="/Content/images/icn_more_mgcard.png">-->
-                    <!--</div>                    -->
+                    <!--<div class="organizationsSearchResultItem__floorBlock" style="">-->
+                        <!--<span ng-bind="item.Floors|joinBy:', ':'Number'"></span> ЭТАЖ-->
+                    <!--</div>-->
                 </div>
             </div>
         </li>
     </ul>
-
-
 
     <div ng-show="$root.currentOrganizations.length==0">
         <div class="errorHeaderBlock organizationsSearchResultItem__errorHeaderBlock" ng-show="$root.currentOrganizations.length==0">

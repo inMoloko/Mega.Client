@@ -16,7 +16,7 @@
 
 .colorTheme_color .proposalsListControl,
 .colorTheme_blackLite .proposalsListControl {
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 8px 16px 0px rgba(255, 255, 255, 0.2);
   border: 1px solid transparent;
   border-left: 0px;
 }
@@ -61,11 +61,11 @@
   height: 200px;
   border-radius: 0px;
   border: 0px solid transparent;
-  margin: 10px;
-  width: 605px;
+  margin: 10px 20px;
+  width: 590px;
   overflow: hidden;
   //padding: 10px;
-  box-shadow: 0 0 10px @maroon-light;
+  box-shadow: 0 0 5px gray, 0 0 15px @maroon-light;
 }
 
 .colorTheme_black .proposalsListControlListBlock__listElement {
@@ -82,12 +82,24 @@
     display: flex;
     align-items: center;
   }
-  &__remainder img {
+  &__remainder > div {
     height: 30px;
+    width: 30px;
+    background: url('/Content/images/icn_alarm_red.png') no-repeat;
+    background-size: contain;
+  }
+  &__remainder.expired > div {
+    background: url('/Content/images/icn_alarm_gray.png') no-repeat;
+    background-size: contain;
+    eight: 30px;
+    width: 30px;
   }
   &__remainder span {
     margin-left: 10px;
     color: #EA8F64;
+  }
+  &__remainder.expired span {
+    color: gray;
   }
 }
 
@@ -96,6 +108,7 @@
   height: 100%;
   border: 0 solid transparent;
   border-bottom: 1px solid #e4e1e1;
+  border-left: 1px solid #e4e1e1;
 
   //background-image: url('/Content/images/card_sales_cover_holder.png');
   //position: absolute;
@@ -107,7 +120,20 @@
   background-size: cover;
   float: right;
   object-fit: cover;
+  position: relative;
+  > img {
+    height: 100%;
+    right: 0;
+    position: absolute;
+  }
 }
+
+//.proposalsListControlListElement__imageBlock:before {
+//  content: ' ';
+//  position: absolute;
+//  left: -2px;
+//  background-color: #e4e1e1;
+//}
 
 .proposalsListControlListElement__infoBlock {
   background: transparent;

@@ -3,60 +3,62 @@
     var controller = function ($scope, $http, settings, $state, $rootScope, arrayHelper, $q, Idle, $location, $stateParams, $timeout) {
         //Обработка простоя
         $scope.$on('IdleTimeout', function () {
-            $rootScope.colorTheme = settings.colorThemes[0];
-            $rootScope.formatTheme = $scope.formatThemesMain[0];
-            if ($rootScope.organizations == undefined)
-                location.reload();
-            if ($rootScope.statisticStack && $rootScope.statisticStack.length > 0)
-                $rootScope.sendStatistics();
-            //$state.go('navigation.mainMenu', {});
-            $("input, textarea").focusout();
-            if ($rootScope.banners.length > 0) {
-            }
-            // $state.go('screensaver', {});
-            else {
-                $state.go('navigation.mainMenu', {});
-                Idle.watch();
-            }
+            // $rootScope.colorTheme = settings.colorThemes[0];
+            // $rootScope.formatTheme = $scope.formatThemesMain[0];
+            // if ($rootScope.organizations == undefined)
+            //     location.reload();
+            // if ($rootScope.statisticStack && $rootScope.statisticStack.length > 0)
+            //     $rootScope.sendStatistics();
+            // //$state.go('navigation.mainMenu', {});
+            // $("input, textarea").focusout();
+            // if ($rootScope.banners.length > 0) {
+            // }
+            // // $state.go('screensaver', {});
+            // else {
+            //     $state.go('navigation.mainMenu', {});
+            //     Idle.watch();
+            // }
+           // $state.go('navigation', {});
+            Idle.watch();
         });
 
         $scope.formatThemesMain = [];
         $rootScope.orientation;
-        $scope.changeOrientation = function () {
-            if (window.innerHeight > window.innerWidth) {
-                $scope.formatThemesMain = settings.formatThemes.filter(e => e.includes('vertical'));
-                $rootScope.orientation = 'vertical';
-            }
-            else {
-                $scope.formatThemesMain = settings.formatThemes.filter(e => e.includes('horizontal'));
-                $rootScope.orientation = 'horizontal';
-            }
-            $rootScope.formatTheme = $scope.formatThemesMain[0];
-        };
-
-        $(window).resize(function () {
-            $scope.changeOrientation();
-            $state.reload();
-        });
+        // $scope.changeOrientation = function () {
+        //     if (window.innerHeight > window.innerWidth) {
+        //         $scope.formatThemesMain = settings.formatThemes.filter(e => e.includes('vertical'));
+        //         $rootScope.orientation = 'vertical';
+        //     }
+        //     else {
+        //         $scope.formatThemesMain = settings.formatThemes.filter(e => e.includes('horizontal'));
+        //         $rootScope.orientation = 'horizontal';
+        //     }
+        //     $rootScope.formatTheme = $scope.formatThemesMain[0];
+        // };
+        //
+        // $(window).resize(function () {
+        //     $scope.changeOrientation();
+        //     $state.reload();
+        // });
 
         //Работа с темами
-        $rootScope.colorTheme = settings.colorThemes[0];
-        $rootScope.formatTheme = settings.formatThemes[0];
-        $scope.changeTheme = function (themeType) {
-            if (themeType == 'colorTheme')
-                $rootScope.colorTheme = arrayHelper.nextItem(settings.colorThemes, $rootScope.colorTheme);
-            else if (themeType == 'formatTheme')
-                $rootScope.formatTheme = arrayHelper.nextItem($scope.formatThemesMain, $rootScope.formatTheme);
-            setTimeout($rootScope.initMasonry, 250);
-        };
-
-        $rootScope.initMasonry = function () {
-            $(".wrapper").masonry({
-                itemSelector: ".item ",
-                columnWidth: ".item"
-            });
-        }
-        $scope.changeOrientation();
+        // $rootScope.colorTheme = settings.colorThemes[0];
+        // $rootScope.formatTheme = settings.formatThemes[0];
+        // $scope.changeTheme = function (themeType) {
+        //     if (themeType == 'colorTheme')
+        //         $rootScope.colorTheme = arrayHelper.nextItem(settings.colorThemes, $rootScope.colorTheme);
+        //     else if (themeType == 'formatTheme')
+        //         $rootScope.formatTheme = arrayHelper.nextItem($scope.formatThemesMain, $rootScope.formatTheme);
+        //     setTimeout($rootScope.initMasonry, 250);
+        // };
+        //
+        // $rootScope.initMasonry = function () {
+        //     $(".wrapper").masonry({
+        //         itemSelector: ".item ",
+        //         columnWidth: ".item"
+        //     });
+        // }
+        //$scope.changeOrientation();
         //граф для поиска организаций
         $rootScope.mapGraph = new Graph();
 
@@ -87,12 +89,12 @@
 
         var bannersPromise = $q.when({}); //$http.get(settings.webApiBaseUrl + '/Banner/GetAllActual?CustomerID=' + settings.customerID);
 
-        var feedbackCategories = $http.get(settings.webApiBaseUrl + '/FeedbackCategory?$select=Name,FeedbackCategoryID,ParentID&CustomerID=' + settings.customerID);
+        var feedbackCategories = $q.when({});// $http.get(settings.webApiBaseUrl + '/FeedbackCategory?$select=Name,FeedbackCategoryID,ParentID&CustomerID=' + settings.customerID);
 
         let dt = new Date().toISOString();
         var filter = `(DateEnd ge DateTime'${dt}' or DateEnd eq null) and (DateBegin le DateTime'${dt}' or DateBegin eq null)`;
 
-        var eventsPromise = $http.get(settings.webApiBaseUrl + `/Event?$filter=${filter}&CustomerID=` + settings.customerID);
+        var eventsPromise = $q.when({});//$http.get(settings.webApiBaseUrl + `/Event?$filter=${filter}&CustomerID=` + settings.customerID);
 
         var settingsPromise = $http.get(`${settings.webApiBaseUrl}/SystemSetting/Settings?CustomerID=${settings.customerID}`);
 
@@ -153,11 +155,10 @@
             let megacard;
             $rootScope.categories.forEach(i => {
                 i.Children.splice(i.Children.indexOf(i.Children.find(i => i.CategoryID == 1570)), 1);
-                if(i.Name == 'Партнер MEGACARD'){
+                if (i.Name == 'Партнер MEGACARD') {
                     megacard = i.CategoryID;
                 }
             });
-
 
 
             $rootScope.organizations.forEach(i => {
@@ -361,8 +362,11 @@
                 $rootScope.$broadcast('menuLoaded');
             }
             $rootScope.customer = response[9].data[0];
-            $rootScope.customer.ScheduleFrom = JSON.parse($rootScope.customer.Schedule)[new Date().getDay() - 1].From;
-            $rootScope.customer.ScheduleTo = JSON.parse($rootScope.customer.Schedule)[new Date().getDay() - 1].To;
+            let dat = new Date().getDay() - 1;
+            if (dat < 0)
+                dat = 6;
+            $rootScope.customer.ScheduleFrom = JSON.parse($rootScope.customer.Schedule)[dat].From;
+            $rootScope.customer.ScheduleTo = JSON.parse($rootScope.customer.Schedule)[dat].To;
             //$rootScope.menuItems = { "1965": { Name: 'Магазины', CategoryID: 1965 }, "1966": { Name: 'Рестораны и кафе', CategoryID: 1966 }, "1967": { Name: "Развлечения и услуги", CategoryID: 1967 } };
 
             //$rootScope.proposals = response[10].data;

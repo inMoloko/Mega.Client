@@ -1,10 +1,11 @@
 ﻿(function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $state, $rootScope, eventService) {
+    var controller = function ($scope, $http, settings, $state, $rootScope, eventService, feedbackService) {
         var self = this;
         self.$state = $state;
         self.item = {};
         self.ratings = [1, 2, 3, 4, 5];
+        self.feedbackService = feedbackService;
 
         var $firstInput = $('#filter');
         $firstInput.focus();
@@ -25,9 +26,12 @@
     };
     controller.prototype.submit = function () {
         var self = this;
-        self.$state.go(".final", {feedback: self.item});
+        self.feedbackService.post(self.item).then(function(){
 
+            self.$state.go(".final", {feedback: self.item});
+
+        });
     };
-    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'eventService'];
+    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'eventService','feedbackService'];
     angular.module('app').controller('feedbackController', controller);
 })();

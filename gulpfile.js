@@ -11,23 +11,26 @@ let concat = require('gulp-concat');
 let mainBowerFiles = require('main-bower-files');
 let gulpFilter = require('gulp-filter');
 let uglify = require('gulp-uglify');
+let babel = require('gulp-babel');
+
+
 gulp.task('bower', function () {
     return gulp.src('./index.html')
-        .pipe(wiredep({ directory: "./bower_components" }))
+        .pipe(wiredep({directory: "./bower_components"}))
         .pipe(gulp.dest('./'));
 });
-//�������� �������
+
 gulp.task('inject', function () {
-    var sources = gulp.src(['./Scripts/**/*.{js,css}', './blocks/**/*.{js,css}', './Content/**/*.{js,css}','./bower_components/leaflet.AnimatedMarker/src/AnimatedMarker.js'], { read: false });
+    var sources = gulp.src(['./Scripts/**/*.{js,css}', './blocks/**/*.{js,css}', './Content/**/*.{js,css}', './bower_components/leaflet.AnimatedMarker/src/AnimatedMarker.js'], {read: false});
     return gulp.src('./index.html')
-        .pipe(inject(sources, { relative: true }))
+        .pipe(inject(sources, {relative: true}))
         .pipe(gulp.dest('./'));
 });
-gulp.task('bower-build', function(){
+gulp.task('bower-build', function () {
     var jsFilter = gulpFilter('**/*.js', {restore: true});  //отбираем только  javascript файлы
     var cssFilter = gulpFilter('**/*.css');  //отбираем только css файлы
     return gulp.src(mainBowerFiles())
-        // собираем js файлы , склеиваем и отправляем в нужную папку
+    // собираем js файлы , склеиваем и отправляем в нужную папку
         .pipe(jsFilter)
         .pipe(concat('vendor.min.js'))
         .pipe(uglify({outSourceMap: true}))
@@ -41,15 +44,25 @@ gulp.task('bower-build', function(){
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('js-prod', function () {
+    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js'])
+        .pipe(concat('script.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        //.pipe(uglify({outSourceMap: true}))
+        .pipe(gulp.dest('dist'));
+});
+
 
 gulp.task('build', function (callback) {
     runSequence('bower', 'inject',
         callback);
 });
 gulp.task('lint', function () {
-    return gulp.src(['./Scripts/**/*.js', './blocks/**/*.js', './blocks/**/*.less','./Content/**/*.js','!./Scripts/**/leaflet.js '])
-        // eslint() attaches the lint output to the "eslint" property 
-        // of the file object so it can be used by other modules. 
+    return gulp.src(['./Scripts/**/*.js', './blocks/**/*.js', './blocks/**/*.less', './Content/**/*.js', '!./Scripts/**/leaflet.js '])
+    // eslint() attaches the lint output to the "eslint" property
+    // of the file object so it can be used by other modules.
         .pipe(eslint())
         // eslint.format() outputs the lint results to the console. 
         // Alternatively use eslint.formatEach() (see Docs). 
@@ -60,7 +73,7 @@ gulp.task('lint', function () {
 });
 
 
-gulp.task('server', function() {
+gulp.task('server', function () {
     browserSync.init({
         server: {
             baseDir: "./"

@@ -28,17 +28,31 @@
   &__container {
     margin-left: 20px;
     margin-right: 20px;
-    margin-top: 85px;
+    margin-top: 65px;
 
     &__remain {
       display: flex;
       align-items: center;
-      > img {
-        height: 40px;
+      > div {
+        height: 30px;
+        width: 30px;
+        background: url('/Content/images/icn_alarm_red.png') no-repeat;
+        background-size: contain;
       }
       > span {
         color: #EA8F64;
         margin-left: 10px;
+      }
+    }
+    &__remain.expired {
+      > div {
+        height: 30px;
+        width: 30px;
+        background: url('/Content/images/icn_alarm_gray.png') no-repeat;
+        background-size: contain;
+      }
+      > span {
+        color: gray;
       }
     }
     &__organization {

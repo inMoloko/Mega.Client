@@ -6,6 +6,18 @@
   width: 100%;
   position: absolute;
   overflow-y: scroll;
+
+  &:after {
+    content: ' ';
+    width: 620px;
+    height: 40px;
+    display: block;
+    background-color: white;
+    position: fixed;
+    bottom: 60px;
+    opacity: 0.8;
+  }
+
   &__logo-container {
     position: relative;
     &__img {
@@ -15,7 +27,7 @@
       border: solid 1px gray;
       position: absolute;
       bottom: -30px;
-      left: 50px;
+      left: 20px;
       width: 150px;
       background-size: contain;
       background: no-repeat center;
@@ -25,7 +37,7 @@
   &__container {
     margin-left: 20px;
     margin-right: 20px;
-    margin-top: 85px;
+    margin-top: 65px;
 
     &__categories {
       display: flex;
@@ -37,7 +49,7 @@
         font-size: 1.1em;
         color: @dark-blue;
         background-color: @light-blue;
-        margin: 5px;
+        margin-right: 5px;
       }
       > img {
         margin-left: auto;
@@ -55,6 +67,9 @@
     &__description {
       margin-top: 10px;
       font-size: 1.3em;
+      position: relative;
+
     }
+
   }
 }

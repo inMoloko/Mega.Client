@@ -7,6 +7,9 @@
         let self = this;
         self._$state = $state;
         self._$rootScope = $rootScope;
+        self._$scope = $scope;
+
+        $scope.currentFilter = $state.params.Filter;
 
         $scope.placeholder = "Ашан, икея, джинсы...";
         if ($state.current.name) {
@@ -23,31 +26,38 @@
                 $scope.placeholder = "KFC, Кофе, суши...";
             }
         }
-        //self._$rootScope.currentFilter = $state.Filter;
+        self._$rootScope.currentFilter = $state.Filter;
 
-        $scope.$watch("currentFilter", function (n, o) {
-            if (n == o)
-                return;
-            if ($state.current.name == "navigation.mainMenu" && $rootScope.currentFilter == undefined)
-                return;
-            if (!$state.current.name.includes("searchResult")) {
-                $state.go('.searchResult', {
-                    CategoryID: $state.params.CategoryID,
-                    Filter: $rootScope.currentFilter
-                }, {reload: true});
-                return;
-            }
-            $state.go('.', {CategoryID: $state.params.CategoryID, Filter: $rootScope.currentFilter}, {reload: false});
-
-        });
+        // $scope.$watch("currentFilter", function (n, o) {
+        //     if (n == o)
+        //         return;
+        //     if ($state.current.name == "navigation.mainMenu" && $scope.currentFilter == undefined)
+        //         return;
+        //     if (!$state.current.name.includes("searchResult")) {
+        //         $state.go('.searchResult', {
+        //             CategoryID: $state.params.CategoryID,
+        //             Filter: $scope.currentFilter
+        //         }, {reload: true});
+        //         return;
+        //     }
+        //     $state.go('.', {CategoryID: $state.params.CategoryID, Filter: $scope.currentFilter}, {reload: false});
+        //
+        // });
         var $firstInput = $('#filter');
         $firstInput.focus();
         jsKeyboard.currentElement = $firstInput;
         jsKeyboard.currentElement.val($state.params.Filter);
         jsKeyboard.currentElementCursorPosition = $firstInput.val().length || 0;
         $firstInput.bind('writeKeyboard', function (event, a) {
-            $rootScope.currentFilter = $firstInput.val();
-            console.log('enter keys');
+            $scope.currentFilter = $firstInput.val();
+            if (!$state.current.name.includes("searchResult")) {
+                $state.go('.searchResult', {
+                    CategoryID: $state.params.CategoryID,
+                    Filter: $scope.currentFilter
+                }, {reload: true});
+                return;
+            }
+            $state.go('.', {CategoryID: $state.params.CategoryID, Filter: $scope.currentFilter});
             $scope.$apply();
         });
         jsKeyboard.show();
@@ -55,7 +65,6 @@
         $scope.$on('$destroy', function () {
             jsKeyboard.hide();
             $('#filter').unbind();
-            console.log('unbind');
         });
     };
     controller.prototype.change = function () {
@@ -70,7 +79,7 @@
     };
     controller.prototype.goBack = function () {
         let self = this;
-        self._$rootScope.currentFilter = null;
+        self._$scope.currentFilter = null;
         self._$state.go('navigation.mainMenu');
     };
     controller.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', '$timeout'];

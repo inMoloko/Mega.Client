@@ -18,7 +18,7 @@
                     },
                     'searchResult': {
                         templateUrl: 'blocks/sideMenu/sideMenu.html',
-                        controller: 'mainMenuController'
+                        //controller: 'mainMenuController'
                     }
                 },
                 fullScreen: true,
@@ -198,8 +198,8 @@
                         templateUrl: 'blocks/restaurantHeading/restaurantHeading.html'
                     },
                     'searchResult@': {
-                        templateUrl: 'blocks/organization/organization.html',
-                        controller: 'organizationController',
+                        templateUrl: 'blocks/restaurant/restaurant.html',
+                        controller: 'restaurantController',
                         controllerAs: 'controller'
                     }
                 }
@@ -221,15 +221,15 @@
 
                 }
             })
-            .state('navigation.restaurants.organization', {
+            .state('navigation.restaurants.restaurant', {
                 url: '/organization/:OrganizationID',
                 views: {
                     'search@': {
                         templateUrl: 'blocks/restaurantHeading/restaurantHeading.html'
                     },
                     'searchResult@': {
-                        templateUrl: 'blocks/organization/organization.html',
-                        controller: 'organizationController',
+                        templateUrl: 'blocks/restaurant/restaurant.html',
+                        controller: 'restaurantController',
                         controllerAs: 'controller'
                     }
 
@@ -261,14 +261,14 @@
                         templateUrl: 'blocks/restaurantHeading/restaurantHeading.html'
                     },
                     'searchResult@': {
-                        templateUrl: 'blocks/organization/organization.html',
-                        controller: 'organizationController',
+                        templateUrl: 'blocks/restaurant/restaurant.html',
+                        controller: 'restaurantController',
                         controllerAs: 'controller'
                     }
 
                 }
             })
-            //=====================Entertaiments=====================
+            //=====================Entertainments=====================
             .state('navigation.entertainment', {
                 url: '/entertainment/:OrganizationID',
                 views: {
@@ -316,21 +316,21 @@
                 },
                 reloadOnSearch: true
             })
-            .state('navigation.entertainments.searchResult.organization', {
-                url: '/organization/:OrganizationID',
+            .state('navigation.entertainments.searchResult.entertainment', {
+                url: '/entertainment/:OrganizationID',
                 views: {
                     'search@': {
                         templateUrl: 'blocks/entertainmentsHeading/entertainmentsHeading.html',
                     },
                     'searchResult@': {
-                        templateUrl: 'blocks/organization/organization.html',
-                        controller: 'organizationController',
+                        templateUrl: 'blocks/entertainment/entertainment.html',
+                        controller: 'entertainmentController',
                         controllerAs: 'controller'
                     }
                 }
             })
-            .state('navigation.entertainments.organization', {
-                url: '/organization/:OrganizationID',
+            .state('navigation.entertainments.entertainment', {
+                url: '/entertainment/:OrganizationID',
                 params: {
                     Organizations: {array: true}
                 },
@@ -339,8 +339,8 @@
                         templateUrl: 'blocks/entertainmentsHeading/entertainmentsHeading.html',
                     },
                     'searchResult@': {
-                        templateUrl: 'blocks/organization/organization.html',
-                        controller: 'organizationController',
+                        templateUrl: 'blocks/entertainment/entertainment.html',
+                        controller: 'entertainmentController',
                         controllerAs: 'controller'
                     }
                 }
@@ -391,6 +391,45 @@
                     }
                 }
             })
+            .state('navigation.favoriteSearch.searchResult.restaurant', {
+                url: '/restaurant/:OrganizationID',
+                views: {
+                    'search@': {
+                        templateUrl: 'blocks/restaurantHeading/restaurantHeading.html',
+                    },
+                    'searchResult@': {
+                        templateUrl: 'blocks/restaurant/restaurant.html',
+                        controller: 'restaurantController',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            .state('navigation.favoriteSearch.searchResult.entertainment', {
+                url: '/entertainment/:OrganizationID',
+                views: {
+                    'search@': {
+                        templateUrl: 'blocks/entertainmentsHeading/entertainmentsHeading.html',
+                    },
+                    'searchResult@': {
+                        templateUrl: 'blocks/entertainment/entertainment.html',
+                        controller: 'entertainmentController',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            .state('navigation.favoriteSearch.searchResult.service', {
+                url: '/service/:OrganizationID',
+                views: {
+                    'search@': {
+                        templateUrl: 'blocks/servicesHeading/servicesHeading.html',
+                    },
+                    'searchResult@': {
+                        templateUrl: 'blocks/service/service.html',
+                        controller: 'serviceController',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
             /* Сюда переходим когда выбранна оргия на карте*/
             .state('navigation.organization', {
                 url: '/organization/:OrganizationID?MapObjectID',
@@ -409,6 +448,19 @@
                 // reloadOnSearch: false
             })
             //=====================Services=================
+            .state('navigation.service', {
+                url: '/service/:OrganizationID',
+                views: {
+                    'search@': {
+                        templateUrl: 'blocks/servicesHeading/servicesHeading.html'
+                    },
+                    'searchResult@': {
+                        templateUrl: 'blocks/service/service.html',
+                        controller: 'organizationController',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
             .state('navigation.services', {
                 url: '/services/:CategoryID',
                 params: {

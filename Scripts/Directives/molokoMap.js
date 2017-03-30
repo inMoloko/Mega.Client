@@ -216,6 +216,15 @@
                                 });
                                 return;
                             }
+                            value = $scope.menuItems['Сервисы'];
+                            cats = $rootScope.categories.find(i => i.CategoryID == value).ChildrenIds;
+                            if (cats.includes(categoryID)) {
+                                $state.go("navigation.service", {
+                                    OrganizationID: orgID,
+                                    MapObjectID: mapObjectID
+                                });
+                                return;
+                            }
                             $state.go("navigation.organization", {
                                 OrganizationID: orgID,
                                 MapObjectID: mapObjectID
@@ -225,7 +234,8 @@
                     //Изменение маршрута
                     let stateChangeHandler = $rootScope.$on('$stateChangeSuccess',
                         function (event, toState, toParams, fromState, fromParams) {
-                            clearSelect();
+
+                        clearSelect();
 
                             if ($state.params.OrganizationID) {
                                 let mapObjects;
@@ -423,7 +433,8 @@
                         init();
                     });
                     $scope.getCount = function (floorID) {
-                        return $scope.selectedOrganizations === undefined ? 0 : $linq.Enumerable().From($scope.selectedOrganizations).SelectMany(i => i.OrganizationMapObject).Count(i => i.MapObject.FloorID == floorID);
+                        var floor = $scope.mapFloors[floorID];
+                        return $scope.selectedOrganizations === undefined ? 0 : $linq.Enumerable().From($scope.selectedOrganizations).SelectMany(i => i.Floors).Where(i => i.Number == floor.Number).Count(i=>i.Count);
                     };
                     function getOptimalPath(array) {
                         let paths = {};

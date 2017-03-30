@@ -1,5 +1,5 @@
 ﻿<div class="eventsList">
-    <ul class="eventsList__list">
+    <ul class="eventsList__list" ng-scrollbars>
         <li class="event__item" ng-repeat="item in controller.items" ui-sref=".event({EventID:item.EventID})">
             <div class="event__item__logo-container">
                 <img src="" alt="" class="event__logo-container__img" moloko-image-api="item.EventID" url="/Event/:id/WideLogo" default="/Content/images/card_event_cover_holder.png">

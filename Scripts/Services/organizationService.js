@@ -6,7 +6,11 @@
         this.settings = settings;
     };
     service.prototype.get = function (id) {
-        return this.$http.get(this.settings.webApiBaseUrl + '/Organization/GetDetail/' + id).then(i => i.data);
+        let self = this;
+        return this.$http.get(this.settings.webApiBaseUrl + '/Organization/GetDetail/' + id).then(i => {
+            self.organization = i.data;
+            return i.data;
+        });
 
     };
     service.prototype.getFilter = function (filter = '', categoryID = '') {

@@ -5,14 +5,17 @@
              default="/Content/images/card_sales_cover_holder.png">
         <img src="" alt="" class="proposal__logo-container__organization-image"
              ui-sref="navigation.shops.organization({OrganizationID:controller.item.Organization.OrganizationID, CategoryID: menuItems['Магазины']})"
-             moloko-image-api="controller.item.Organization.OrganizationID" url="/Organization/:id/Logo">
+             moloko-image-api="controller.item.Organization.OrganizationID"
+             default="/Content/images/card_sales_logo_holder.png"
+             url="/Organization/:id/Logo">
         <img class="proposal__logo-container__megacard" src="/Content/images/megacard2.png"
              ng-if="controller.item.Organization.Megacard" >
     </div>
 
     <div class="proposal__container">
-        <div class="proposal__container__remain" ng-if="controller.item.DateEnd">
-            <img src="/Content/images/icn_alarm_red.png">
+        <div class="proposal__container__remain" ng-if="controller.item.DateEnd" ng-class="{'expired':controller.item.RemainDays==0}">
+            <!--<img src="/Content/images/icn_alarm_red.png">-->
+            <div></div>
             <span ng-bind="controller.item.DateEnd|remainDays"></span>
         </div>
         <div class="proposal__container__organization"

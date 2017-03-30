@@ -4,9 +4,9 @@
         var self = this;
         self.$state = $state;
         self.item = $state.params.feedback;
-        // $timeout(function () {
-        //     $state.go('navigation');
-        // },5000);
+        $timeout(function () {
+            $state.go('navigation');
+        },5000);
     };
     controller.prototype.getRating = function () {
         var self = this;
