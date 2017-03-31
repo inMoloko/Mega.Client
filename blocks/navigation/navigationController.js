@@ -16,15 +16,15 @@
                 $scope.themClass = 'shops';
                 return;
             }
-            if(route.includes('restaurants')){
+            if(route.includes('restaurant')){
                 $scope.themClass = 'food';
                 return;
             }
-            if(route.includes('proposals')){
+            if(route.includes('proposal')){
                 $scope.themClass = 'proposals';
                 return;
             }
-            if(route.includes('more') || route.includes('event') || route.includes('services')){
+            if(route.includes('more') || route.includes('event') || route.includes('service')){
                 $scope.themClass = 'more';
                 return;
             }

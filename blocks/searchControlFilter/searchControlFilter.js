@@ -45,6 +45,10 @@
         // });
         var $firstInput = $('#filter');
         $firstInput.focus();
+        $firstInput.bind('click', function () {
+            jsKeyboard.show();
+        });
+
         jsKeyboard.currentElement = $firstInput;
         jsKeyboard.currentElement.val($state.params.Filter);
         jsKeyboard.currentElementCursorPosition = $firstInput.val().length || 0;

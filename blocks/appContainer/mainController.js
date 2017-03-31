@@ -18,7 +18,7 @@
             //     $state.go('navigation.mainMenu', {});
             //     Idle.watch();
             // }
-           // $state.go('navigation', {});
+            $state.go('navigation', {});
             Idle.watch();
         });
 

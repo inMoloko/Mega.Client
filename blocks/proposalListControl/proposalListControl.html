@@ -5,7 +5,7 @@
             <div class="proposalsListControlListElement__infoBlock">
                 <div class="proposalsListControlListElement__remainder" ng-if="item.DateEnd" ng-class="{'expired':item.RemainDays==0}">
 
-                    <div src="/Content/images/icn_alarm_red.png"></div><span>{{item.DateEnd|remainDays}}</span>
+                    <div src="Content/images/icn_alarm_red.png"></div><span>{{item.DateEnd|remainDays}}</span>
                 </div>
                 <div class="proposalsListControlListElement__name">
                     {{item.Organization.Name}}
@@ -15,7 +15,7 @@
                 </div>
             </div>
         <div class="proposalsListControlListElement__imageBlock">
-            <img  moloko-image-api="item.ProposalID" url="/Proposal/:id/WideLogo" default="/Content/images/card_sales_cover_holder.png">
+            <img  moloko-image-api="item.ProposalID" url="/Proposal/:id/WideLogo" default="Content/images/card_sales_cover_holder.png">
         </div>
 
             <!--<div class="proposalsListControlListElement__imageBlock"-->

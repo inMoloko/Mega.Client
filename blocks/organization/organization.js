@@ -29,8 +29,8 @@
         mainMenuService.get().then(i => {
             self.menuItems = i;
         });
-        self.default = '/Content/images/card_shop_cover_holder.png';
-        self.logoDefault = '/Content/images/card_shop_logo_holder.png';
+        self.default = 'Content/images/card_shop_cover_holder.png';
+        self.logoDefault = 'Content/images/card_shop_logo_holder.png';
         // if ($state.current.name) {
         //     if ($state.current.name.includes("favoriteSearch")) {
         //

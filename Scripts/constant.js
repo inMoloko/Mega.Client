@@ -2,7 +2,9 @@
     "use strict";
     var app = angular.module('app');
     var queryDict = {};
-    location.search.substr(1).split("&").forEach(function (item) { queryDict[item.split("=")[0]] = item.split("=")[1]; });
+    location.search.substr(1).split("&").forEach(function (item) {
+        queryDict[item.split("=")[0]] = item.split("=")[1];
+    });
     app.constant('settings', {
         webApiBaseUrl: 'http://localhost:5555/api',
         webApiODataUrl: 'http://localhost:5555/odata',
@@ -17,6 +19,7 @@
         deltaDistanceTouchMoveAsClick: 100,
         customerID: queryDict.CustomerID,
         terminalID: queryDict.TerminalID,
-        displayKeyboard:true
+        displayKeyboard: true,
+        autoReset: false
     });
 })();

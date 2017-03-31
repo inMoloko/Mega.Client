@@ -133,7 +133,7 @@
             })
             //=====================Proposal=====================
             .state('navigation.proposals', {
-                url: '/proposals',
+                url: '/proposals/:OrganizationID',
                 views: {
                     'search@': {
                         templateUrl: 'blocks/proposalsHeading/proposalsHeading.html'
@@ -446,6 +446,19 @@
                     }
                 },
                 // reloadOnSearch: false
+            })
+            .state('navigation.organization.proposals', {
+                url: '/proposals/:OrganizationID',
+                views: {
+                    'search@': {
+                        templateUrl: 'blocks/proposalsHeading/proposalsHeading.html'
+                    },
+                    'searchResult@': {
+                        templateUrl: 'blocks/proposalListControl/proposalListControl.html',
+                        controller: 'proposalListController',
+                        controllerAs: 'controller'
+                    }
+                }
             })
             //=====================Services=================
             .state('navigation.service', {

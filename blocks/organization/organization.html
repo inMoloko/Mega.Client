@@ -1,4 +1,4 @@
-﻿<div class="organization">
+﻿<div class="organization" ng-scrollbars>
     <div class="organization__logo-container">
         <img src="" alt="" class="organization__logo-container__img"
              moloko-image-api="controller.item.OrganizationID"
@@ -10,9 +10,9 @@
     <div class="organization__container">
         <div class="organization__container__categories">
             <div ng-repeat="cat in controller.item.Categories" ng-bind="cat.Name"></div>
-            <img src="/Content/images/icn_sales_shop_list.png" ng-if="controller.item.HasProposal"
-                 ui-sref=".proposals({OrganizationID:controller.item.OrganizationID})">
-            <img src="/Content/images/icn_sales_shop_card_disabled.png" ng-if="!controller.item.HasProposal">
+            <img src="Content/images/icn_sales_shop_list.png" ng-if="controller.item.HasProposal"
+                 ui-sref="navigation.proposals({OrganizationID:controller.item.OrganizationID})">
+            <img src="Content/images/icn_sales_shop_card_disabled.png" ng-if="!controller.item.HasProposal">
         </div>
 
         <h2>{{controller.item.Name}}</h2>

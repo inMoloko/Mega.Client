@@ -1,11 +1,11 @@
 ﻿<div class="event">
     <div class="event__logo-container">
-        <img src="" alt="" class="event__logo-container__img" moloko-image-api="controller.item.EventID" url="/Event/:id/WideLogo" default="/Content/images/card_event_cover_holder.png">
+        <img src="" alt="" class="event__logo-container__img" moloko-image-api="controller.item.EventID" url="/Event/:id/WideLogo" default="Content/images/card_event_cover_holder.png">
     </div>
 
     <div class="event__container">
         <div class="event__container__remain" ng-if="controller.item.DateEnd">
-            <img src="/Content/images/icn_alarm_red.png">
+            <img src="Content/images/icn_alarm_red.png">
             <span ng-bind="controller.item.DateEnd|remainDays"></span>
         </div>
         <div class="event__container__organization" ng-bind="controller.item.Organization.Name">

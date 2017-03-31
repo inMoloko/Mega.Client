@@ -4,7 +4,7 @@
         <textarea placeholder="Текст" ng-model="controller.item.text" id="filter"/>
     </div>
     <div class="feedback__stars">
-        <img ng-repeat="rate in controller.ratings" ng-src="/Content/images/{{controller.item.rating>=rate?'icn_feedback_star_full.png':'icn_feedback_star_empty.png'}}"
+        <img ng-repeat="rate in controller.ratings" ng-src="Content/images/{{controller.item.rating>=rate?'icn_feedback_star_full.png':'icn_feedback_star_empty.png'}}"
              ng-click="controller.item.rating=rate">
     </div>
     <div class="feedback__submit">

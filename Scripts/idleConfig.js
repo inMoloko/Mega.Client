@@ -7,7 +7,8 @@
         IdleProvider.timeout(30); // in seconds
         KeepaliveProvider.interval(30); // in seconds
     }])
-        .run(function (Idle) {
-            Idle.watch();
-        });
+        .run(['Idle', 'settings', function (Idle, settings) {
+            if (settings.autoReset)
+                Idle.watch();
+        }]);
 })();

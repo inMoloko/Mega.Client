@@ -1,21 +1,14 @@
-@import "../../Styles/style.less";
+@import "../../style.less";
 
 .organization {
   background: white;
   height: 100%; //calc(~"100%" - ~"20px");
   width: 100%;
   position: absolute;
-  overflow-y: scroll;
-
+  //overflow-y: scroll;
+  overflow-y: hidden;
   &:after {
-    content: ' ';
-    width: 620px;
-    height: 40px;
-    display: block;
-    background-color: white;
-    position: fixed;
-    bottom: 60px;
-    opacity: 0.8;
+    .base-blur;
   }
 
   &__logo-container {
@@ -50,6 +43,7 @@
         color: @dark-blue;
         background-color: @light-blue;
         margin-right: 5px;
+        margin-bottom: 5px;
       }
       > img {
         margin-left: auto;
@@ -68,7 +62,7 @@
       margin-top: 10px;
       font-size: 1.3em;
       position: relative;
-
+      white-space: pre-line;
     }
 
   }

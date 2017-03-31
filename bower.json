@@ -10,7 +10,8 @@
     "ng-scrollbars": "^0.0.11",
     "moment": "^2.17.0",
     "angular-qrcode": "monospaced/angular-qrcode#^6.2.1",
-    "swiper": "^3.4.2"
+    "swiper": "^3.4.2",
+    "leaflet": "^1.0.3"
   },
   "resolutions": {
     "angular": "^1.0.8"

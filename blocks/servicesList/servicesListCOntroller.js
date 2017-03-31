@@ -1,20 +1,5 @@
 ﻿(function () {
     "use strict";
-    function* processData(data) {
-        if (!data) {
-            return;
-        }
-
-        for (let i = 0; i < data.length; i++) {
-            let val = data[i];
-            yield val.id;
-
-            if (val.children) {
-                yield* processData(val.children);
-            }
-        }
-    }
-
     var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, $linq) {
 
         this.$state = $state;

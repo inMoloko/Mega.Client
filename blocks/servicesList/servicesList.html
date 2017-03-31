@@ -22,9 +22,9 @@
                     <div class="organizationsSearchResultItem__categoryBlock" style="">
                         {{::item.CategoryOrganization|limitTo:6|joinBy:', ':'Category.Name'}}
                     </div>
-                    <div class="organizationsSearchResultItem__floorBlock" style="">
-                        <span ng-bind="getFloors(item)"></span> ЭТАЖ
-                    </div>
+                    <!--<div class="organizationsSearchResultItem__floorBlock" style="">-->
+                        <!--<span ng-bind="getFloors(item)"></span> ЭТАЖ-->
+                    <!--</div>-->
                     <div ng-if="item.megacard" class="organizationsSearchResultItem__megacardBlock" style="">
                         Принимает MEGACARD
                     </div>                    
