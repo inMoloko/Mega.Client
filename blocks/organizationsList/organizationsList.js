@@ -2,6 +2,8 @@
     "use strict";
     var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, $linq, organizationService, mainMenuService) {
 
+        this.$rootScope = $rootScope;
+
         function filter() {
             organizationService.getFilter($state.params.Filter, $state.params.CategoryID).then(i => {
                 $rootScope.otherCurrentOrganizations = i.Other;

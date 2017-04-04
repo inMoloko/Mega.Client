@@ -20,7 +20,7 @@
                 scope: {
                     options: '=options'
                 },
-                templateUrl: './Views/molokoMap.html',
+                templateUrl: 'blocks/mapControl/molokoMap.html',
                 link: function ($scope, element, attrs) {
                     $scope.rootScope = $rootScope;
                     if (!$scope.options)
@@ -190,7 +190,7 @@
 
                         let organization = $rootScope.organizations.find(i => i.OrganizationID == orgID);
 
-                        if (organization.CategoryOrganization.length > 1) {
+                        if (organization.CategoryOrganization.length > 1 || organization.CategoryOrganization.length == 0) {
                             $state.go("navigation.organization", {
                                 OrganizationID: orgID,
                                 MapObjectID: mapObjectID
@@ -235,7 +235,7 @@
                     let stateChangeHandler = $rootScope.$on('$stateChangeSuccess',
                         function (event, toState, toParams, fromState, fromParams) {
 
-                        clearSelect();
+                            clearSelect();
 
                             if ($state.params.OrganizationID) {
                                 let mapObjects;
@@ -434,7 +434,7 @@
                     });
                     $scope.getCount = function (floorID) {
                         var floor = $scope.mapFloors[floorID];
-                        return $scope.selectedOrganizations === undefined ? 0 : $linq.Enumerable().From($scope.selectedOrganizations).SelectMany(i => i.Floors).Where(i => i.Number == floor.Number).Count(i=>i.Count);
+                        return $scope.selectedOrganizations === undefined ? 0 : $linq.Enumerable().From($scope.selectedOrganizations).SelectMany(i => i.Floors).Where(i => i.Number == floor.Number).Count(i => i.Count);
                     };
                     function getOptimalPath(array) {
                         let paths = {};

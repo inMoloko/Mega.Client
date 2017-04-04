@@ -62,7 +62,8 @@
                 return;
             }
             $state.go('.', {CategoryID: $state.params.CategoryID, Filter: $scope.currentFilter});
-            $scope.$apply();
+            if (!$scope.$$phase)
+                $scope.$apply();
         });
         jsKeyboard.show();
 
@@ -70,6 +71,11 @@
             jsKeyboard.hide();
             $('#filter').unbind();
         });
+    };
+    controller.prototype.clear = function () {
+        let $firstInput = $('#filter');
+        $firstInput.val('');
+        $firstInput.trigger('writeKeyboard');
     };
     controller.prototype.change = function () {
         console.log('change');

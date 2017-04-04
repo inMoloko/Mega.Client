@@ -8,23 +8,23 @@
             $scope.menuItems = result;
         });
         function getClass(route, params) {
-            if(!route){
+            if (!route) {
                 $scope.themClass = 'main';
                 return;
             }
-            if(route.includes('shops')){
+            if (route.includes('shops') || route == "navigation.organization") {
                 $scope.themClass = 'shops';
                 return;
             }
-            if(route.includes('restaurant')){
+            if (route.includes('restaurant')) {
                 $scope.themClass = 'food';
                 return;
             }
-            if(route.includes('proposal')){
+            if (route.includes('proposal')) {
                 $scope.themClass = 'proposals';
                 return;
             }
-            if(route.includes('more') || route.includes('event') || route.includes('service')){
+            if (route.includes('more') || route.includes('event') || route.includes('service')|| route.includes('entertainment')) {
                 $scope.themClass = 'more';
                 return;
             }

@@ -1,11 +1,8 @@
 @import "../../style.less";
-.selected.proposalsListControlListBlock__listElement {
-  background: @color-base;
-}
 
-.proposalsListControlHeadBlock__iconClose {
-  color: @color-work;
-}
+//.proposalsListControlHeadBlock__iconClose {
+//  color: @color-work;
+//}
 
 .proposalsListControl {
   background: #ffffff;
@@ -15,36 +12,13 @@
   position: absolute;
 }
 
-.colorTheme_color .proposalsListControl,
-.colorTheme_blackLite .proposalsListControl {
-  box-shadow: 0px 8px 16px 0px rgba(255, 255, 255, 0.2);
-  border: 1px solid transparent;
-  border-left: 0px;
-}
-
-.colorTheme_black .proposalsListControl {
-  border: 1px solid black;
-  background: black;
-  color: white;
-}
-
-.colorTheme_black .proposalsListControlHeadBlock__iconClose {
-  color: white;
-}
-
-.proposalsListControlHeadBlock__headSearchCount {
-  display: -moz-inline-box;
-  padding-left: 15%;
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 14px;
-}
-
-.colorTheme_black .proposalsListControlHeadBlock__headSearchCount,
-.colorTheme_blackLite .proposalsListControlHeadBlock__headSearchCount {
-  font-size: 20px;
-  text-transform: uppercase;
-}
+//.proposalsListControlHeadBlock__headSearchCount {
+//  display: -moz-inline-box;
+//  padding-left: 15%;
+//  display: inline-block;
+//  vertical-align: middle;
+//  font-size: 14px;
+//}
 
 .proposalsListControl__listBlock {
   position: absolute;
@@ -67,15 +41,6 @@
   overflow: hidden;
   //padding: 10px;
   box-shadow: 0 0 5px gray, 0 0 15px @maroon-light;
-}
-
-.colorTheme_black .proposalsListControlListBlock__listElement {
-  background: black;
-}
-
-.colorTheme_black .selected.proposalsListControlListBlock__listElement {
-  background: white;
-  color: black;
 }
 
 .proposalsListControlListElement {
@@ -110,9 +75,6 @@
   border: 0 solid transparent;
   border-bottom: 1px solid #e4e1e1;
   border-left: 1px solid #e4e1e1;
-
-  //background-image: url('/Content/images/card_sales_cover_holder.png');
-  //position: absolute;
   width: 280px;
   display: inline-block;
   shape-outside: polygon(0 0, 100% 0, 100% 100%, 30% 100%);
@@ -129,13 +91,6 @@
   }
 }
 
-//.proposalsListControlListElement__imageBlock:before {
-//  content: ' ';
-//  position: absolute;
-//  left: -2px;
-//  background-color: #e4e1e1;
-//}
-
 .proposalsListControlListElement__infoBlock {
   background: transparent;
   display: inline-block;
@@ -147,11 +102,6 @@
   overflow: hidden;
 }
 
-.colorTheme_black .proposalsListControlListElement__infoBlock {
-  left: 20px;
-  max-width: 100%;
-}
-
 .proposalsListControlListElement__name {
   font-size: 30px;
   text-transform: uppercase;
@@ -161,12 +111,6 @@
   margin-top: 10px;
 }
 
-.colorTheme_black .proposalsListControlListElement__name,
-.colorTheme_blackLite .proposalsListControlListElement__name {
-  font-size: 24px;
-  margin-top: 0px;
-}
-
 .proposalsListControlListElement__summary {
   font-size: 18px;
   //max-height: 35px;
@@ -174,22 +118,3 @@
   margin-top: 10px;
   display: -webkit-box;
 }
-
-//.colorTheme_black .proposalsListControlListElement__summary,
-//.colorTheme_blackLite .proposalsListControlListElement__summary{
-//    font-size: 20px;
-//    max-height: 50px;
-//    margin-top: 2px;
-//}
-//
-//
-//.colorTheme_black .proposalsListControlListElement__remainder,
-//.colorTheme_blackLite .proposalsListControlListElement__remainder{
-//    font-size: 20px;
-//    margin-top: 5px;
-//}
-//
-//.formatTheme_horizontal .proposalsListControlVertical,
-//.formatTheme_horizontalSmall .proposalsListControlVertical{
-//    display:none;
-//}

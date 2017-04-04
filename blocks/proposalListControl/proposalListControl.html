@@ -1,30 +1,24 @@
 <div class="proposalsListControl" style="">
     <ul class="list-group proposalsListControl__listBlock" style="" ng-scrollbars>
-        <li class="list-group-item proposalsListControlListBlock__listElement" ng-repeat="item in items"
+        <li class="list-group-item proposalsListControlListBlock__listElement"
+            ng-repeat="item in items track by item.ProposalID"
             ui-sref=".proposal({ProposalID:item.ProposalID})">
             <div class="proposalsListControlListElement__infoBlock">
-                <div class="proposalsListControlListElement__remainder" ng-if="item.DateEnd" ng-class="{'expired':item.RemainDays==0}">
+                <div class="proposalsListControlListElement__remainder" ng-if="item.DateEnd"
+                     ng-class="{'expired':item.RemainDays==0}">
 
-                    <div src="Content/images/icn_alarm_red.png"></div><span>{{item.DateEnd|remainDays}}</span>
+                    <div src="Content/images/icn_alarm_red.png"></div>
+                    <span ng-bind="::item.DateEnd|remainDays"></span>
                 </div>
-                <div class="proposalsListControlListElement__name">
-                    {{item.Organization.Name}}
+                <div class="proposalsListControlListElement__name" ng-bind="::item.Organization.Name">
                 </div>
-                <div class="proposalsListControlListElement__summary">
-                    {{item.Name}}
+                <div class="proposalsListControlListElement__summary" ng-bind="::item.Name">
                 </div>
             </div>
-        <div class="proposalsListControlListElement__imageBlock">
-            <img  moloko-image-api="item.ProposalID" url="/Proposal/:id/WideLogo" default="Content/images/card_sales_cover_holder.png">
-        </div>
-
-            <!--<div class="proposalsListControlListElement__imageBlock"-->
-                 <!--style="background-image: url({{controller.getUrl(item.ProposalID)}})">-->
-                <!--&lt;!&ndash;<img moloko-image-api="item.ProposalID" url="/Proposal/:id/Logo" class="img-responsive" alt="{{item.Organization.Name}}"&ndash;&gt;-->
-                <!--&lt;!&ndash;style='height: 100%; width: 100%; object-fit: cover'>&ndash;&gt;-->
-            <!--</div>-->
-
-
+            <div class="proposalsListControlListElement__imageBlock">
+                <img moloko-image-api="item.ProposalID" url="/Proposal/:id/WideLogo"
+                     default="Content/images/card_sales_cover_holder.png">
+            </div>
         </li>
     </ul>
     <div ng-show="items.length==0">

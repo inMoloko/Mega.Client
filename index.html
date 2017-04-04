@@ -9,7 +9,6 @@
     <!--rel='stylesheet' type='text/css' />-->
     <link rel='stylesheet' href='bower_components/swiper/dist/css/swiper.css'/>
 
-    <link rel="stylesheet" href="Content/icons/mainIcons/style.css">
     <link rel="stylesheet" href="dist/vendor.min.css">
     <link rel="stylesheet/less" type="text/css" href="style.less">
     <link rel="stylesheet" href="Scripts/Keyboard/jsKeyboard.css">
@@ -17,8 +16,6 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="Scripts/Keyboard/jsKeyboard.css">
     <link rel="stylesheet" href="Scripts/Keyboard/main.css">
-    <link rel="stylesheet" href="blocks/sheduleControl/sheduleControl.css">
-    <link rel="stylesheet" href="Content/icons/mainIcons/style.css">
     <!-- endinject -->
 
 
@@ -30,12 +27,8 @@
 <script src="less.js" type="text/javascript"></script>
 <!-- inject:js -->
 <script src="app.js"></script>
-<script src="Scripts/constant.js"></script>
 <script src="Scripts/idleConfig.js"></script>
 <script src="Scripts/stateConfig.js"></script>
-<!--<script src="Scripts/bowser/bowser.js"></script>-->
-<script src="blocks/appContainer/mainController.js"></script>
-<!--<script src="Scripts/Custom-leaflet/leaflet.js"></script>-->
 <script src="Scripts/Custom-leaflet/movingMarker.js"></script>
 <script src="Scripts/Custom-leaflet/zoomingMarker.js"></script>
 <script src="Scripts/Directives/angular-vs-repeat.js"></script>
@@ -50,8 +43,6 @@
 <script src="Scripts/Filters/unique.js"></script>
 <script src="Scripts/Helpers/arrayHelper.js"></script>
 <script src="Scripts/Helpers/mapHelper.js"></script>
-<script src="Scripts/Keyboard/jsKeyboard.js"></script>
-<script src="Scripts/Keyboard/main.js"></script>
 <script src="Scripts/Services/bannerService.js"></script>
 <script src="Scripts/Services/eventsService.js"></script>
 <script src="Scripts/Services/feedbackService.js"></script>
@@ -59,10 +50,13 @@
 <script src="Scripts/Services/mapService.js"></script>
 <script src="Scripts/Services/organizationService.js"></script>
 <script src="Scripts/Services/proposalService.js"></script>
+<script src="Scripts/Keyboard/jsKeyboard.js"></script>
+<script src="Scripts/Keyboard/main.js"></script>
+<script src="blocks/appContainer/mainController.js"></script>
 <script src="blocks/entertainment/entertainmentController.js"></script>
 <script src="blocks/event/eventController.js"></script>
-<script src="blocks/eventsList/eventsListController.js"></script>
 <script src="blocks/favoriteSearch/favoriteSearchController.js"></script>
+<script src="blocks/eventsList/eventsListController.js"></script>
 <script src="blocks/feedback/feedbackController.js"></script>
 <script src="blocks/feedbackFinal/feedbackFinalController.js"></script>
 <script src="blocks/mapControl/mapController.js"></script>
@@ -76,9 +70,9 @@
 <script src="blocks/searchControlMainPage/searchControlMainPageController.js"></script>
 <script src="blocks/servicesHeading/serviceController.js"></script>
 <script src="blocks/servicesList/servicesListCOntroller.js"></script>
-<script src="blocks/sheduleControl/sheduleControl.js"></script>
 <script src="blocks/shopHeading/shopHeadingController.js"></script>
 <script src="blocks/sideMenu/sideMenu.js"></script>
+<script src="environmental/development/constant.js"></script>
 <!-- endinject -->
 <div class="appContainer" ng-controller="mainController" ng-class="[]">
     <div id="virtualKeyboard"></div>

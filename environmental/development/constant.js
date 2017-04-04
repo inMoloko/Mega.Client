@@ -1,7 +1,7 @@
 (function () {
     "use strict";
-    var app = angular.module('app');
-    var queryDict = {};
+    let app = angular.module('app');
+    let queryDict = {};
     location.search.substr(1).split("&").forEach(function (item) {
         queryDict[item.split("=")[0]] = item.split("=")[1];
     });

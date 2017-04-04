@@ -17,6 +17,11 @@ let path = require('path');
 let urlAdjuster = require('gulp-css-url-adjuster');
 let templateCache = require('gulp-angular-templatecache');
 let minifyHTML = require('gulp-minify-html');
+//Очистка папки
+let rimraf = require('gulp-rimraf');
+
+let rename = require('gulp-rename');
+
 
 gulp.task('bower', function () {
     return gulp.src('./index.html')
@@ -25,7 +30,7 @@ gulp.task('bower', function () {
 });
 
 gulp.task('inject', function () {
-    var sources = gulp.src(['./Scripts/**/*.{js,css}', './blocks/**/*.{js,css}', '.Content/**/*.{js,css}', './bower_components/leaflet.AnimatedMarker/src/AnimatedMarker.js'], {read: false});
+    var sources = gulp.src(['./app.js', './Scripts/**/*.{js,css}', './blocks/**/*.{js,css}', '.Content/**/*.{js,css}', './environmental/development/**/*.js'], {read: false});
     return gulp.src('./index.html')
         .pipe(inject(sources, {relative: true}))
         .pipe(gulp.dest('./'));
@@ -49,7 +54,7 @@ gulp.task('bower-build', function () {
 });
 
 gulp.task('js-prod', function () {
-    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js'])
+    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/production/**/*.js'])
         .pipe(concat('script.js'))
         .pipe(babel({
             presets: ['es2015']
@@ -58,12 +63,11 @@ gulp.task('js-prod', function () {
         .pipe(gulp.dest('dist'));
 });
 gulp.task('less-prod', function () {
-    return gulp.src(['style.less', './blocks/**/*.less','./Scripts/Keyboard/jsKeyboard.css'])
+    return gulp.src(['style.less', './blocks/**/*.less', './Scripts/Keyboard/jsKeyboard.css'])
         .pipe(concat('clinet.less'))
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes')]
-        })).
-        pipe(urlAdjuster({
+        })).pipe(urlAdjuster({
             replace: ['Content', '../Content'],
         }))
         .pipe(gulp.dest('dist'));
@@ -80,17 +84,36 @@ function log(error) {
     this.end();
 }
 gulp.task('template', function () {
-    return gulp.src('./blocks/**/*.html')
+    return gulp.src(['./blocks/**/*.html', './Views/*.html'])
         .pipe(minifyHTML({quotes: true}))
         .pipe(templateCache({root: "blocks", module: "app", filename: "templates.js"}))
         .pipe(gulp.dest('dist'))
         .on('error', log);
 });
+//Очистка - удаляет папку
+gulp.task('build:clean', function () {
+    return gulp.src('./dist/', {read: false})
+        .pipe(rimraf({force: true}))
+        .on('error', log);
+});
+gulp.task('build:content', function () {
+    return gulp.src(['./Content/**/*.*','./web.config','./demoPage.html'], {read: true, base: '.'})
+        .pipe(gulp.dest('dist'))
+        .on('error', log);
+});
+gulp.task('build:index', function () {
+    return gulp.src('index.prod.html', {read: true})
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest('dist'))
+        .on('error', log);
+});
 
+gulp.task('prod', function (callback) {
+    runSequence('build:clean', ['template', 'js-prod', 'less-prod', 'bower-build', 'build:content', 'build:index'], callback);
+});
 
 gulp.task('build', function (callback) {
-    runSequence('bower', 'inject',
-        callback);
+    runSequence('bower', 'inject', callback);
 });
 gulp.task('lint', function () {
     return gulp.src(['./Scripts/**/*.js', './blocks/**/*.js', './blocks/**/*.less', '.Content/**/*.js', '!./Scripts/**/leaflet.js '])

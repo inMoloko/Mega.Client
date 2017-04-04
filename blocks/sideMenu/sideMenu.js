@@ -3,6 +3,17 @@
     var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, $timeout, mainMenuService, eventService) {
         let swiper;
 
+        eventService.getCurrent().then(function(proposals){
+            // angular.forEach(proposals, (i, k) => {
+            //     swiper.appendSlide(`<a class="swiper-slide" href="#/navigation/more/events/event/${i}" style="background-image:url('${settings.webApiBaseUrl}/Event/${i}/WideLogo');"></a>`);
+            //     // swiper.appendSlide(`<div class="swiper-slide"></div>`);
+            // });
+            $scope.events = proposals;
+            $timeout(function () {
+                swiperInit();
+            });
+        });
+
         function swiperInit() {
             swiper = new Swiper('#swiper-container', {
                 centeredSlides: true,
@@ -10,26 +21,16 @@
                 autoplayDisableOnInteraction: false,
                 loop: true
             });
-
-            eventService.getCurrent().then(function(proposals){
-                angular.forEach(proposals, (i, k) => {
-                    swiper.appendSlide(`<div class="swiper-slide" style="background-image:url('${settings.webApiBaseUrl}/Event/${i}/WideLogo');"></div>`);
-                    // swiper.appendSlide(`<div class="swiper-slide"></div>`);
-                });
-            });
-
-
-
         }
 
         //if ($state.current.name === 'navigation.mainMenu') {
         if (!$rootScope.horizontalBanners) {
             let event = $rootScope.$on('proposalsLoaded', function () {
-                swiperInit();
+                //swiperInit();
                 event();
             });
         } else {
-            swiperInit();
+            //swiperInit();
         }
         //}
 
@@ -37,7 +38,9 @@
             $scope.menuItems = result;
         });
 
-
+        $scope.getImage = function (i) {
+            return `${settings.webApiBaseUrl}/Event/${i}/WideLogo`;
+        };
         // $scope.sizeMenuItem = function () {
         //     if ($('#sideMenu').height() > 600)
         //         return "menuItemFull";

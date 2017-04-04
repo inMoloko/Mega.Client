@@ -11,83 +11,6 @@
   flex-direction: column;
 }
 
-.menuItemVerrySmall {
-  width: 33%;
-  height: 60px;
-  float: left;
-  margin-top: 20px;
-}
-
-.menuItemSmall {
-  width: 50%;
-  height: 60px;
-  float: left;
-  margin-top: 20px;
-
-}
-
-.menuItemFull {
-  width: 100%;
-  height: 80px;
-  float: left;
-  margin-bottom: 2px;
-}
-
-//.colorTheme_color .sideMenu,
-//.colorTheme_blackLite .sideMenu {
-//  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-//  border: 1px solid transparent;
-//}
-
-.colorTheme_black .sideMenu {
-  border: 1px solid black;
-}
-
-.sideMenu__head {
-  background: transparent;
-  z-index: 5;
-  width: 100%;
-  height: 60px;
-}
-
-.formatTheme_vertical .sideMenu__head {
-  margin-bottom: 20px;
-}
-
-/*sideMenu__sheduleButton*/
-.sideMenu__sheduleButton {
-  background: transparent;
-  z-index: 5;
-  position: absolute;
-  width: 500px;
-  height: 60px;
-  left: 60px;
-  padding: 0px 10px 0px 0px;
-  font-size: 14px;
-}
-
-.colorTheme_black .sideMenu__sheduleButton {
-  font-size: 24px;
-  text-transform: uppercase;
-}
-
-.colorTheme_blackLite .sideMenu__sheduleButton {
-  font-size: 24px;
-  text-transform: uppercase;
-}
-
-/*sideMenu__sheduleButtonText*/
-.sideMenu__sheduleButtonText {
-  height: 60px;
-  top: 50%;
-  position: absolute;
-  margin-top: -7px;
-}
-
-.colorTheme_black .sideMenu__sheduleButtonText {
-  margin-top: -10px;
-}
-
 .sideMenuItemBlock {
   //margin-top: 2px;
   flex: 1.5;
@@ -95,6 +18,11 @@
   flex-direction: column;
 
   &__itemButton {
+    background: @maroon;
+    font-size: 24px;
+    min-height: 80px;
+    flex: 1;
+    color: white;
     display: flex;
     align-items: center;
     margin-top: 2px;
@@ -112,13 +40,31 @@
     object-fit: contain;
     align-self: stretch;
     object-position: 100%;
-    max-width: 150px;
+    max-width: 200px;
   }
 
   .sideMenuItemBlock__icon {
     margin-right: 15px;
     margin-left: 15px;
 
+  }
+  &__itemButtonChevron {
+    width: 50px;
+  }
+  &__itemButtonText {
+    vertical-align: middle;
+  }
+  &__itemButtonImage {
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    background: #28303b;
+    border-radius: 30px;
+    border-width: 0px;
+    padding: 8px;
+    font-size: 1.8em;
+    color: #ffffff;
+    visibility: hidden;
   }
 }
 
@@ -143,108 +89,37 @@
 }
 
 /*sideMenuItemBlock__itemButton*/
-.sideMenuItemBlock__itemButton {
-  background: @maroon;
-  /*position:absolute;*/
-  //display: inline-block;
-  font-size: 24px;
-  min-height: 80px;
-  flex: 1;
-  color: white;
-}
-
-.sideMenuItemBlock__itemButtonImage {
-  vertical-align: middle;
-  width: 60px;
-  height: 60px;
-  background: #28303b;
-  border-radius: 30px;
-  border-width: 0px;
-  padding: 8px;
-  font-size: 1.8em;
-  color: #ffffff;
-  visibility: hidden;
-}
-
-.sideMenuItemBlock__itemButtonChevron {
-  width: 50px;
-}
-
-.sideMenuItemBlock__itemButtonText {
-  vertical-align: middle;
-}
-
-.colorTheme_black .sideMenuItemBlock__itemButton {
-  display: none;
-}
-
-/*sideMenuItemBlock__itemName*/
-.sideMenuItemBlock__itemName {
-}
-
-.colorTheme_black .sideMenuItemBlock__itemName {
-  text-transform: uppercase;
-}
-
-.colorTheme_blackLite .sideMenuItemBlock__itemName {
-  text-transform: uppercase;
-}
-
-//.feedback {
-//  background: transparent;
-//  z-index: 5;
-//  width: 100%;
-//  position: absolute;
-//  bottom: 10px;
-//  height: 60px;
+//.sideMenuItemBlock__itemButton {
+//  background: @maroon;
+//  /*position:absolute;*/
+//  //display: inline-block;
+//  font-size: 24px;
+//  min-height: 80px;
+//  flex: 1;
+//  color: white;
 //}
-//
-//.feedback__feedbackItem {
-//  margin-left: 60px;
-//  font-size: 18px;
-//  position: relative;
-//  height: 60px;
-//}
-//
-//.feedback__feedbackItem__text {
-//  height: 60px;
-//  left: 70px;
-//  top: 50%;
-//  position: absolute;
-//  margin-top: -9px;
-//}
-//
-//.feedback__feedbackItem__image {
-//  background: transparent;
-//  /* z-index: 5; */
-//  position: absolute;
+
+//.sideMenuItemBlock__itemButtonImage {
+//  vertical-align: middle;
 //  width: 60px;
 //  height: 60px;
-//  left: 0;
-//}
-//
-//.colorTheme_black .feedback__feedbackItem__text,
-//.colorTheme_blackLite .feedback__feedbackItem__text {
-//  text-transform: uppercase;
-//}
-
-//.NotEmpty {
-//  border-bottom-style: dashed;
+//  background: #28303b;
+//  border-radius: 30px;
+//  border-width: 0px;
+//  padding: 8px;
+//  font-size: 1.8em;
+//  color: #ffffff;
+//  visibility: hidden;
 //}
 
-.formatTheme_horizontal .vertical,
-.formatTheme_horizontalSmall .vertical {
-  display: none;
-}
+//.sideMenuItemBlock__itemButtonChevron {
+//  width: 50px;
+//}
 
-.formatTheme_vertical .horizontal {
-  display: none;
-}
+//.sideMenuItemBlock__itemButtonText {
+//  vertical-align: middle;
+//}
 
-/*
-.formatTheme_horizontalSmall .feedback__feedbackItem__image {
-    left: 500px;
-}*/
 .sideMenu__swiper {
   width: 100%;
   min-height: 360px;
