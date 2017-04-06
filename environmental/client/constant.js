@@ -15,6 +15,6 @@
         customerID: queryDict.CustomerID,
         terminalID: queryDict.TerminalID,
         displayKeyboard: true,
-        autoReset: false
+        autoReset: true
     });
 })();

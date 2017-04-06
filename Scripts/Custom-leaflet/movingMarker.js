@@ -115,7 +115,7 @@ L.Marker.MovingMarker = L.Marker.extend({
         }
 
         this._state = L.Marker.MovingMarker.endedState;
-        this.fire('end', { elapsedTime: elapsedTime });
+        this.fire('end', {elapsedTime: elapsedTime});
     },
 
     addLatLng: function (latlng, duration) {
@@ -268,7 +268,7 @@ L.Marker.MovingMarker = L.Marker.extend({
                 if (this.options.loop) {
                     lineIndex = 0;
                     elapsedTime -= 1000;
-                    this.fire('loop', { elapsedTime: elapsedTime });
+                    this.fire('loop', {elapsedTime: elapsedTime});
                 } else {
                     // place the marker at the end, else it would be at
                     // the last position
@@ -331,7 +331,7 @@ L.Marker.MovingMarker = L.Marker.extend({
         }
         return L.divIcon({
             className: 'man',
-            html: '<i class="man__item iconMall-iconMan" style="z-index:1010"></i>',
+            html: '<img src="Content/images/man.svg" width="40" style="z-index:1010;">',
             iconSize: [40, 40],
             iconAnchor: [x, y],
             zIndexOffset: 1000

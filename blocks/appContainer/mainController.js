@@ -3,61 +3,13 @@
     var controller = function ($scope, $http, settings, $state, $rootScope, arrayHelper, $q, Idle, $location, $stateParams, $timeout) {
         //Обработка простоя
         $scope.$on('IdleTimeout', function () {
-            // $rootScope.colorTheme = settings.colorThemes[0];
-            // $rootScope.formatTheme = $scope.formatThemesMain[0];
-            // if ($rootScope.organizations == undefined)
-            //     location.reload();
-            // if ($rootScope.statisticStack && $rootScope.statisticStack.length > 0)
-            //     $rootScope.sendStatistics();
-            // //$state.go('navigation.mainMenu', {});
-            // $("input, textarea").focusout();
-            // if ($rootScope.banners.length > 0) {
-            // }
-            // // $state.go('screensaver', {});
-            // else {
-            //     $state.go('navigation.mainMenu', {});
-            //     Idle.watch();
-            // }
             $state.go('navigation', {});
             Idle.watch();
         });
 
         $scope.formatThemesMain = [];
         $rootScope.orientation;
-        // $scope.changeOrientation = function () {
-        //     if (window.innerHeight > window.innerWidth) {
-        //         $scope.formatThemesMain = settings.formatThemes.filter(e => e.includes('vertical'));
-        //         $rootScope.orientation = 'vertical';
-        //     }
-        //     else {
-        //         $scope.formatThemesMain = settings.formatThemes.filter(e => e.includes('horizontal'));
-        //         $rootScope.orientation = 'horizontal';
-        //     }
-        //     $rootScope.formatTheme = $scope.formatThemesMain[0];
-        // };
-        //
-        // $(window).resize(function () {
-        //     $scope.changeOrientation();
-        //     $state.reload();
-        // });
 
-        //Работа с темами
-        // $rootScope.colorTheme = settings.colorThemes[0];
-        // $rootScope.formatTheme = settings.formatThemes[0];
-        // $scope.changeTheme = function (themeType) {
-        //     if (themeType == 'colorTheme')
-        //         $rootScope.colorTheme = arrayHelper.nextItem(settings.colorThemes, $rootScope.colorTheme);
-        //     else if (themeType == 'formatTheme')
-        //         $rootScope.formatTheme = arrayHelper.nextItem($scope.formatThemesMain, $rootScope.formatTheme);
-        //     setTimeout($rootScope.initMasonry, 250);
-        // };
-        //
-        // $rootScope.initMasonry = function () {
-        //     $(".wrapper").masonry({
-        //         itemSelector: ".item ",
-        //         columnWidth: ".item"
-        //     });
-        // }
         //$scope.changeOrientation();
         //граф для поиска организаций
         $rootScope.mapGraph = new Graph();
@@ -233,26 +185,7 @@
 
             //Добаляем линки (переходы)
             $rootScope.organizationLinks.forEach(i => {
-                // var layer1 = graphLayerd[i.OrganizationFrom.FloorID];
-                // var x = i.OrganizationFrom.Longitude;
-                // var y = i.OrganizationFrom.Latitude;
-                // x = cos * i.OrganizationFrom.Longitude + sin * i.OrganizationFrom.Latitude;
-                // y = cos * i.OrganizationFrom.Latitude - sin * i.OrganizationFrom.Longitude;
-                //
-                // var vertex1 = layer1.getVertex(x, y) || layer1.addVertexWithShortestSegment(x, y).vertex;
-                //
-                // var layer2 = graphLayerd[i.OrganizationTo.FloorID];
-                // x = i.OrganizationTo.Longitude;
-                // y = i.OrganizationTo.Latitude;
-                // x = cos * i.OrganizationTo.Longitude + sin * i.OrganizationTo.Latitude;
-                // y = cos * i.OrganizationTo.Latitude - sin * i.OrganizationTo.Longitude;
-                //
-                // var vertex2 = layer2.getVertex(x, y) || layer2.addVertexWithShortestSegment(x, y).vertex;
-                //
-                // if (vertex1 && vertex2) {
-                //     var segment1 = layer1.addSegment1(vertex1, vertex2);
-                //     layer2.addSegment1(vertex1, vertex2);
-                // }
+
                 var layer1 = graphLayerd[i.MapObjectFrom.FloorID];
                 var x = i.MapObjectFrom.Longitude;
                 var y = i.MapObjectFrom.Latitude;
@@ -285,50 +218,7 @@
             $rootScope.currentStateParam;
             $rootScope.closeResultTitle;
 
-            // $rootScope.addStatistics = function (action, parametr) {
-            //     var statItem = {
-            //         Action: action,
-            //         ParamsAsJson: parametr,
-            //         Date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -1)
-            //     };
-            //     if (!$rootScope.statisticStack)
-            //         $rootScope.statisticStack = [];
-            //     $rootScope.statisticStack.push(statItem);
-            // };
-            // let locationChangeHandler = $rootScope.$on('$locationChangeSuccess', function () {
-            //     if ($state.current.name === 'navigation.searchResult.organization' ||
-            //         $state.current.name === 'navigation.organization' ||
-            //         $state.current.name === 'navigation.mainMenu.organization' ||
-            //         $state.current.name === 'navigation.closedResult.organization') {
-            //         $rootScope.addStatistics('SelectОрганизацияСхема', {
-            //             OrganizationID: +$rootScope.currentOrganization.OrganizationID,
-            //             CategoryID: +$rootScope.currentCategory.CategoryID,
-            //             Filter: $rootScope.currentFilter
-            //         });
-            //     }
-            //     $rootScope.addStatistics('Command', '{"Param":"' + $location.url() + '"}');
-            //
-            // });
 
-            // $rootScope.sendStatistics = function () {
-            //     //Возможно ParamsAsJson объект, тогда его нужно преобразовать в строку
-            //     $rootScope.statisticStack.forEach(i => {
-            //         if (angular.isObject(i.ParamsAsJson))
-            //             i.ParamsAsJson = angular.toJson(i.ParamsAsJson);
-            //     });
-            //
-            //     $http({
-            //         method: 'POST',
-            //         url: settings.webApiBaseUrl + '/Statistic',
-            //         data: JSON.stringify($rootScope.statisticStack),
-            //         headers: {'Content-type': 'application/json'}
-            //     }).success(function (response) {
-            //         $rootScope.statisticStack = undefined;
-            //     }).error(function (response) {
-            //         //$rootScope.addStatistics('SendStatistics', '{"Param":"Not sended"}');
-            //         console.error("При отправке статистики произошла ошибка");
-            //     });
-            // }
             $rootScope.systemSettings = response[8].data;
             if ($rootScope.systemSettings && $rootScope.systemSettings.length) {
                 let result = $rootScope.systemSettings.find(i => i.SettingType == "TERMINAL_MENU_ITEMS");
@@ -374,22 +264,6 @@
             //$rootScope.cinemaTimetable = response[11].data;
         });
 
-        // $rootScope.$watchCollection('currentOrganizations', function () {
-        //     if ($rootScope.currentOrganizations === undefined && $rootScope.currentOrganization === undefined) {
-        //         if ($state.current.name != "navigation.mainMenu")
-        //             $state.go('navigation.mainMenu');
-        //         return;
-        //     }
-        //     //if ($state.current.name !== "navigation.searchResult")
-        //     //    $state.go('navigation.searchResult');
-        // });
-        // $rootScope.$watch('currentOrganization', function (nw, old) {
-        //     if ($rootScope.currentOrganization !== undefined && nw != old) {
-        //         //if ($state.current.name !== "navigation.searchResult.organization")
-        //         //$state.go('navigation.searchResult.organization', { OrganizationID: $rootScope.currentOrganization ? $rootScope.currentOrganization.OrganizationID : null });
-        //     }
-        //
-        // });
         $rootScope.$on('$stateChangeSuccess',
             function (event, toState, toParams, fromState, fromParams) {
                 //console.log(fromState, toState);
@@ -419,72 +293,6 @@
         });
 
         var x, y;
-
-        //получаем координаты начальной точки касания
-        // window.addEventListener('touchstart', function (event) {
-        //     x = event.changedTouches[0].pageX;
-        //     y = event.changedTouches[0].pageY;
-        //
-        //     console.log("event.touches.length = " + event.touches.length);
-        //     if (event.touches.length == 2) {
-        //         event.preventDefault();
-        //     }
-        // }, true);
-        //
-        //
-        // //при завершении касания имитируем клик
-        // $scope.touchHandler = function (event) {
-        //     var touches = event.changedTouches,
-        //         first = touches[0],
-        //         type = "";
-        //     switch (event.type) {
-        //         case "touchend":
-        //             type = "click";
-        //             break;
-        //         default:
-        //             return;
-        //     }
-        //
-        //     // initMouseEvent(type, canBubble, cancelable, view, clickCount,
-        //     //                screenX, screenY, clientX, clientY, ctrlKey,
-        //     //                altKey, shiftKey, metaKey, button, relatedTarget);
-        //
-        //     var deltaX = event.changedTouches[0].pageX - x;
-        //     var deltaY = event.changedTouches[0].pageY - y;
-        //     var difference = (deltaX * deltaX) + (deltaY * deltaY);
-        //     if (Math.sqrt(difference) < settings.deltaDistanceTouchMoveAsClick) {
-        //         var simulatedEvent = document.createEvent("MouseEvent");
-        //         simulatedEvent.initMouseEvent("mousedown", true, true, window, 1,
-        //             first.screenX, first.screenY,
-        //             first.clientX, first.clientY, false,
-        //             false, false, false, 0/*left*/, null);
-        //         first.target.dispatchEvent(simulatedEvent);
-        //         simulatedEvent.initMouseEvent("mouseup", true, true, window, 1,
-        //             first.screenX, first.screenY,
-        //             first.clientX, first.clientY, false,
-        //             false, false, false, 0/*left*/, null);
-        //         first.target.dispatchEvent(simulatedEvent);
-        //         simulatedEvent.initMouseEvent(type, true, true, window, 1,
-        //             first.screenX, first.screenY,
-        //             first.clientX, first.clientY, false,
-        //             false, false, false, 0/*left*/, null);
-        //         first.target.dispatchEvent(simulatedEvent);
-        //         if (event.srcElement.nodeName == "INPUT")
-        //             event.srcElement.focus();
-        //         event.preventDefault();
-        //     }
-        //
-        // }
-        //
-        // $scope.initEvent = function () {
-        //     document.addEventListener("touchend", $scope.touchHandler, true);
-        // }
-        // $scope.initEvent();
-        //
-        // function init() {
-        //     preventLongPressMenu(document);
-        // }
-
 
         //время работы якорей
         $rootScope.anchorOrganizations;
@@ -573,6 +381,7 @@
             }
         });
 
+        $rootScope.filters = {};
     };
     controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'arrayHelper', '$q', 'Idle', '$location', '$stateParams', '$timeout'];
     angular.module('app').controller('mainController', controller);

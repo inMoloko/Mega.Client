@@ -5,6 +5,7 @@
         this.$rootScope = $rootScope;
 
         function filter() {
+            $scope.searchText = $state.params.Filter;
             organizationService.getFilter($state.params.Filter, $state.params.CategoryID).then(i => {
                 $rootScope.otherCurrentOrganizations = i.Other;
                 $rootScope.currentOrganizations = i.Result;

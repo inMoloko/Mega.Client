@@ -1,31 +1,31 @@
-@import 'blocks/appContainer/appContainer.less';
-@import 'blocks/mapControl/mapControl.less';
-@import 'blocks/organization/organization.less';
-@import 'blocks/organizationsList/organizationsList.less';
-@import 'blocks/proposalListControl/proposalListControl.less';
-@import 'blocks/searchControlMainPage/searchControlMainPage.less';
-@import 'blocks/searchControlFilter/searchControlFilter.less';
-@import 'blocks/shopHeading/shopHeading.less';
-@import 'blocks/favoriteSearch/favoriteSearch.less';
-@import 'blocks/sideMenu/sideMenu.less';
-@import 'blocks/navigation/navigation.less';
-@import 'Scripts/Custom-leaflet/leaflet.less';
-@import 'blocks/proposalsHeading/proposalsHeading.less';
-@import 'blocks/restaurantHeading/restaurantHeading.less';
-@import 'blocks/entertainmentsHeading/entertainments.less';
-@import 'blocks/proposal/proposal.less';
-@import 'blocks/moreHeading/moreHeading.less';
-@import 'blocks/more/more.less';
-@import 'blocks/eventsList/eventsList.less';
-@import 'blocks/eventsHeading/eventsHeading.less';
-@import 'blocks/event/event.less';
-@import 'blocks/feedbackHeading/feedbackHeading.less';
-@import 'blocks/feedback/feedback.less';
-@import 'blocks/scheduleHeading/scheduleHeading.less';
-@import 'blocks/servicesHeading/servicesHeading.less';
-@import 'blocks/servicesList/servicesList.less';
-@import 'blocks/schedule/schedule.less';
-@import 'blocks/feedbackFinal/feedbackFinal.less';
+//@import 'blocks/appContainer/appContainer.less';
+//@import 'blocks/mapControl/mapControl.less';
+//@import 'blocks/organization/organization.less';
+//@import 'blocks/organizationsList/organizationsList.less';
+//@import 'blocks/proposalListControl/proposalListControl.less';
+//@import 'blocks/searchControlMainPage/searchControlMainPage.less';
+//@import 'blocks/searchControlFilter/searchControlFilter.less';
+//@import 'blocks/shopHeading/shopHeading.less';
+//@import 'blocks/favoriteSearch/favoriteSearch.less';
+//@import 'blocks/sideMenu/sideMenu.less';
+//@import 'blocks/navigation/navigation.less';
+//@import 'Scripts/Custom-leaflet/leaflet.less';
+//@import 'blocks/proposalsHeading/proposalsHeading.less';
+//@import 'blocks/restaurantHeading/restaurantHeading.less';
+//@import 'blocks/entertainmentsHeading/entertainments.less';
+//@import 'blocks/proposal/proposal.less';
+//@import 'blocks/moreHeading/moreHeading.less';
+//@import 'blocks/more/more.less';
+//@import 'blocks/eventsList/eventsList.less';
+//@import 'blocks/eventsHeading/eventsHeading.less';
+//@import 'blocks/event/event.less';
+//@import 'blocks/feedbackHeading/feedbackHeading.less';
+//@import 'blocks/feedback/feedback.less';
+//@import 'blocks/scheduleHeading/scheduleHeading.less';
+//@import 'blocks/servicesHeading/servicesHeading.less';
+//@import 'blocks/servicesList/servicesList.less';
+//@import 'blocks/schedule/schedule.less';
+//@import 'blocks/feedbackFinal/feedbackFinal.less';
 
 @color-base: #006bc2; /*006bc2*/
 @color-work: #28303b; /*28303b*/
@@ -52,8 +52,14 @@
 @light-blue: #E9F1F4;
 @dark-blue: #4D8AC9;
 
+@navigation-footer-height: 60px;
+
 * {
-   outline: none;
+  outline: none;
+}
+
+body {
+  font-family: @font-base;
 }
 
 .base-icon-btn {
@@ -83,7 +89,14 @@
   margin-left: 40px;
 }
 
-.flex-row {
+.base-tile {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+.flex-row, .row {
   display: flex;
 }
 

@@ -2,8 +2,10 @@
     <div class="organizationsList__organizationsHeadBlock" style="">
         <div class="organizationsHeadBlock__searchCountBlock" style="">
             <div class="searchCountBlock__searchCount">
-                Найдено
-                {{searchText&&$root.currentOrganizations.length==0&&$root.otherCurrentOrganizations.length>0?$root.otherCurrentOrganizations.length:$root.currentOrganizations.length}}
+                <span>Найдено {{searchText&&$root.currentOrganizations.length==0&&$root.otherCurrentOrganizations.length>0?$root.otherCurrentOrganizations.length:$root.currentOrganizations.length}}</span>
+                <div class="searchCountBlock__searchCount__filter" ng-if="controller.filter"><span ng-bind="controller.filter"></span> <img
+                        src="Content/images/icn_resetfilters.png" ng-click="controller.clean()"></div>
+
             </div>
         </div>
     </div>
@@ -33,7 +35,7 @@
             Рекомендации:
             <ul>
                 <li>Убедитесь, что все слова написаны без ошибок</li>
-                <li>Убедитесь, что выбрана нужная категория</li>
+                <!--<li>Убедитесь, что выбрана нужная категория</li>-->
                 <li>Используйте более популярные ключевые слова.</li>
             </ul>
         </div>

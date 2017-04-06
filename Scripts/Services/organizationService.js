@@ -16,6 +16,9 @@
     service.prototype.getFilter = function (filter = '', categoryID = '') {
         return this.$http.get(this.settings.webApiBaseUrl + '/Organization/GetFilter?CustomerID=' + this.settings.customerID + '&Filter=' + filter + '&CategoryID=' + categoryID, {cache: true}).then(i => i.data);
     };
+    service.prototype.getDetailFilter = function (data) {
+        return this.$http.post(this.settings.webApiBaseUrl + '/Organization/DetailFilter', data, {cache: true}).then(i => i.data);
+    };
     angular
         .module('app')
         .service('organizationService', service);

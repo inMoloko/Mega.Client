@@ -84,22 +84,44 @@
   position: absolute;
   height: 60px;
   left: 50px;
-  right: 60px;
+  right: 15px;
   padding: 0px;
   font-size: 20px;
+  display: flex;
+  align-items: center;
 }
 
-//.colorTheme_black .organizationsHeadBlock__searchCountBlock,
-//.colorTheme_blackLite .organizationsHeadBlock__searchCountBlock {
-//  text-transform: uppercase
-//}
-
 .searchCountBlock__searchCount {
-  //height: 60px;
+  width: 100%;
   top: 50%;
-  position: absolute;
+  //position: absolute;
   margin-top: -10px;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  &__filter {
+    min-width: 100px;
+    max-width: 400px;
+    margin-left: auto;
+    border: solid 1px @blue;
+    border-radius: 20px;
+    height: 40px;
+    padding-left: 15px;
+    padding-right: 5px;
+    background-color: @light-blue;
+    display: flex;
+    align-items: center;
+    color: @blue;
+    > span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    > img {
+      height: 30px;
+      margin-left: auto;
+    }
+  }
 }
 
 .organizationsSearchResultBlock__organizationsSearchResultItem {

@@ -21,7 +21,7 @@ let minifyHTML = require('gulp-minify-html');
 let rimraf = require('gulp-rimraf');
 
 let rename = require('gulp-rename');
-
+let sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('bower', function () {
     return gulp.src('./index.html')
@@ -62,13 +62,22 @@ gulp.task('js-prod', function () {
         .pipe(uglify({outSourceMap: true}))
         .pipe(gulp.dest('dist'));
 });
+gulp.task('js-client', function () {
+    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/client/**/*.js'])
+        .pipe(concat('script.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(uglify({outSourceMap: true}))
+        .pipe(gulp.dest('dist'));
+});
 gulp.task('less-prod', function () {
     return gulp.src(['style.less', './blocks/**/*.less', './Scripts/Keyboard/jsKeyboard.css'])
-        .pipe(concat('clinet.less'))
+        .pipe(concat('client.less'))
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes')]
         })).pipe(urlAdjuster({
-            replace: ['Content', '../Content'],
+            replace: ['Content', 'Content'],
         }))
         .pipe(gulp.dest('dist'));
 });
@@ -97,7 +106,7 @@ gulp.task('build:clean', function () {
         .on('error', log);
 });
 gulp.task('build:content', function () {
-    return gulp.src(['./Content/**/*.*','./web.config','./demoPage.html'], {read: true, base: '.'})
+    return gulp.src(['./Content/**/*.*', './web.config', './demoPage.html'], {read: true, base: '.'})
         .pipe(gulp.dest('dist'))
         .on('error', log);
 });
@@ -111,7 +120,9 @@ gulp.task('build:index', function () {
 gulp.task('prod', function (callback) {
     runSequence('build:clean', ['template', 'js-prod', 'less-prod', 'bower-build', 'build:content', 'build:index'], callback);
 });
-
+gulp.task('client', function (callback) {
+    runSequence('build:clean', ['template', 'js-client', 'less-prod', 'bower-build', 'build:content', 'build:index'], callback);
+});
 gulp.task('build', function (callback) {
     runSequence('bower', 'inject', callback);
 });
@@ -127,13 +138,25 @@ gulp.task('lint', function () {
         // lint error, return the stream and pipe to failAfterError last. 
         .pipe(eslint.failAfterError());
 });
+gulp.task('less-serve', function () {
+    return gulp.src(['style.less', './blocks/**/*.less', './Scripts/Keyboard/jsKeyboard.css'])
+        .pipe(sourcemaps.init())
+        .pipe(less({
+            paths: [path.join(__dirname, 'less', 'includes')]
+        }))
+        .pipe(concat('client.css'))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('dist'))
+        .pipe(browserSync.stream())
+        .on('error', log);
+});
 
-
-gulp.task('server', function () {
+gulp.task('server', ['less-serve'], function () {
     browserSync.init({
         server: {
             baseDir: "./"
         }
     });
-    browserSync.watch(['./Scripts/**/*.{js,css,html,less}', './blocks/**/*.{js,css,html,less}']).on('change', browserSync.reload);
+    gulp.watch('./blocks/**/*.{css,less}', ['less-serve']);
+    browserSync.watch(['./Scripts/**/*.{js,html}', './blocks/**/*.{js,html}']).on('change', browserSync.reload);
 });

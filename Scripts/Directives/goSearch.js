@@ -28,9 +28,6 @@
                         $state.go(".searchResult");
                     }
                 });
-                // scope.$watch("$destroy", function () {
-                //     element.unbind();
-                // });
             }
         };
     }]);
