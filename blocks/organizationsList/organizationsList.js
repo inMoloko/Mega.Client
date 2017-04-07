@@ -26,7 +26,8 @@
             let cats = $rootScope.categories.find(i => i.CategoryID == value).ChildrenIds;
             if ($linq.Enumerable().From(item.Categories).Select(i => i.CategoryID).Intersect(cats).Count() != 0) {
                 $state.go(".restaurant", {
-                    OrganizationID: item.OrganizationID
+                    OrganizationID: item.OrganizationID,
+                    CategoryID: value
                 });
                 return;
             }
@@ -34,7 +35,8 @@
             cats = $rootScope.categories.find(i => i.CategoryID == value).ChildrenIds;
             if ($linq.Enumerable().From(item.Categories).Select(i => i.CategoryID).Intersect(cats).Count() != 0) {
                 $state.go(".entertainment", {
-                    OrganizationID: item.OrganizationID
+                    OrganizationID: item.OrganizationID,
+                    CategoryID: value
                 });
                 return;
             }
@@ -42,12 +44,15 @@
             cats = $rootScope.categories.find(i => i.CategoryID == value).ChildrenIds;
             if ($linq.Enumerable().From(item.Categories).Select(i => i.CategoryID).Intersect(cats).Count() != 0) {
                 $state.go(".service", {
-                    OrganizationID: item.OrganizationID
+                    OrganizationID: item.OrganizationID,
+                    CategoryID: value
                 });
                 return;
             }
+            value = $scope.menuItems['Магазины'];
             $state.go(".organization", {
-                OrganizationID: item.OrganizationID
+                OrganizationID: item.OrganizationID,
+                CategoryID: value
             });
         };
         // $scope.megacard = function (item) {

@@ -1,7 +1,7 @@
 <div class="shopHeading">
     <button class="shopHeading__back" ng-click="controller.goBack()"><img src="Content/images/icn_back.png"></button>
     <h1 class="shopHeading__title" ng-bind="controller.getTitle()">Магазины</h1>
-    <div class="shopHeading__close" ui-sref="navigation.shops.filter()"
+    <div class="shopHeading__close" ui-sref="navigation.shops.filter({CategoryID:controller.categoryID})"
          state="organization"><img
             src="Content/images/icn_filter.png"></div>
     <div class="shopHeading__close" ui-sref="navigation.shops.searchResult">

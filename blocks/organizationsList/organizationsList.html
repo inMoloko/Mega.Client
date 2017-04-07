@@ -3,8 +3,8 @@
         <div class="organizationsHeadBlock__searchCountBlock" style="">
             <div class="searchCountBlock__searchCount">
                 <span>Найдено {{searchText&&$root.currentOrganizations.length==0&&$root.otherCurrentOrganizations.length>0?$root.otherCurrentOrganizations.length:$root.currentOrganizations.length}}</span>
-                <div class="searchCountBlock__searchCount__filter" ng-if="controller.filter"><span ng-bind="controller.filter"></span> <img
-                        src="Content/images/icn_resetfilters.png" ng-click="controller.clean()"></div>
+                <div class="searchCountBlock__searchCount__filter" ng-if="controller.filter" ng-click="controller.clean()"><span ng-bind="controller.filter"></span> <img
+                        src="Content/images/icn_resetfilters.png"></div>
 
             </div>
         </div>

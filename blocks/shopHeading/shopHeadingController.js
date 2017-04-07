@@ -11,6 +11,7 @@
 
         mainMenuService.get().then(i => {
             self.menuItems = i;
+            self.categoryID = self.menuItems['Магазины'];
         });
     };
     controller.prototype.getTitle = function () {

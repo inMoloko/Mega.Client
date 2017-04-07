@@ -37,6 +37,9 @@
         });
         return deferred.promise;
     };
+    service.prototype.getDetailFilter = function (data) {
+        return this.$http.post(this.settings.webApiBaseUrl + '/Proposal/DetailFilter', data, {cache: true}).then(i => i.data);
+    };
     angular
         .module('app')
         .service('proposalService', service);

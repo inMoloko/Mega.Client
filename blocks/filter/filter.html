@@ -7,7 +7,7 @@
                 ng-click="controller.select(category)"
                 ng-class="{'filter__button_selected':category.select}"
                 ng-bind="category.Name"></button>
-        <button class="filter__button" ng-click="controller.changeLimit()"
+        <button class="filter__button" ng-click="controller.changeLimit()" ng-if="controller.categories.length>20"
                 ng-class="{'filter__button_close':controller.full}">{{controller.full?'Свернуть':'...'}}
         </button>
     </div>

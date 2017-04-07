@@ -284,6 +284,8 @@
                                 }
                                 return;
                             }
+                            if(!$state.params.OrganizationID && !$state.params.Organizations)
+                                delete $scope.selectedOrganizations;
                         });
 
                     function getIcon(org, selected, mapObjectID) {
@@ -460,6 +462,8 @@
                         document.querySelectorAll('._selected').forEach(m => {
                             m.classList.remove('_selected');
                         });
+                        if(!$scope.currentMapFloor)
+                            return;
                         let floorID = $scope.currentMapFloor.FloorID;
                         angular.forEach($scope.mapFloors, function (value, key) {
                             if (key != floorID)

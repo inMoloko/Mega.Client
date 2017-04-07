@@ -31,8 +31,16 @@
             if (!$state.params[self.filterName]) {
                 self.filter = '';
             } else {
+                let tmp = [];
                 let categories = $state.params[self.filterName].Categories.filter(i => i.select == true);
-                self.filter = categories.length == 0 ? $state.params[self.filterName].Categories.map(i => i.Name).join('/') : categories.map(i => i.Name).join('/');
+                if (categories.length != 0) {
+                    tmp = categories.map(i => i.Name);
+                }
+
+                if ($state.params[self.filterName].HasProposals) {
+                    tmp.unshift('Акции');
+                }
+                self.filter = tmp.join('/');
             }
         }
 

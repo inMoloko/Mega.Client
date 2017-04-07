@@ -28,9 +28,7 @@
             </div>
         </div>
 
-        <div class="appContainer__footerBlock" ng-include="'blocks/navigation/navigation.html'">
-            <div ng-include="'blocks/navigation/navigation.html'"></div>
-        </div>
+        <div class="appContainer__footerBlock" ui-view="navigation"></div>
     </div>
     <div class="appContainer__mapBlock">
         <div ng-include="'blocks/mapControl/mapControl.html'"
