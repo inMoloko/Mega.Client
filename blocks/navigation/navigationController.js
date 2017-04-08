@@ -12,7 +12,7 @@
                 $scope.themClass = 'main';
                 return;
             }
-            if (route.includes('shops') || route == "navigation.organization") {
+            if (route.includes('shop') || route == "navigation.organization") {
                 $scope.themClass = 'shops';
                 return;
             }

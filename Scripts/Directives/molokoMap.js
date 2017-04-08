@@ -191,7 +191,7 @@
                         let organization = $rootScope.organizations.find(i => i.OrganizationID == orgID);
 
                         if (organization.CategoryOrganization.length > 1 || organization.CategoryOrganization.length == 0) {
-                            $state.go("navigation.organization", {
+                            $state.go("navigation.shop", {
                                 OrganizationID: orgID,
                                 MapObjectID: mapObjectID
                             });
@@ -225,7 +225,7 @@
                                 });
                                 return;
                             }
-                            $state.go("navigation.organization", {
+                            $state.go("navigation.shop", {
                                 OrganizationID: orgID,
                                 MapObjectID: mapObjectID
                             });

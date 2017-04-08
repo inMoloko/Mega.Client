@@ -48,5 +48,5 @@
     };
 
     controller.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', 'organizationService', '$linq', 'mainMenuService'];
-    angular.module('app').controller('organizationController', controller);
+    angular.module('app').controller('shopController', controller);
 })();

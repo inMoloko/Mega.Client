@@ -7,8 +7,8 @@
         function filter() {
             $scope.searchText = $state.params.Filter;
             organizationService.getFilter($state.params.Filter, $state.params.CategoryID).then(i => {
-                $rootScope.otherCurrentOrganizations = i.Other;
-                $rootScope.currentOrganizations = i.Result;
+                $scope.otherCurrentOrganizations = i.Other;
+                $scope.currentOrganizations = i.Result;
                 $state.go($state.current.name, {Organizations: i.Result, CategoryID: $state.params.CategoryID});
             });
         }
@@ -50,7 +50,7 @@
                 return;
             }
             value = $scope.menuItems['Магазины'];
-            $state.go(".organization", {
+            $state.go(".shop", {
                 OrganizationID: item.OrganizationID,
                 CategoryID: value
             });
@@ -65,7 +65,7 @@
         $scope.hide = function () {
             $rootScope.currentStateName = $state.current.name;
             $rootScope.currentStateParam = $state.params;
-            $rootScope.closeResultTitle = 'Найдено ' + $rootScope.currentOrganizations.length;
+            $rootScope.closeResultTitle = 'Найдено ' + $scope.currentOrganizations.length;
             $state.go("navigation.closedResult", {
                 CategoryID: $stateParams.CategoryID,
                 Filter: $stateParams.Filter,

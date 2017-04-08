@@ -20,7 +20,7 @@
             <span ng-bind="controller.item.DateEnd|remainDays"></span>
         </div>
         <div class="proposal__container__organization"
-             ui-sref="navigation.shops.organization({OrganizationID:controller.item.Organization.OrganizationID, CategoryID: menuItems['Магазины']})">
+             ui-sref="navigation.shops.shop({OrganizationID:controller.item.Organization.OrganizationID, CategoryID: menuItems['Магазины']})">
             <span ng-bind="controller.item.Organization.Name"></span>
             <img src="Content/images/arrow_black.png">
         </div>
