@@ -318,7 +318,9 @@
                 },
                 views: {
                     'search@': {
-                        templateUrl: 'blocks/restaurantHeading/restaurantHeading.html'
+                        templateUrl: 'blocks/restaurantHeading/restaurantHeading.html',
+                        controller: 'restaurantHeadingController',
+                        controllerAs: 'controller'
                     },
                     'searchResult@': {
                         templateUrl: 'blocks/organizationsList/organizationsList.html',

@@ -37,5 +37,8 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "wiredep": "^4.0.0"
+  },
+  "dependencies": {
+    "angular-ui-router": "^0.4.2"
   }
 }
