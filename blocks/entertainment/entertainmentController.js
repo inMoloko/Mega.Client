@@ -6,7 +6,6 @@
     var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, organizationService, $linq, mainMenuService) {
         var self = this;
         self.$rootScope = $rootScope;
-
         organizationService.get($state.params.OrganizationID).then(i => {
             self.item = i;
         });

@@ -3,7 +3,6 @@
     var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, $linq, organizationService, mainMenuService) {
 
         this.$rootScope = $rootScope;
-
         function filter() {
             $scope.searchText = $state.params.Filter;
             organizationService.getFilter($state.params.Filter, $state.params.CategoryID).then(i => {

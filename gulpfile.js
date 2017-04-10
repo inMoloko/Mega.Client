@@ -150,13 +150,22 @@ gulp.task('less-serve', function () {
         .pipe(browserSync.stream())
         .on('error', log);
 });
-
-gulp.task('server', ['less-serve'], function () {
+gulp.task('js-serve', function () {
+    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/development/**/*.js'])
+        .pipe(sourcemaps.init())
+        .pipe(concat('script.js'))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('dist'))
+        .pipe(browserSync.stream())
+        .on('error', log);
+});
+gulp.task('server', ['less-serve', 'js-serve'], function () {
     browserSync.init({
         server: {
             baseDir: "./"
         }
     });
     gulp.watch('./blocks/**/*.{css,less}', ['less-serve']);
-    browserSync.watch(['./Scripts/**/*.{js,html}', './blocks/**/*.{js,html}']).on('change', browserSync.reload);
+    gulp.watch(['app.js', './Scripts/**/*.js', './blocks/**/*.js'], ['js-serve']);
+    browserSync.watch(['./Scripts/**/*.{html}', './blocks/**/*.{html}']).on('change', browserSync.reload);
 });

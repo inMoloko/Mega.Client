@@ -3,7 +3,7 @@
  */
 (function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $state, $rootScope, mainMenuService, $stateParams, $q, Idle) {
+    var controller = function ($scope, $http, settings, $state, $rootScope, mainMenuService, $stateParams) {
         mainMenuService.get().then(function (result) {
             $scope.menuItems = result;
         });
@@ -91,6 +91,6 @@
             locationChangeHandler();
         });
     };
-    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'mainMenuService', '$stateParams', '$q', 'Idle'];
+    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'mainMenuService', '$stateParams'];
     angular.module('app').controller('navigationController', controller);
 })();
