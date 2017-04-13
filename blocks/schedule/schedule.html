@@ -5,7 +5,7 @@
         <div class="schedule__main_title">Сегодня с {{::customer.ScheduleFrom}} до {{::customer.ScheduleTo}}</div>
     </div>
     <ul class="schedule__list">
-        <li class="schedule__list__item" ng-repeat="org in anchorOrganizations" ui-sref="navigation.organization({OrganizationID: org.OrganizationID})">
+        <li class="schedule__list__item" ng-repeat="org in anchorOrganizations" ui-sref="navigation.shop({OrganizationID: org.OrganizationID})">
             <span ng-bind="org.Name"></span>
             <div>
                 <div class="schedule-item">

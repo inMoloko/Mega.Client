@@ -30,7 +30,7 @@
         let deferred = this.$q.defer();
         let dt = new Date().toISOString();
         let filter = `OrganizationID eq ${id} and DateEnd ge DateTime'${dt}' and DateBegin le DateTime'${dt}'`;
-        this.$http.get(this.settings.webApiBaseUrl + `/Proposal?$select=ProposalID,DateBegin,DateEnd,Name,Summary&$filter=${filter}`).then(function (data) {
+        this.$http.get(this.settings.webApiBaseUrl + `/Proposal?$select=ProposalID,DateBegin,DateEnd,Name,Summary,Organization/OrganizationID&$expand=Organization&$filter=${filter}`).then(function (data) {
             deferred.resolve(data.data);
         }, function (err) {
             deferred.reject(err);

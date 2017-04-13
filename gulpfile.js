@@ -165,7 +165,7 @@ gulp.task('server', ['less-serve', 'js-serve'], function () {
             baseDir: "./"
         }
     });
-    gulp.watch('./blocks/**/*.{css,less}', ['less-serve']);
+    gulp.watch(['./blocks/**/*.{css,less}','./style.less'], ['less-serve']);
     gulp.watch(['app.js', './Scripts/**/*.js', './blocks/**/*.js'], ['js-serve']);
     browserSync.watch(['./Scripts/**/*.{html}', './blocks/**/*.{html}']).on('change', browserSync.reload);
 });

@@ -236,7 +236,6 @@
                         function (event, toState, toParams, fromState, fromParams) {
 
                             clearSelect();
-
                             if ($state.params.OrganizationID) {
                                 let mapObjects;
                                 if ($stateParams.MapObjectID) {

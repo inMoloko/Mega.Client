@@ -24,7 +24,15 @@
                 $scope.themClass = 'proposals';
                 return;
             }
-            if (route.includes('more') || route.includes('event') || route.includes('service')|| route.includes('entertainment')) {
+            if (route.includes('entertainment')) {
+                $scope.themClass = 'entertainment';
+                return;
+            }
+            if (route.includes('service')) {
+                $scope.themClass = 'service';
+                return;
+            }
+            if (route.includes('more') || route.includes('event')) {
                 $scope.themClass = 'more';
                 return;
             }

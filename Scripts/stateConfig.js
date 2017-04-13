@@ -279,7 +279,7 @@
                 }
             })
             .state('navigation.proposals.filter.filterList.proposal', {
-                url: '/proposal/:ProposalID',
+                url: '/proposal/:ProposalID?OrganizationID',
                 views: {
                     'search@': {
                         templateUrl: 'blocks/proposalsHeading/proposalsHeading.html'
@@ -293,7 +293,7 @@
                 }
             })
             .state('navigation.proposals.proposal', {
-                url: '/proposal/:ProposalID',
+                url: '/proposal/:ProposalID?OrganizationID',
                 views: {
                     'search@': {
                         templateUrl: 'blocks/proposalsHeading/proposalsHeading.html'
@@ -323,7 +323,7 @@
                 }
             })
             .state('navigation.proposals.searchResult.proposal', {
-                url: '/proposal/:ProposalID',
+                url: '/proposal/:ProposalID?OrganizationID',
                 views: {
                     'search@': {
                         templateUrl: 'blocks/proposalsHeading/proposalsHeading.html'
