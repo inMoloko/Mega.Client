@@ -6,8 +6,9 @@
     </div>
     <ul class="list-group proposalsListControl__listBlock" style="" ng-scrollbars>
         <li class="list-group-item proposalsListControlListBlock__listElement"
+            data-org-id="{{item.Organization.OrganizationID}}"
             ng-repeat="item in items track by item.ProposalID"
-            ui-sref=".proposal({ProposalID:item.ProposalID})">
+            ui-sref=".proposal({ProposalID:item.ProposalID,OrganizationID:item.Organization.OrganizationID})">
             <div class="proposalsListControlListElement__infoBlock">
                 <div class="proposalsListControlListElement__remainder" ng-if="item.DateEnd"
                      ng-class="{'expired':item.RemainDays==0}">
