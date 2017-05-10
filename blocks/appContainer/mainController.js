@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $state, $rootScope, arrayHelper, $q, Idle, $location, $stateParams, $timeout) {
+    var controller = function ($scope, $http, settings, $state, $rootScope, arrayHelper, $q, Idle, $location, $stateParams, $timeout, categoryService) {
         //Обработка простоя
         $scope.$on('IdleTimeout', function () {
             $state.go('navigation', {});
@@ -37,7 +37,7 @@
         //var organizationLink = $http.get(settings.webApiBaseUrl + '/OrganizationLink?$expand=OrganizationFrom,OrganizationTo&$select=OrganizationToID,OrganizationFromID,OrganizationTo/Longitude,OrganizationTo/Latitude,OrganizationFrom/Longitude,OrganizationFrom/Latitude,OrganizationFrom/FloorID,OrganizationTo/FloorID&CustomerID=' + settings.customerID);
         var organizationLink = $http.get(settings.webApiBaseUrl + '/MapObjectLink?$expand=MapObjectFrom,MapObjectTo&CustomerID=' + settings.customerID);
         // var categoriesPromise =$http.get(settings.webApiBaseUrl + '/Category?$expand=Children&$select=Name,CategoryID&$filter=IsUsed eq true and ParentID eq null');
-        var categoriesPromise = $http.get(settings.webApiBaseUrl + '/Category/GetAllRecursive?CustomerID=' + settings.customerID);
+        var categoriesPromise = categoryService.getAllRecursive(); //$http.get(settings.webApiBaseUrl + '/Category/GetAllRecursive?CustomerID=' + settings.customerID);
 
         var bannersPromise = $q.when({}); //$http.get(settings.webApiBaseUrl + '/Banner/GetAllActual?CustomerID=' + settings.customerID);
 
@@ -88,7 +88,7 @@
 
             $rootScope.organizationLinks = response[3].data;
 
-            $rootScope.categories = response[4].data;
+            $rootScope.categories = response[4];
 
             $rootScope.banners = response[5].data;
 
@@ -383,6 +383,6 @@
 
         $rootScope.filters = {};
     };
-    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'arrayHelper', '$q', 'Idle', '$location', '$stateParams', '$timeout'];
+    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'arrayHelper', '$q', 'Idle', '$location', '$stateParams', '$timeout', 'categoryService'];
     angular.module('app').controller('mainController', controller);
 })();

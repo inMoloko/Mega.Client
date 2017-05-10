@@ -43,17 +43,36 @@
         //     $state.go('.', {CategoryID: $state.params.CategoryID, Filter: $scope.currentFilter}, {reload: false});
         //
         // });
-        var $firstInput = $('#filter');
-        $firstInput.focus();
-        $firstInput.bind('click', function () {
-            jsKeyboard.show();
-        });
 
-        jsKeyboard.currentElement = $firstInput;
-        jsKeyboard.currentElement.val($state.params.Filter);
-        jsKeyboard.currentElementCursorPosition = $firstInput.val().length || 0;
-        $firstInput.bind('writeKeyboard', function (event, a) {
-            $scope.currentFilter = $firstInput.val();
+        $timeout(function () {
+            var $firstInput = $('#filter');
+            $firstInput.focus();
+            $firstInput.bind('click', function () {
+                jsKeyboard.show();
+            });
+
+            jsKeyboard.currentElement = $firstInput;
+            jsKeyboard.currentElement.val($state.params.Filter);
+            jsKeyboard.currentElementCursorPosition = $firstInput.val().length || 0;
+            $firstInput.bind('writeKeyboard', function (event, a) {
+                $scope.currentFilter = $firstInput.val();
+                if (!$state.current.name.includes("searchResult")) {
+                    $state.go('.searchResult', {
+                        CategoryID: $state.params.CategoryID,
+                        Filter: $scope.currentFilter
+                    }, {reload: true});
+                    return;
+                }
+                $state.go('.', {CategoryID: $state.params.CategoryID, Filter: $scope.currentFilter});
+                if (!$scope.$$phase)
+                    $scope.$apply();
+            });
+        },0);
+
+        $scope.$watch('currentFilter', function (n, o) {
+            if (n == o)
+                return;
+            $('#keyboardHeader>span').text(jsKeyboard.currentElement.val());
             if (!$state.current.name.includes("searchResult")) {
                 $state.go('.searchResult', {
                     CategoryID: $state.params.CategoryID,
@@ -62,8 +81,6 @@
                 return;
             }
             $state.go('.', {CategoryID: $state.params.CategoryID, Filter: $scope.currentFilter});
-            if (!$scope.$$phase)
-                $scope.$apply();
         });
         jsKeyboard.show();
 

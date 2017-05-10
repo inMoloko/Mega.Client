@@ -13,7 +13,7 @@
     };
 
     angular.module('app').directive("molokoMap", [
-        '$rootScope', '$http', '$q', 'settings', '$linq', '$state', '$stateParams', '$timeout', 'mainMenuService', function ($rootScope, $http, $q, settings, $linq, $state, $stateParams, $timeout, mainMenuService) {
+        '$rootScope', '$http', '$q', 'settings', '$linq', '$state', '$stateParams', '$timeout', 'mainMenuService', 'categoryService', function ($rootScope, $http, $q, settings, $linq, $state, $stateParams, $timeout, mainMenuService, categoryService) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -47,9 +47,13 @@
                         fadeAnimation: false,
                         zoomSnap: 0
                     });
-                    mainMenuService.get().then(function (result) {
-                        $scope.menuItems = result;
+                    $q.all([mainMenuService.get(), categoryService.getAllRecursive()]).then(function (result) {
+                        $scope.menuItems = result[0];
+                        $scope.menuItems.init(result[1]);
                     });
+                    // mainMenuService.get().then(function (result) {
+                    //     $scope.menuItems = result;
+                    // });
                     //console.log('Create map');
                     map.setView([0, 0], 1);
                     //Сброс карты
@@ -242,12 +246,16 @@
                                     document.querySelectorAll('[data-map-id="' + $stateParams.MapObjectID + '"]').forEach(m => {
                                         m.classList.add('_selected');
                                     });
+                                    if (!$scope.mapObjects)
+                                        return;
                                     mapObjects = [$scope.mapObjects[$stateParams.MapObjectID]];
                                 }
                                 else {
                                     document.querySelectorAll('[data-org-id="' + $state.params.OrganizationID + '"]').forEach(m => {
                                         m.classList.add('_selected');
                                     });
+                                    if (!$rootScope.organizations)
+                                        return;
                                     mapObjects = $rootScope.organizations.find(i => i.OrganizationID == $state.params.OrganizationID).OrganizationMapObject.map(i => i.MapObject);
                                 }
                                 // $scope.mapOrganizations[$rootScope.currentOrganization.OrganizationID].marker.setIcon(markerIcon);
@@ -283,7 +291,7 @@
                                 }
                                 return;
                             }
-                            if(!$state.params.OrganizationID && !$state.params.Organizations)
+                            if (!$state.params.OrganizationID && !$state.params.Organizations)
                                 delete $scope.selectedOrganizations;
                         });
 
@@ -307,10 +315,32 @@
                                 }
                             }
                             else //if (org.MapSize > 0 && org.SignPointRadius == null)
-                            //html = `<div><span class="marker__text">${org.Name}</span></div><svg><circle class="marker__item${cls}" cx="5" cy="5" r="5" data-org-id="${org.OrganizationID}"/></svg>`;
+                            {
                                 html = `<div><svg><circle class="marker__item${cls}" cx="5" cy="5" r="5" data-org-id="${org.OrganizationID}" data-map-id="${mapObjectID}"/></svg></div>`;
-                            //else
-                            //    html = `<div><svg><circle class="marker__item${cls}" cx="5" cy="5" r="5" data-org-id="${org.OrganizationID}" data-map-id="${mapObjectID}"/></svg></div>`;
+                                if (org.CategoryOrganization.length > 1 || org.CategoryOrganization.length === 0) {
+                                    html = `<div><img class="marker__image${cls}" src="/Content/images/card_shop_logo_holder.png" data-org-id="${org.OrganizationID}" data-map-id="${mapObjectID}"/></div>`;
+                                } else {
+                                    let categoryID = org.CategoryOrganization[0].CategoryID;
+                                    // let restaurant = $scope.menuItems['Рестораны и кафе'] || -1;
+                                    // let restaurantCats = $rootScope.categories.find(i => i.CategoryID == restaurant).ChildrenIds;
+                                    // let entertainment = $scope.menuItems['Развлечения и услуги'] || -1;
+                                    // let entertainmentCats = $rootScope.categories.find(i => i.CategoryID == entertainment).ChildrenIds;
+                                    // let service = $scope.menuItems['Сервисы'] || -1;
+                                    // let serviceCats = $rootScope.categories.find(i => i.CategoryID == service).ChildrenIds;
+
+                                    let type = $scope.menuItems.getType(categoryID);
+
+                                    if (type === 'restaurant') {
+                                        html = `<div><img class="marker__image${cls}" src="/Content/images/card_food_logo_holder.png" data-org-id="${org.OrganizationID}" data-map-id="${mapObjectID}"/></div>`;
+                                    } else if (type === 'entertainment') {
+                                        html = `<div><img class="marker__image${cls}" src="/Content/images/card_enterteinment_logo_holder.png" data-org-id="${org.OrganizationID}" data-map-id="${mapObjectID}"/></div>`;
+                                    } else if (type === 'service') {
+                                        html = `<div><img class="marker__image${cls}" src="/Content/images/card_enterteinment_logo_holder.png" data-org-id="${org.OrganizationID}" data-map-id="${mapObjectID}"/></div>`;
+                                    } else
+                                        html = `<div><img class="marker__image${cls}" src="/Content/images/card_shop_logo_holder.png" data-org-id="${org.OrganizationID}" data-map-id="${mapObjectID}"/></div>`;
+
+                                }
+                            }
                         }
                         return L.divIcon({className: 'marker', html: html, iconSize: [16, 16]});
                     }
@@ -366,24 +396,23 @@
                         //$q.all(promises).then(function () {
 
                         //Чтобы поставить маркер для терминала без отображения терминалов
-                        {
-                            var terminalOrg = $rootScope.currentTerminal.TerminalMapObject[0].MapObject;
-                            var position = map.unproject([terminalOrg.Longitude, terminalOrg.Latitude], map.getMaxZoom());
-                            let markerIcon = getIcon($rootScope.currentTerminal, false);
-                            terminalOrg.marker = L.marker(position, {
-                                icon: markerIcon,
-                                title: terminalOrg.Name,
-                                iconSize: [16, 16],
-                                zIndexOffset: getZIndex($rootScope.currentTerminal)
-                            });
-                            $scope.mapFloors[terminalOrg.FloorID].layerGroup.addLayer(terminalOrg.marker, {pane: 'tilePane'});
-                            $scope.mapOrganizations[terminalOrg.OrganizationID] = terminalOrg;
-                        }
+                        var terminalOrg = $rootScope.currentTerminal.TerminalMapObject[0].MapObject;
+                        var position = map.unproject([terminalOrg.Longitude, terminalOrg.Latitude], map.getMaxZoom());
+                        let markerIcon = getIcon($rootScope.currentTerminal, false);
+                        terminalOrg.marker = L.marker(position, {
+                            icon: markerIcon,
+                            title: terminalOrg.Name,
+                            iconSize: [16, 16],
+                            zIndexOffset: getZIndex($rootScope.currentTerminal)
+                        });
+                        $scope.mapFloors[terminalOrg.FloorID].layerGroup.addLayer(terminalOrg.marker, {pane: 'tilePane'});
+                        $scope.mapOrganizations[terminalOrg.OrganizationID] = terminalOrg;
 
                         //Наносим организации
                         $scope.options.zoom = map.getZoom();
                         $rootScope.organizations.forEach(item => {
                             item.OrganizationMapObject.forEach(mapObject => {
+                                let position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
                                 if (mapObject.MapObject.ParamsAsJson && mapObject.MapObject.ParamsAsJson.SignPointRadius) {
                                     var markerText = L.Marker.zoomingMarker(mapObject.MapObject);
                                     markerText.on("click", function (e) {
@@ -391,15 +420,76 @@
                                         clickToOrganization(item.OrganizationID);
                                     });
                                     $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(markerText);
-                                }
-                                else {
-                                    var position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
-                                    let markerIcon = getIcon(item, false, mapObject.MapObject.MapObjectID);
+                                } else if ($rootScope.currentTerminal.OrganizationID === item.OrganizationID) {
                                     let marker = L.marker(position, {
-                                        icon: markerIcon,
+                                        icon: L.divIcon({
+                                            className: 'marker',
+                                            html: `<div data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"><img style="width:40px;margin-top: -60px;margin-left: -10px;" src="Content/images/youHere.png"/></div>`,
+                                            iconSize: [16, 16]
+                                        }),
                                         title: item.Name,
                                         iconSize: [16, 16],
-                                        zIndexOffset: getZIndex(item)
+                                        zIndexOffset: 400
+                                    });
+                                    if (mapObject.MapObject.FloorID) {
+                                        $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker);
+                                        if (!$scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[item.OrganizationID])
+                                            $scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[item.OrganizationID] = [];
+
+                                        $scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[item.OrganizationID].push({
+                                            position: position,
+                                            mapObjectID: mapObject.MapObject.MapObjectID
+                                        });
+                                    }
+                                } else if (item.CategoryOrganization.map(i => i.Category.ServiceCategoryType).filter(i => i === constants.Service || i === constants.Link).length !== 0) {
+                                    let html;
+                                    if (item.CategoryOrganization.length != 0) {
+                                        let cat = item.CategoryOrganization[0];
+                                        if (item.CategoryOrganization.map(i => i.CategoryID).includes($rootScope.serviceCategories.toilet))
+                                            html = `<div><img class="marker__image marker__wc" src="${settings.webApiBaseUrl}/Category/${cat.CategoryID}/Logo" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
+                                        else
+                                            html = `<div><img class="marker__image" src="${settings.webApiBaseUrl}/Category/${cat.CategoryID}/Logo" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
+                                    }
+                                    let icon = L.divIcon({className: 'marker', html: html, iconSize: [16, 16]});
+                                    let marker = L.marker(position, {
+                                        icon: icon,
+                                        title: item.Name,
+                                        iconSize: [16, 16],
+                                        zIndexOffset: 10
+                                    });
+                                    if (mapObject.MapObject.FloorID) {
+                                        $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker);
+                                        if (!$scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[item.OrganizationID])
+                                            $scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[item.OrganizationID] = [];
+
+                                        $scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[item.OrganizationID].push({
+                                            position: position,
+                                            mapObjectID: mapObject.MapObject.MapObjectID
+                                        });
+                                    }
+                                }
+                                else if (!item.CategoryOrganization || item.CategoryOrganization.length === 0) {
+
+                                } else {
+                                    //var position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
+                                    // let markerIcon = getIcon(item, false, mapObject.MapObject.MapObjectID);
+                                    // let marker = L.marker(position, {
+                                    //     icon: markerIcon,
+                                    //     title: item.Name,
+                                    //     iconSize: [16, 16],
+                                    //     zIndexOffset: getZIndex(item)
+                                    // });
+                                    let categoryID = item.CategoryOrganization[0].CategoryID;
+                                    let type = $scope.menuItems.getType(categoryID);
+                                    let img = {
+                                        'service': '/Content/images/card_enterteinment_logo_holder.png',
+                                        'entertainment': '/Content/images/card_enterteinment_logo_holder.png',
+                                        'restaurant': '/Content/images/card_food_logo_holder.png',
+                                        'shop': '/Content/images/card_shop_logo_holder.png'
+                                    };
+                                    let marker = L.Marker.iconShowMarker(mapObject.MapObject, item, {
+                                        src: img[type],
+                                        threshold: map.getMaxZoom() - 1
                                     });
                                     if (mapObject.MapObject.FloorID) {
                                         $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker, {pane: 'tilePane'});
@@ -461,7 +551,7 @@
                         document.querySelectorAll('._selected').forEach(m => {
                             m.classList.remove('_selected');
                         });
-                        if(!$scope.currentMapFloor)
+                        if (!$scope.currentMapFloor)
                             return;
                         let floorID = $scope.currentMapFloor.FloorID;
                         angular.forEach($scope.mapFloors, function (value, key) {

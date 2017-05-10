@@ -55,7 +55,7 @@ var jsKeyboard = {
 
         var s = "";
         s += "<div id=\"keyboard\">";
-        s += "<div id=\"keyboardHeader\">";
+        s += "<div id=\"keyboardHeader\"><span></span>";
         // s += "<div onclick=\"jsKeyboard.hide();\"><span>" + jsKeyboard.settings.text.close + "</span><span class=\"closex\"> X</span></div>"
         s += "</div>";
 
@@ -163,6 +163,7 @@ var jsKeyboard = {
         //input cursor focus and position during typing
         jsKeyboard.currentElement.setCursorPosition(jsKeyboard.currentElementCursorPosition);
 		jsKeyboard.currentElement.focus();
+		$('#keyboardHeader>span').text(jsKeyboard.currentElement.val());
     },
     write: function (m) {       
         var a = jsKeyboard.currentElement.val(),

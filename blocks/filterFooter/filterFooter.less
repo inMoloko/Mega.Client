@@ -12,4 +12,33 @@
     font-size: 1.5em;
     text-transform: uppercase;
   }
+  &._ripple {
+    background-color: white;
+    opacity: 1;
+    z-index: 100;
+    //transition: background-color .9s;
+    //animation: ripple-black-white-animation .6s;
+  }
+  &._ripple &__done {
+    color: black;
+    //transition: color .3s;
+    //animation: ripple-white-black-animation .3s;
+  }
+}
+
+@keyframes ripple-black-white-animation {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: black;
+  }
+}
+@keyframes ripple-white-black-animation {
+  from {
+    color: black;
+  }
+  to {
+    color: white;
+  }
 }

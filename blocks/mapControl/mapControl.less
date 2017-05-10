@@ -11,6 +11,7 @@ div.leaflet-container {
   stroke: none;
   stroke-opacity: 1;
 }
+
 .button-shadow {
   box-shadow: 0px 2px 13px 0px #777;
 }
@@ -182,7 +183,7 @@ div.leaflet-container {
   position: relative;
 }
 
-.marker__image {
+.marker__image, .marker__image-sq {
   width: 22px;
   height: 22px;
 }
@@ -195,6 +196,16 @@ div.leaflet-container {
   border: solid red 2px;
   background: red;
   border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.marker__image-sq._selected {
+  margin-left: -1px;
+  margin-top: -1px;
+  width: 26px;
+  height: 26px;
+  border: solid red 2px;
+  background: red;
   box-sizing: border-box;
 }
 

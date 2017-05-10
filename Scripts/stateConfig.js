@@ -357,7 +357,7 @@
                 url: '/entertainment/:OrganizationID?CategoryID',
                 views: {
                     'search@': {
-                        templateUrl: 'blocks/entertainmentsHeading/entertainmentsHeading.html',
+                        templateUrl: 'blocks/entertainmentHeading/entertainmentHeading.html',
                         controller: 'entertainmentHeadingController',
                         controllerAs: 'controller'
                     },

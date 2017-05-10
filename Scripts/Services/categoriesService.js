@@ -12,6 +12,10 @@
         getFilterCategories(categoryID) {
             return this.$http.get(this.settings.webApiBaseUrl + '/Category/GetFilterCategories?CategoryID=' + categoryID, {cache: true}).then(i => i.data);
         }
+
+        getAllRecursive() {
+            return this.$http.get(this.settings.webApiBaseUrl + '/Category/GetAllRecursive?CustomerID=' + this.settings.customerID, {cache: true}).then(i => i.data);
+        }
     }
     angular
         .module('app')

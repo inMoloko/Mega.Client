@@ -5,7 +5,7 @@
     "use strict";
     class ProposalFilterFooterController {
 
-        constructor($scope, $http, settings, $state, $rootScope) {
+        constructor($scope, $http, settings, $state, $rootScope, $timeout) {
             let self = this;
 
             self.Result = [];
@@ -18,12 +18,13 @@
                 if ($state.params.proposalFilter.entertainmentFilter && $state.params.proposalFilter.entertainmentFilter.Proposals)
                     self.Result = self.Result.concat($state.params.proposalFilter.entertainmentFilter.Proposals);
             }
-
+            self.animation = true;
+            $timeout(i => self.animation = false, 1000);
 
             //self.Result = $state.params.Proposals;
         }
 
     }
-    ProposalFilterFooterController.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope'];
+    ProposalFilterFooterController.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', '$timeout'];
     angular.module('app').controller('proposalFilterFooterController', ProposalFilterFooterController);
 })();
