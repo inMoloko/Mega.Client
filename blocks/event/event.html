@@ -1,6 +1,9 @@
-﻿<div class="event">
+﻿<div class="event" ng-scrollbars>
     <div class="event__logo-container">
-        <img src="" alt="" class="event__logo-container__img" moloko-image-api="controller.item.EventID" url="/Event/:id/WideLogo" default="Content/images/card_event_cover_holder.png">
+        <img src="" alt="" class="event__logo-container__img"
+             file-system-image="Events/{{controller.item.EventID + '_WideLogo.' + controller.item.WideLogoExtension}}"
+             default="Content/images/card_event_cover_holder.png">
+             <!--moloko-image-api="controller.item.EventID" url="/Event/:id/WideLogo" -->
     </div>
 
     <div class="event__container">

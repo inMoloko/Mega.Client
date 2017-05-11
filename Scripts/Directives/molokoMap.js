@@ -446,9 +446,9 @@
                                     if (item.CategoryOrganization.length != 0) {
                                         let cat = item.CategoryOrganization[0];
                                         if (item.CategoryOrganization.map(i => i.CategoryID).includes($rootScope.serviceCategories.toilet))
-                                            html = `<div><img class="marker__image marker__wc" src="${settings.webApiBaseUrl}/Category/${cat.CategoryID}/Logo" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
+                                            html = `<div><img class="marker__image marker__wc" src="${settings.resourceFolder}/Categories/${cat.CategoryID}.${cat.Category.LogoExtension}" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
                                         else
-                                            html = `<div><img class="marker__image" src="${settings.webApiBaseUrl}/Category/${cat.CategoryID}/Logo" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
+                                            html = `<div><img class="marker__image" src="${settings.resourceFolder}/Categories/${cat.CategoryID}.${cat.Category.LogoExtension}" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
                                     }
                                     let icon = L.divIcon({className: 'marker', html: html, iconSize: [16, 16]});
                                     let marker = L.marker(position, {
