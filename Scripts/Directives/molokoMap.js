@@ -380,7 +380,7 @@
 
 
                             if (!settings.terminalID)
-                                item.layer = L.imageOverlay(`${settings.webApiBaseUrl}/Floor/${item.FloorID}/File`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
+                                item.layer = L.imageOverlay(`${settings.resourceFolder}/Floors/${item.FloorID}.${item.FileExtension}`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
                             else
                                 item.layer = L.imageOverlay(`${settings.webApiBaseUrl}/Floor/${item.FloorID}/File?TerminalID=${settings.terminalID}`, [southWest, northEast]);
                             item.layerGroup = L.featureGroup();
