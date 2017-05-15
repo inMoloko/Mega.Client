@@ -22,13 +22,16 @@
                 },
                 templateUrl: 'blocks/mapControl/molokoMap.html',
                 link: function ($scope, element, attrs) {
+
+                    let scale = 4;
+
                     $scope.rootScope = $rootScope;
                     if (!$scope.options)
                         $scope.options = {};
                     if (!$scope.options.minZoom)
-                        $scope.options.minZoom = 17;
+                        $scope.options.minZoom = 1;
                     if (!$scope.options.maxZoom)
-                        $scope.options.maxZoom = 19;
+                        $scope.options.maxZoom = 6;
                     if (!$scope.options.orginalAngel)
                         $scope.options.orginalAngel = false;
                     var elm = element[0].children[0];
@@ -45,7 +48,6 @@
                         inertia: false,
                         bounceAtZoomLimits: true,
                         fadeAnimation: false,
-                        zoomSnap: 0
                     });
                     $q.all([mainMenuService.get(), categoryService.getAllRecursive()]).then(function (result) {
                         $scope.menuItems = result[0];
@@ -370,13 +372,12 @@
                             if (map.options.maxZoom < map.options.minZoom + range)
                                 map.options.maxZoom = map.options.minZoom + range;
 
-
                             //var image = getImage(item.File);
                             //promises.push(image);
                             //image.then(function (value) {
                             var value = {width: item.Width, height: item.Height};
-                            var southWest = map.unproject([-value.width / 2, value.height / 2], map.getMaxZoom());
-                            var northEast = map.unproject([value.width / 2, -value.height / 2], map.getMaxZoom());
+                            var southWest = map.unproject([-value.width * scale / 2, value.height * scale / 2], map.getMaxZoom());
+                            var northEast = map.unproject([value.width * scale / 2, -value.height * scale / 2], map.getMaxZoom());
 
 
                             if (!settings.terminalID)
@@ -397,7 +398,7 @@
 
                         //Чтобы поставить маркер для терминала без отображения терминалов
                         var terminalOrg = $rootScope.currentTerminal.TerminalMapObject[0].MapObject;
-                        var position = map.unproject([terminalOrg.Longitude, terminalOrg.Latitude], map.getMaxZoom());
+                        var position = map.unproject([terminalOrg.Longitude * scale, terminalOrg.Latitude * scale], map.getMaxZoom());
                         let markerIcon = getIcon($rootScope.currentTerminal, false);
                         terminalOrg.marker = L.marker(position, {
                             icon: markerIcon,
@@ -412,8 +413,11 @@
                         $scope.options.zoom = map.getZoom();
                         $rootScope.organizations.forEach(item => {
                             item.OrganizationMapObject.forEach(mapObject => {
-                                let position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
+                                let position = map.unproject([mapObject.MapObject.Longitude * scale, mapObject.MapObject.Latitude * scale], map.getMaxZoom());
                                 if (mapObject.MapObject.ParamsAsJson && mapObject.MapObject.ParamsAsJson.SignPointRadius) {
+                                    mapObject.MapObject.Latitude = mapObject.MapObject.Latitude * scale;
+                                    mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
+                                    mapObject.MapObject.ParamsAsJson.SignPointRadius = mapObject.MapObject.ParamsAsJson.SignPointRadius * scale;
                                     var markerText = L.Marker.zoomingMarker(mapObject.MapObject);
                                     markerText.on("click", function (e) {
                                         //$rootScope.currentOrganization = item;
@@ -487,9 +491,13 @@
                                         'restaurant': '/Content/images/card_food_logo_holder.png',
                                         'shop': '/Content/images/card_shop_logo_holder.png'
                                     };
+                                    mapObject.MapObject.Latitude = mapObject.MapObject.Latitude * scale;
+                                    mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
+
                                     let marker = L.Marker.iconShowMarker(mapObject.MapObject, item, {
                                         src: img[type],
-                                        threshold: map.getMaxZoom() - 1
+                                        threshold: map.getMaxZoom() - 1,
+                                        title: item.Name
                                     });
                                     if (mapObject.MapObject.FloorID) {
                                         $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker, {pane: 'tilePane'});

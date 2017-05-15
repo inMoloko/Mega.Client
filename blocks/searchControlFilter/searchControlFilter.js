@@ -11,7 +11,7 @@
 
         $scope.currentFilter = $state.params.Filter;
 
-        $scope.placeholder = "Ашан, икея, джинсы...";
+        $scope.placeholder = "Ашан, ИКЕА, джинсы...";
         if ($state.current.name) {
             if ($state.current.name.includes("shop")) {
                 $scope.placeholder = "Ашан, стокман ...";

@@ -13,7 +13,9 @@ L.Marker.IconShowMarker = L.Marker.extend({
 
         let icon = this._getIcon(this._mapObject, map.getZoom());
 
-        let options = {icon: icon};
+        let self = this;
+
+        let options = {icon: icon, title: self._options.title};
 
         L.Marker.prototype.initialize.call(this, map.unproject([this._mapObject.Longitude, this._mapObject.Latitude], map.getMaxZoom()), options);
 
@@ -36,15 +38,22 @@ L.Marker.IconShowMarker = L.Marker.extend({
 
         let selected = self._icon ? self._icon.querySelector('._selected') : false;
         let cls = selected ? ' _selected' : '';
-        if (zm >= self._options.threshold) {
+        if (zm === self._map.getMaxZoom()) {
             return L.divIcon({
-                iconSize: [16, 16],
+                iconSize: [22, 22],
+                className: 'marker__image',
+                html: `<img class="marker__image-sq${cls}" src="${self._options.src}" data-map-id="${this._mapObject.MapObjectID}" data-org-id="${this._organization.OrganizationID}"/><div>${self._options.title}</div>`
+            });
+        }
+        else if (zm >= self._options.threshold) {
+            return L.divIcon({
+                iconSize: [22, 22],
                 className: 'marker__image',
                 html: `<img class="marker__image-sq${cls}" src="${self._options.src}" data-map-id="${this._mapObject.MapObjectID}" data-org-id="${this._organization.OrganizationID}"/>`
             });
         } else {
             return L.divIcon({
-                iconSize: [16, 16],
+                iconSize: [22, 22],
                 className: 'marker__image',
                 html: `<svg><circle class="marker__item${cls}" cx="5" cy="5" r="5" data-org-id="${this._organization.OrganizationID}" data-map-id="${this._mapObject.MapObjectID}"/></svg>`
             });

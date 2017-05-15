@@ -8,10 +8,10 @@
         constructor($scope, $http, settings, $state, $rootScope, $timeout) {
             let self = this;
             self.Result = $state.params.Organizations;
-            self.animation = true;
-            $timeout(i => {
-                self.animation = false;
-            }, 500);
+            // self.animation = true;
+            // $timeout(i => {
+            //     self.animation = false;
+            // }, 500);
         }
 
     }

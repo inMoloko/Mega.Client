@@ -18,8 +18,8 @@
                 if ($state.params.proposalFilter.entertainmentFilter && $state.params.proposalFilter.entertainmentFilter.Proposals)
                     self.Result = self.Result.concat($state.params.proposalFilter.entertainmentFilter.Proposals);
             }
-            self.animation = true;
-            $timeout(i => self.animation = false, 1000);
+            // self.animation = true;
+            // $timeout(i => self.animation = false, 1000);
 
             //self.Result = $state.params.Proposals;
         }

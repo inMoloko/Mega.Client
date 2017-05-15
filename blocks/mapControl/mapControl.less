@@ -182,9 +182,9 @@ div.leaflet-container {
 .marker > div {
   position: relative;
 }
-
+@marker__image_width: 22px;
 .marker__image, .marker__image-sq {
-  width: 22px;
+  width: @marker__image_width;
   height: 22px;
 }
 
@@ -207,6 +207,13 @@ div.leaflet-container {
   border: solid red 2px;
   background: red;
   box-sizing: border-box;
+}
+@marker__image-sq_text-width: 150px;
+.marker__image-sq + div {
+  width: @marker__image-sq_text-width;
+  //width
+  margin-left:-(@marker__image-sq_text-width/2 - @marker__image_width/2);
+  text-align: center;
 }
 
 .marker__wc {
