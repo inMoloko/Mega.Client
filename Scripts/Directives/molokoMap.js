@@ -354,7 +354,8 @@
                             return 1;
                         return 10;
                     };
-                    let init = $rootScope.$watchCollection('organizations', function () {
+                    let init;
+                    init = $rootScope.$watchCollection('organizations', function () {
                         if ($rootScope.organizations === undefined || $scope.mapOrganizations || $scope.mapFloors) {
                             return;
                         }
@@ -378,11 +379,17 @@
                             var southWest = map.unproject([-value.width / 2, value.height / 2], map.getMaxZoom());
                             var northEast = map.unproject([value.width / 2, -value.height / 2], map.getMaxZoom());
 
+                            let angle = $rootScope.currentTerminal.TerminalMapObject[0].MapObject.ParamsAsJson.LookDirectionAngleDegrees || 0;
 
-                            if (!settings.terminalID)
-                                item.layer = L.imageOverlay(`${settings.resourceFolder}/Floors/${item.FloorID}.${item.FileExtension}`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
-                            else
-                                item.layer = L.imageOverlay(`${settings.webApiBaseUrl}/Floor/${item.FloorID}/File?TerminalID=${settings.terminalID}`, [southWest, northEast]);
+                            angle = `${angle === 0 ? '' : 'D_' + angle}`;
+
+                            item.layer = L.imageOverlay(`${settings.resourceFolder}/Floors/${item.FloorID}${angle}.${item.FileExtension}`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
+
+                            // if (!settings.terminalID)
+                            //     item.layer = L.imageOverlay(`${settings.resourceFolder}/Floors/${item.FloorID}${angle}.${item.FileExtension}`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
+                            // else {
+                            //     item.layer = L.imageOverlay(`${settings.webApiBaseUrl}/Floor/${item.FloorID}/File?TerminalID=${settings.terminalID}`, [southWest, northEast]);
+                            // }
                             item.layerGroup = L.featureGroup();
                             item.pathGroup = L.layerGroup();
                             item.floorMapObjects = {};
