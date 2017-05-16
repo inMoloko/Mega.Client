@@ -548,7 +548,14 @@
                     });
                     $scope.getCount = function (floorID) {
                         var floor = $scope.mapFloors[floorID];
-                        return $scope.selectedOrganizations === undefined ? 0 : $linq.Enumerable().From($scope.selectedOrganizations).SelectMany(i => i.Floors).Where(i => i.Number == floor.Number).Count(i => i.Count);
+                        if ($scope.selectedOrganizations === undefined || $scope.selectedOrganizations.length === 0)
+                            return 0;
+                        if ($scope.selectedOrganizations[0].Floors == undefined)
+                        {
+                            return $linq.Enumerable().From($scope.selectedOrganizations).SelectMany(i => i.OrganizationMapObject).Select(i=>i.MapObject.FloorID).Where(i => i == floorID).Count();
+                        }
+                        else
+                            return $linq.Enumerable().From($scope.selectedOrganizations).SelectMany(i => i.Floors).Where(i => i.Number == floor.Number).Count(i => i.Count);
                     };
                     function getOptimalPath(array) {
                         let paths = {};

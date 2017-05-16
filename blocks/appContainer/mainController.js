@@ -27,6 +27,7 @@
             //$rootScope.floors = response.data;
         });
         var organizationPromise = $http.get(settings.webApiBaseUrl + '/organization?$select=KeyWords,LogoBaseColor,Description,OrganizationID,Name,IsAnchor,Schedule,MapSize,CategoryOrganization/CategoryID,CategoryOrganization/Category/Name,CategoryOrganization/Category/IsUsed,CategoryOrganization/Category/ServiceCategoryType,OrganizationMapObject&$expand=CategoryOrganization/Category,OrganizationMapObject/MapObject&$orderby=Name asc&CustomerID=' + settings.customerID);
+        // var organizationPromise = $http.get(settings.webApiBaseUrl +'/Organization/GetFilter?CustomerID=' + settings.customerID);
         organizationPromise.then(function (response) {
             //$rootScope.organizations = response.data;
         });
