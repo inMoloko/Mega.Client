@@ -173,10 +173,10 @@
                 let layer = graphLayerd[floor.FloorID] = $rootScope.mapGraph.addLayer(floor.FloorID);
                 let path = angular.fromJson(floor.Paths);
                 path.forEach(p => {
-                    let x1 = cos * p[0].x + sin * p[0].y;
-                    let y1 = cos * p[0].y - sin * p[0].x;
-                    let x2 = cos * p[1].x + sin * p[1].y;
-                    let y2 = cos * p[1].y - sin * p[1].x;
+                    let x1 = cos * p[0].x * settings.mapScale + sin * p[0].y * settings.mapScale;
+                    let y1 = cos * p[0].y * settings.mapScale - sin * p[0].x * settings.mapScale;
+                    let x2 = cos * p[1].x * settings.mapScale + sin * p[1].y * settings.mapScale;
+                    let y2 = cos * p[1].y * settings.mapScale - sin * p[1].x * settings.mapScale;
                     //layer.addSegment(p[0].x, p[0].y, p[1].x, p[1].y);
                     layer.addSegment(x1, y1, x2, y2);
                 });
@@ -206,7 +206,7 @@
             });
             let tm = $rootScope.currentTerminal.TerminalMapObject[0].MapObject;
 
-            graphLayerd[tm.FloorID].addVertexWithShortestSegment(tm.Longitude, tm.Latitude);
+            graphLayerd[tm.FloorID].addVertexWithShortestSegment(tm.Longitude * settings.mapScale, tm.Latitude * settings.mapScale);
             $rootScope.$broadcast('floorLoad');
 
             //поиск пути

@@ -20,6 +20,7 @@
         customerID: queryDict.CustomerID,
         terminalID: queryDict.TerminalID,
         displayKeyboard: true,
-        autoReset: true
+        autoReset: true,
+        mapScale: 4
     });
 })();

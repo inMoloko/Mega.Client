@@ -264,6 +264,8 @@ class Graph {
             this.clearDksData();
 
             var startVertex = this.getLayer(startVertexLayerID).getVertex(startVertexX, startVertexY);
+            if(startVertex == undefined)
+                throw `Стартовая точка не найденна startVertexLayerID: ${startVertexLayerID}, startVertexX: ${startVertexX}, startVertexY: ${startVertexY}`;
             startVertex.dksLength = 0;
 
             var destVertexLayer = this.getLayer(destVertexLayerID);

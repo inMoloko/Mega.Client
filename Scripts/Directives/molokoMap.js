@@ -23,7 +23,7 @@
                 templateUrl: 'blocks/mapControl/molokoMap.html',
                 link: function ($scope, element, attrs) {
 
-                    let scale = 4;
+                    let scale = settings.mapScale;
 
                     $scope.rootScope = $rootScope;
                     if (!$scope.options)
@@ -541,7 +541,7 @@
                         //Надписи не учитывем для посторения
                         array = array.filter(i => !i.ParamsAsJson || !i.ParamsAsJson.SignText);
                         array.forEach(i => {
-                            let path = $rootScope.mapGraph.findPath(mapObject.Longitude, mapObject.Latitude, mapObject.FloorID, i.Longitude, i.Latitude, i.FloorID);
+                            let path = $rootScope.mapGraph.findPath(mapObject.Longitude * settings.mapScale, mapObject.Latitude * settings.mapScale, mapObject.FloorID, i.Longitude, i.Latitude, i.FloorID);
                             let sum = path[path.length - 1].dksLength;
                             paths[i.MapObjectID] = {
                                 path: path,
@@ -603,8 +603,8 @@
                             currentLines.forEach((value, key, m) => {
 
                                 let line = L.polyline(value, {color: 'red', className: 'path'});
-
-                                let myMovingMarker = L.Marker.movingMarker(value, settings.manVelocity, {
+                                //settings.manVelocity
+                                let myMovingMarker = L.Marker.movingMarker(value, settings.manVelocity * 0.00001, {
                                     loop: true,
                                     autostart: true,
                                     angle: map._bearing,
