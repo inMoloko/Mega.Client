@@ -187,15 +187,15 @@
             $rootScope.organizationLinks.forEach(i => {
 
                 var layer1 = graphLayerd[i.MapObjectFrom.FloorID];
-                var x = i.MapObjectFrom.Longitude;
-                var y = i.MapObjectFrom.Latitude;
+                var x = i.MapObjectFrom.Longitude * settings.mapScale;
+                var y = i.MapObjectFrom.Latitude * settings.mapScale;
                 var x1 = cos * x + sin * y;
                 var y1 = cos * y - sin * x;
                 var vertex1 = layer1.getVertex(x1, y1) || layer1.addVertexWithShortestSegment(x1, y1).vertex;
 
                 var layer2 = graphLayerd[i.MapObjectTo.FloorID];
-                x = i.MapObjectTo.Longitude;
-                y = i.MapObjectTo.Latitude;
+                x = i.MapObjectTo.Longitude * settings.mapScale;
+                y = i.MapObjectTo.Latitude * settings.mapScale;
                 var x2 = cos * x + sin * y;
                 var y2 = cos * y - sin * x;
                 var vertex2 = layer2.getVertex(x2, y2) || layer2.addVertexWithShortestSegment(x2, y2).vertex;

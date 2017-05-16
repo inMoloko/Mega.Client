@@ -29,9 +29,9 @@
                     if (!$scope.options)
                         $scope.options = {};
                     if (!$scope.options.minZoom)
-                        $scope.options.minZoom = 1;
+                        $scope.options.minZoom = 17;
                     if (!$scope.options.maxZoom)
-                        $scope.options.maxZoom = 6;
+                        $scope.options.maxZoom = 23;
                     if (!$scope.options.orginalAngel)
                         $scope.options.orginalAngel = false;
                     var elm = element[0].children[0];
@@ -258,7 +258,21 @@
                                     });
                                     if (!$rootScope.organizations)
                                         return;
-                                    mapObjects = $rootScope.organizations.find(i => i.OrganizationID == $state.params.OrganizationID).OrganizationMapObject.map(i => i.MapObject);
+                                    mapObjects = $rootScope
+                                        .organizations
+                                        .find(i => i.OrganizationID == $state.params.OrganizationID)
+                                        .OrganizationMapObject
+                                        .map(i=>i.MapObject);
+                                        // .map(i => {
+                                        //     return {
+                                        //         Latitude: i.MapObject.Latitude * scale,
+                                        //         Longitude: i.MapObject.Longitude * scale,
+                                        //         MapObjectID: i.MapObjectID,
+                                        //         FloorID: i.MapObject.FloorID,
+                                        //         ParamsAsJson: i.MapObject.ParamsAsJson,
+                                        //         Params: i.MapObject.Params
+                                        //     }
+                                        // });
                                 }
                                 // $scope.mapOrganizations[$rootScope.currentOrganization.OrganizationID].marker.setIcon(markerIcon);
 
@@ -413,10 +427,11 @@
                         $scope.options.zoom = map.getZoom();
                         $rootScope.organizations.forEach(item => {
                             item.OrganizationMapObject.forEach(mapObject => {
-                                let position = map.unproject([mapObject.MapObject.Longitude * scale, mapObject.MapObject.Latitude * scale], map.getMaxZoom());
+                                mapObject.MapObject.Latitude = mapObject.MapObject.Latitude * scale;
+                                mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
+
+                                let position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
                                 if (mapObject.MapObject.ParamsAsJson && mapObject.MapObject.ParamsAsJson.SignPointRadius) {
-                                    mapObject.MapObject.Latitude = mapObject.MapObject.Latitude * scale;
-                                    mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
                                     mapObject.MapObject.ParamsAsJson.SignPointRadius = mapObject.MapObject.ParamsAsJson.SignPointRadius * scale;
                                     var markerText = L.Marker.zoomingMarker(mapObject.MapObject);
                                     markerText.on("click", function (e) {
@@ -491,8 +506,8 @@
                                         'restaurant': '/Content/images/card_food_logo_holder.png',
                                         'shop': '/Content/images/card_shop_logo_holder.png'
                                     };
-                                    mapObject.MapObject.Latitude = mapObject.MapObject.Latitude * scale;
-                                    mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
+                                    // mapObject.MapObject.Latitude = mapObject.MapObject.Latitude * scale;
+                                    // mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
 
                                     let marker = L.Marker.iconShowMarker(mapObject.MapObject, item, {
                                         src: img[type],
@@ -603,8 +618,8 @@
                             currentLines.forEach((value, key, m) => {
 
                                 let line = L.polyline(value, {color: 'red', className: 'path'});
-                                //settings.manVelocity
-                                let myMovingMarker = L.Marker.movingMarker(value, settings.manVelocity * 0.00001, {
+                                //settings.manVelocity * 0.000018
+                                let myMovingMarker = L.Marker.movingMarker(value, settings.manVelocity*2, {
                                     loop: true,
                                     autostart: true,
                                     angle: map._bearing,
@@ -690,7 +705,7 @@
                                 delete floor.clear;
                             }
                             //console.time('selectedOrganizations');
-                            if ($scope.selectedOrganizations && $scope.selectedOrganizations.length != 0) {
+                            if ($scope.selectedOrganizations && $scope.selectedOrganizations.length !== 0) {
                                 $scope.selectedOrganizations.forEach(org => {
                                     document.querySelectorAll('[data-org-id="' + org.OrganizationID + '"]').forEach(m => {
                                         m.classList.add('_selected');
