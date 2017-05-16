@@ -25,6 +25,8 @@ L.Marker.MovingMarker = L.Marker.extend({
         if (!options.icon)
             options.icon = this._getGetRunningManIcon(options.angle);
 
+        this.defaultDurations = durations;
+
         L.Marker.prototype.initialize.call(this, latlngs[0], options);
 
         this._latlngs = latlngs.map(function (e, index) {
@@ -34,7 +36,7 @@ L.Marker.MovingMarker = L.Marker.extend({
         if (durations instanceof Array) {
             this._durations = durations;
         } else {
-            this._durations = this._createDurations(this._latlngs, durations);
+            this._durations = this._createDurations(this._latlngs, this.defaultDurations * (options.startZoomLevel || 1));
         }
 
         this._currentDuration = 0;
@@ -139,10 +141,20 @@ L.Marker.MovingMarker = L.Marker.extend({
         this._stations[pointIndex] = duration;
     },
 
+    _selfZoom: function (e) {
+        let self = this;
+        let z = e.target.getZoom() - e.target.getMinZoom();
+        self.stop();
+        this._durations = this._createDurations(this._latlngs, self.defaultDurations * z);
+        self.start();
+    },
+
     onAdd: function (map) {
         L.Marker.prototype.onAdd.call(this, map);
 
-        this._map.on('rotate', this._selfRotate, this)
+        this._map.on('rotate', this._selfRotate, this);
+
+        this._map.on('zoom', this._selfZoom, this);
 
         if (this.options.autostart && (!this.isStarted())) {
             this.start();
@@ -158,7 +170,8 @@ L.Marker.MovingMarker = L.Marker.extend({
         L.Marker.prototype.onRemove.call(this, map);
         this._stopAnimation();
 
-        this._map.off('rotate', this._selfRotate)
+        this._map.off('rotate', this._selfRotate);
+        this._map.off('zoom', this._selfZoom);
     },
     _selfRotate: function (e, data) {
         if (this._getGetRunningManIcon)

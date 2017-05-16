@@ -262,17 +262,17 @@
                                         .organizations
                                         .find(i => i.OrganizationID == $state.params.OrganizationID)
                                         .OrganizationMapObject
-                                        .map(i=>i.MapObject);
-                                        // .map(i => {
-                                        //     return {
-                                        //         Latitude: i.MapObject.Latitude * scale,
-                                        //         Longitude: i.MapObject.Longitude * scale,
-                                        //         MapObjectID: i.MapObjectID,
-                                        //         FloorID: i.MapObject.FloorID,
-                                        //         ParamsAsJson: i.MapObject.ParamsAsJson,
-                                        //         Params: i.MapObject.Params
-                                        //     }
-                                        // });
+                                        .map(i => i.MapObject);
+                                    // .map(i => {
+                                    //     return {
+                                    //         Latitude: i.MapObject.Latitude * scale,
+                                    //         Longitude: i.MapObject.Longitude * scale,
+                                    //         MapObjectID: i.MapObjectID,
+                                    //         FloorID: i.MapObject.FloorID,
+                                    //         ParamsAsJson: i.MapObject.ParamsAsJson,
+                                    //         Params: i.MapObject.Params
+                                    //     }
+                                    // });
                                 }
                                 // $scope.mapOrganizations[$rootScope.currentOrganization.OrganizationID].marker.setIcon(markerIcon);
 
@@ -619,11 +619,12 @@
 
                                 let line = L.polyline(value, {color: 'red', className: 'path'});
                                 //settings.manVelocity * 0.000018
-                                let myMovingMarker = L.Marker.movingMarker(value, settings.manVelocity*2, {
+                                let myMovingMarker = L.Marker.movingMarker(value, settings.manVelocity * 2, {
                                     loop: true,
                                     autostart: true,
                                     angle: map._bearing,
-                                    zIndexOffset: 700
+                                    zIndexOffset: 700,
+                                    startZoomLevel: (map.getZoom() - map.getMinZoom())
                                 });
                                 let floor = $scope.mapFloors[key];
                                 if (!floor.pathGroup)
