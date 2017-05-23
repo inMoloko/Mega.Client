@@ -109,13 +109,11 @@ L.Marker.MovingMarker = L.Marker.extend({
         }
 
         this._stopAnimation();
-
         if (typeof (elapsedTime) === 'undefined') {
             // user call
             elapsedTime = 0;
             this._updatePosition();
         }
-
         this._state = L.Marker.MovingMarker.endedState;
         this.fire('end', {elapsedTime: elapsedTime});
     },
@@ -143,10 +141,14 @@ L.Marker.MovingMarker = L.Marker.extend({
 
     _selfZoom: function (e) {
         let self = this;
-        let z = e.target.getZoom() - e.target.getMinZoom();
-        self.stop();
+        let zoom = e.target.getZoom();
+        if (zoom === self._lastZoom)
+            return;
+        let z = zoom - e.target.getMinZoom();
+        self._stopAnimation();
         this._durations = this._createDurations(this._latlngs, self.defaultDurations * z);
-        self.start();
+        self._resumeAnimation();
+        self._lastZoom = zoom;
     },
 
     onAdd: function (map) {
@@ -154,7 +156,7 @@ L.Marker.MovingMarker = L.Marker.extend({
 
         this._map.on('rotate', this._selfRotate, this);
 
-        this._map.on('zoom', this._selfZoom, this);
+        this._map.on('zoomend', this._selfZoom, this);
 
         if (this.options.autostart && (!this.isStarted())) {
             this.start();
@@ -171,7 +173,7 @@ L.Marker.MovingMarker = L.Marker.extend({
         this._stopAnimation();
 
         this._map.off('rotate', this._selfRotate);
-        this._map.off('zoom', this._selfZoom);
+        this._map.off('zoomend', this._selfZoom);
     },
     _selfRotate: function (e, data) {
         if (this._getGetRunningManIcon)
@@ -309,7 +311,6 @@ L.Marker.MovingMarker = L.Marker.extend({
             // no need to animate
             return;
         }
-
         if (elapsedTime != null) {
             // compute the position
             var p = L.interpolatePosition(this._currentLine[0],
@@ -318,7 +319,6 @@ L.Marker.MovingMarker = L.Marker.extend({
                 elapsedTime);
             this.setLatLng(p);
         }
-
         if (!noRequestAnim) {
             this._animId = L.Util.requestAnimFrame(this._animate, this, false);
             this._animRequested = true;

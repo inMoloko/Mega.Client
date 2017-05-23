@@ -38,7 +38,7 @@
 
                     // Инициализируем карту Leaflet
                     var map = L.map(elm, {
-                        rotate: true,
+                        //rotate: true,
                         minZoom: $scope.options.minZoom,
                         maxZoom: $scope.options.maxZoom,
                         zoomControl: false,
@@ -92,8 +92,8 @@
                         width = 50;
                         //calculateBounds();
                         map.fitBounds(bounds, {
-                            //paddingTopLeft: [50, 50],
-                            //paddingBottomRight: [50, 50],
+                            paddingTopLeft: [width, 50],
+                            paddingBottomRight: [50, 50],
                             reset: true,
                             animate: false
                         });

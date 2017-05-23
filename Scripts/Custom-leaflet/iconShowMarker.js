@@ -30,11 +30,17 @@ L.Marker.IconShowMarker = L.Marker.extend({
         this._map.off('zoomend', this._zoom, this);
     },
     _zoom: function (zm) {
-        this.setIcon(this._getIcon(this._mapObject, this._map.getZoom()));
+        let self = this;
+        let zoom = this._map.getZoom();
+        if (self._lastZoom === zoom)
+            return;
+        this.setIcon(this._getIcon(this._mapObject, zoom));
+        self._lastZoom = zoom;
     },
 
     _getIcon: function (item, zm) {
         let self = this;
+
 
         let selected = self._icon ? self._icon.querySelector('._selected') : false;
         let cls = selected ? ' _selected' : '';
