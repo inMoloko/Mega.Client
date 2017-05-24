@@ -370,7 +370,8 @@
                             return 1;
                         return 10;
                     };
-                    let init = $rootScope.$watchCollection('organizations', function () {
+                    let init;
+                    init = $rootScope.$watchCollection('organizations', function () {
                         if ($rootScope.organizations === undefined || $scope.mapOrganizations || $scope.mapFloors) {
                             return;
                         }
@@ -393,11 +394,17 @@
                             var southWest = map.unproject([-value.width * scale / 2, value.height * scale / 2], map.getMaxZoom());
                             var northEast = map.unproject([value.width * scale / 2, -value.height * scale / 2], map.getMaxZoom());
 
+                            let angle = $rootScope.currentTerminal.TerminalMapObject[0].MapObject.ParamsAsJson.LookDirectionAngleDegrees || 0;
 
-                            if (!settings.terminalID)
-                                item.layer = L.imageOverlay(`${settings.webApiBaseUrl}/Floor/${item.FloorID}/File`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
-                            else
-                                item.layer = L.imageOverlay(`${settings.webApiBaseUrl}/Floor/${item.FloorID}/File?TerminalID=${settings.terminalID}`, [southWest, northEast]);
+                            angle = `${angle === 0 ? '' : 'D_' + angle}`;
+
+                            item.layer = L.imageOverlay(`${settings.resourceFolder}/Floors/${item.FloorID}${angle}.${item.FileExtension}`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
+
+                            // if (!settings.terminalID)
+                            //     item.layer = L.imageOverlay(`${settings.resourceFolder}/Floors/${item.FloorID}${angle}.${item.FileExtension}`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
+                            // else {
+                            //     item.layer = L.imageOverlay(`${settings.webApiBaseUrl}/Floor/${item.FloorID}/File?TerminalID=${settings.terminalID}`, [southWest, northEast]);
+                            // }
                             item.layerGroup = L.featureGroup();
                             item.pathGroup = L.layerGroup();
                             item.floorMapObjects = {};
@@ -465,9 +472,9 @@
                                     if (item.CategoryOrganization.length != 0) {
                                         let cat = item.CategoryOrganization[0];
                                         if (item.CategoryOrganization.map(i => i.CategoryID).includes($rootScope.serviceCategories.toilet))
-                                            html = `<div><img class="marker__image marker__wc" src="${settings.webApiBaseUrl}/Category/${cat.CategoryID}/Logo" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
+                                            html = `<div><img class="marker__image marker__wc" src="${settings.resourceFolder}/Categories/${cat.CategoryID}.${cat.Category.LogoExtension}" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
                                         else
-                                            html = `<div><img class="marker__image" src="${settings.webApiBaseUrl}/Category/${cat.CategoryID}/Logo" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
+                                            html = `<div><img class="marker__image" src="${settings.resourceFolder}/Categories/${cat.CategoryID}.${cat.Category.LogoExtension}" data-org-id="${item.OrganizationID}" data-map-id="${mapObject.MapObject}"/></div>`;
                                     }
                                     let icon = L.divIcon({className: 'marker', html: html, iconSize: [16, 16]});
                                     let marker = L.marker(position, {

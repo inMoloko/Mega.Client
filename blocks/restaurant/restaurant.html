@@ -1,10 +1,13 @@
 <div class="organization" ng-scrollbars>
     <div class="organization__logo-container">
         <img src="" alt="" class="organization__logo-container__img"
-             moloko-image-api="controller.item.OrganizationID"
-             url="/Organization/:id/WideLogo" default="Content/images/card_food_cover_holder.png" height="350">
+             file-system-image="Organizations/{{controller.item.OrganizationID + '_WideLogo.' + controller.item.WideLogoExtension}}"  height="350"
+             default="Content/images/card_food_cover_holder.png">
+             <!--moloko-image-api="controller.item.OrganizationID"-->
+             <!--url="/Organization/:id/WideLogo" default="Content/images/card_food_cover_holder.png" height="350">-->
         <img alt="" class="organization__logo-container__organization-image"
-             moloko-image-api="controller.item.OrganizationID" url="/Organization/:id/Logo" default="Content/images/card_food_logo_holder.png">
+             file-system-image="Organizations/{{controller.item.OrganizationID + '_Logo.' + controller.item.LogoExtension}}" default="Content/images/card_food_logo_holder.png">
+             <!--moloko-image-api="controller.item.OrganizationID" url="/Organization/:id/Logo" default="Content/images/card_food_logo_holder.png">-->
     </div>
     <div class="organization__container">
         <div class="organization__container__categories">

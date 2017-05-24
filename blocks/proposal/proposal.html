@@ -1,13 +1,16 @@
 <div class="proposal" ng-scrollbars>
     <div class="proposal__logo-container">
-        <img src="" alt="" class="proposal__logo-container__img" moloko-image-api="controller.item.ProposalID"
-             url="/Proposal/:id/WideLogo"
+        <img src="" alt="" class="proposal__logo-container__img"
+             file-system-image="Proposals/{{controller.item.ProposalID + '_WideLogo.' + controller.item.WideLogoExtension}}"
              default="Content/images/card_sales_cover_holder.png">
+        <!--moloko-image-api="controller.item.ProposalID"-->
+        <!--url="/Proposal/:id/WideLogo"-->
         <img src="" alt="" class="proposal__logo-container__organization-image"
              ui-sref="navigation.shops.organization({OrganizationID:controller.item.Organization.OrganizationID, CategoryID: menuItems['Магазины']})"
-             moloko-image-api="controller.item.Organization.OrganizationID"
              default="Content/images/card_sales_logo_holder.png"
-             url="/Organization/:id/Logo">
+             file-system-image="Organizations/{{controller.item.Organization.OrganizationID + '_Logo.' + controller.item.Organization.LogoExtension}}">
+        <!--moloko-image-api="controller.item.Organization.OrganizationID"-->
+        <!--url="/Organization/:id/Logo">-->
         <img class="proposal__logo-container__megacard" src="Content/images/megacard2.png"
              ng-if="controller.item.Organization.Megacard">
     </div>
