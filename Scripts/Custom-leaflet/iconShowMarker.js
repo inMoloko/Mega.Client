@@ -18,6 +18,8 @@ L.Marker.IconShowMarker = L.Marker.extend({
         let options = {icon: icon, title: self._options.title};
 
         L.Marker.prototype.initialize.call(this, map.unproject([this._mapObject.Longitude, this._mapObject.Latitude], map.getMaxZoom()), options);
+        //L.Marker.prototype.initialize.call(this, L.latLng(-this._mapObject.Latitude, -this._mapObject.Longitude ), options);
+
 
         L.Marker.prototype.onAdd.call(this, map);
 
@@ -32,8 +34,8 @@ L.Marker.IconShowMarker = L.Marker.extend({
     _zoom: function (zm) {
         let self = this;
         let zoom = this._map.getZoom();
-        if (self._lastZoom === zoom)
-            return;
+        //if (self._lastZoom === zoom)
+        //    return;
         this.setIcon(this._getIcon(this._mapObject, zoom));
         self._lastZoom = zoom;
     },

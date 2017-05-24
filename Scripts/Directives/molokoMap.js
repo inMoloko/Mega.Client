@@ -45,6 +45,7 @@
                         attributionControl: false,
                         markerZoomAnimation: false,
                         crs: L.CRS.Simple,
+                        //crs: L.CRS.Earth,
                         inertia: false,
                         bounceAtZoomLimits: true,
                         fadeAnimation: false,
@@ -57,7 +58,8 @@
                     //     $scope.menuItems = result;
                     // });
                     //console.log('Create map');
-                    map.setView([0, 0], 1);
+                    //map.setView([0, 0], 1);
+                    map.setView([55.655660, 37.845882], 17);
                     //Сброс карты
                     $scope.options.reset = function (data) {
                         $scope.options.orginalAngel = false;
@@ -82,6 +84,7 @@
                     }
 
                     function setBounds() {
+                        //return;
                         map.invalidateSize();
                         let bounds = $scope.currentMapFloor.layerGroup.getBounds(); // layer.getBounds();
                         let rad = $rootScope.currentTerminal ? $rootScope.currentTerminal.LookDirectionAngleDegrees : 0;
@@ -392,8 +395,11 @@
                             //image.then(function (value) {
                             var value = {width: item.Width, height: item.Height};
                             var southWest = map.unproject([-value.width * scale / 2, value.height * scale / 2], map.getMaxZoom());
+                            //var southWest =L.latLng(55.660367 ,37.842235); //map.unproject([-value.width * scale / 2, value.height * scale / 2], map.getMaxZoom());
+                            //55.660367, 37.842235
                             var northEast = map.unproject([value.width * scale / 2, -value.height * scale / 2], map.getMaxZoom());
-
+                            //var northEast = L.latLng(55.651632,37.847771);
+                            //55.651632, 37.847771
                             let angle = $rootScope.currentTerminal.TerminalMapObject[0].MapObject.ParamsAsJson.LookDirectionAngleDegrees || 0;
 
                             angle = `${angle === 0 ? '' : 'D_' + angle}`;
@@ -430,6 +436,11 @@
                         $scope.mapFloors[terminalOrg.FloorID].layerGroup.addLayer(terminalOrg.marker, {pane: 'tilePane'});
                         $scope.mapOrganizations[terminalOrg.OrganizationID] = terminalOrg;
 
+                        // L.marker([55.657772717037, 37.846447154765]).addTo(map)
+                        //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
+                        // L.marker([55.657618054943, 37.843840047604]).addTo(map)
+                        //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
+
                         //Наносим организации
                         $scope.options.zoom = map.getZoom();
                         $rootScope.organizations.forEach(item => {
@@ -438,6 +449,7 @@
                                 mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
 
                                 let position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
+                                //let position = L.latLng(-mapObject.MapObject.Latitude, -mapObject.MapObject.Longitude);
                                 if (mapObject.MapObject.ParamsAsJson && mapObject.MapObject.ParamsAsJson.SignPointRadius) {
                                     mapObject.MapObject.ParamsAsJson.SignPointRadius = mapObject.MapObject.ParamsAsJson.SignPointRadius * scale;
                                     var markerText = L.Marker.zoomingMarker(mapObject.MapObject);
@@ -495,7 +507,12 @@
                                     }
                                 }
                                 else if (!item.CategoryOrganization || item.CategoryOrganization.length === 0) {
-
+                                    // let marker = L.Marker.iconShowMarker(mapObject.MapObject, item, {
+                                    //     src: '/Content/images/card_enterteinment_logo_holder.png',
+                                    //     threshold: map.getMaxZoom() - 1,
+                                    //     title: item.Name
+                                    // });
+                                    // $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker, {pane: 'tilePane'});
                                 } else {
                                     //var position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
                                     // let markerIcon = getIcon(item, false, mapObject.MapObject.MapObjectID);

@@ -16,6 +16,7 @@
         terminalID: queryDict.TerminalID,
         displayKeyboard: true,
         autoReset: true,
-        mapScale: 4
+        mapScale: 4,
+        resourceFolder:'Content/Backup'
     });
 })();
