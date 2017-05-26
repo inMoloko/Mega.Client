@@ -39,7 +39,8 @@
         });
 
         $scope.getImage = function (i) {
-            return `${settings.webApiBaseUrl}/Event/${i}/WideLogo`;
+            //return `${settings.webApiBaseUrl}/Event/${i}/WideLogo`;
+            return `Content/Backup/Events/${i}_WideLogo.jpg`
         };
         // $scope.sizeMenuItem = function () {
         //     if ($('#sideMenu').height() > 600)
