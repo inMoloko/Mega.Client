@@ -3,10 +3,12 @@
  */
 (function () {
     'use strict';
-    var service = function ($http, $q, settings) {
+    var service = function ($http, $q, settings, dbService, $linq) {
         this.$http = $http;
         this.$q = $q;
         this.settings = settings;
+        this.dbService = dbService;
+        this.$linq = $linq;
     };
     service.prototype.getCurrent = function () {
         if (this.promise)
@@ -15,14 +17,28 @@
         return this.promise;
     };
     service.prototype.getFilter = function (term) {
-        return this.$http.get(this.settings.webApiBaseUrl + '/Event/GetFilter?CustomerID=' + this.settings.customerID + '&term=' + (term || '')).then(i => i.data);
+        let self = this;
+        //return this.$http.get(this.settings.webApiBaseUrl + '/Event/GetFilter?CustomerID=' + this.settings.customerID + '&term=' + (term || '')).then(i => i.data);
+        return self.dbService.getData().then(data => {
+            let result = self.$linq.Enumerable().From(data.Events).Select(i => i.Value);
+            if (term) {
+                term = term.toLowerCase();
+                result = result.Where(i => i.Name.toLocaleLowerCase().includes(term)
+                || i.KeyWords.toLocaleLowerCase().includes(term)
+                || i.Summary.toLocaleLowerCase().includes(term)
+                || i.Description.toLocaleLowerCase().includes(term))
+            }
+            return result.ToArray();
+        });
     };
     service.prototype.get = function (id) {
-        return this.$http.get(this.settings.webApiBaseUrl + '/Event/GetById/' + id + '?CustomerID=' + this.settings.customerID).then(i => i.data);
+        //return this.$http.get(this.settings.webApiBaseUrl + '/Event/GetById/' + id + '?CustomerID=' + this.settings.customerID).then(i => i.data);
+        let self = this;
+        return self.dbService.getData().then(data => data.Events[id]);
     };
     angular
         .module('app')
         .service('eventService', service);
 
-    service.$inject = ['$http', '$q', 'settings'];
+    service.$inject = ['$http', '$q', 'settings', 'dbService', '$linq'];
 })();

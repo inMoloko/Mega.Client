@@ -3,14 +3,17 @@
  */
 (function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, organizationService, $linq, mainMenuService) {
+    var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, organizationService, $linq, mainMenuService, dbService) {
         var self = this;
         self.$rootScope = $rootScope;
-        organizationService.get($state.params.OrganizationID).then(i => {
+        // organizationService.get($state.params.OrganizationID).then(i => {
+        //     self.item = i;
+        // });
+        dbService.organizationGetById($state.params.OrganizationID).then(i=>{
             self.item = i;
         });
     };
 
-    controller.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', 'organizationService', '$linq', 'mainMenuService'];
+    controller.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', 'organizationService', '$linq', 'mainMenuService','dbService'];
     angular.module('app').controller('entertainmentController', controller);
 })();

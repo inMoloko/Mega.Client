@@ -20,7 +20,7 @@
                         {{::item.Name}}
                     </div>
                     <div class="organizationsSearchResultItem__categoryBlock" style="">
-                        {{::item.CategoryOrganization|limitTo:6|joinBy:', ':'Category.Name'}}
+                        {{::item.Categories|limitTo:6|joinBy:', ':'Name'}}
                     </div>
                     <!--<div class="organizationsSearchResultItem__floorBlock" style="">-->
                         <!--<span ng-bind="getFloors(item)"></span> ЭТАЖ-->

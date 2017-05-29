@@ -203,7 +203,8 @@
                     let proposalFilter = self.$state.params.proposalFilter || {};
                     proposalFilter.filterName = self.filterName;
                     proposalFilter[self.filterName] = {
-                        full: self.full, Categories: self.categories,
+                        full: self.full,
+                        Categories: self.categories,
                         Proposals: i
                     };
 

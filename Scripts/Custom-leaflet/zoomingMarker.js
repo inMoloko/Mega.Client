@@ -38,9 +38,9 @@ L.Marker.ZoomingMarker = L.Marker.extend({
         //let zoom = revers[origin.indexOf(Math.round(zm))];
         let zoom = 17 + (this._map.getMaxZoom() - zm);
 
-        var text = ((item.ParamsAsJson.SignText !== undefined) && (item.ParamsAsJson.SignText !== null) && (item.ParamsAsJson.SignText.length !== 0)) ? item.ParamsAsJson.SignText : item.Name;
+        var text = ((item.Params.SignText !== undefined) && (item.Params.SignText !== null) && (item.Params.SignText.length !== 0)) ? item.Params.SignText : item.Name;
         let position = this._map.unproject([item.Longitude, item.Latitude], zoom);
-        let radius = this._map.unproject([item.Longitude + item.ParamsAsJson.SignPointRadius * 1.25, item.Latitude], zoom).distanceTo(position);
+        let radius = this._map.unproject([item.Longitude + item.Params.SignPointRadius * 1.25, item.Latitude], zoom).distanceTo(position);
 
         var s = document.createElement("span");
         s.innerHTML = text;

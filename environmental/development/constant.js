@@ -14,6 +14,7 @@
         deltaDistanceTouchMoveAsClick: 100,
         customerID: queryDict.CustomerID,
         terminalID: queryDict.TerminalID,
+        serialNumber: queryDict.Serialnumber,
         displayKeyboard: true,
         autoReset: false,
         mapScale: 4,

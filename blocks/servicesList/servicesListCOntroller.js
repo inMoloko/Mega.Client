@@ -1,19 +1,24 @@
 ﻿(function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, $linq) {
+    var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, $linq, dbService) {
 
         this.$state = $state;
 
-        if ($rootScope.organizations === undefined) {
-            let event = $rootScope.$on('floorLoad', function () {
-                filter();
-                event();
-            });
+               // if ($rootScope.organizations === undefined) {
+        //     let event = $rootScope.$on('floorLoad', function () {
+        //         filter();
+        //         event();
+        //     });
+        //
+        // }
+        // else {
+        //     filter();
+        // }
 
-        }
-        else {
-            filter();
-        }
+        dbService.organizationGetFilter($stateParams.Filter, $stateParams.CategoryID).then(data=>{
+            $rootScope.currentOrganizations = data;
+            $state.go($state.current.name, {Organizations: data, CategoryID: $stateParams.CategoryID});
+        });
 
         function filter() {
             let categoryID = $stateParams.CategoryID;
@@ -127,7 +132,7 @@
             locationChangeHandler();
         });
         let locationChangeHandler = $scope.$on('$locationChangeSuccess', function () {
-            filter();
+            //filter();
         });
         $scope.getFloors = function (item) {
             if (!item)
@@ -141,6 +146,6 @@
         var self = this;
         return self.$state.params.OrganizationID == organizationID;
     }
-    controller.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', '$linq'];
+    controller.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', '$linq', 'dbService'];
     angular.module('app').controller('servicesListController', controller);
 })();

@@ -1,18 +1,21 @@
 (function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, $timeout, mainMenuService, eventService) {
+    var controller = function ($scope, $http, settings, $rootScope, $state, $stateParams, $timeout, mainMenuService, eventService, dbService) {
         let swiper;
 
-        eventService.getCurrent().then(function(proposals){
-            // angular.forEach(proposals, (i, k) => {
-            //     swiper.appendSlide(`<a class="swiper-slide" href="#/navigation/more/events/event/${i}" style="background-image:url('${settings.webApiBaseUrl}/Event/${i}/WideLogo');"></a>`);
-            //     // swiper.appendSlide(`<div class="swiper-slide"></div>`);
-            // });
+        // eventService.getCurrent().then(function(proposals){
+        //     $scope.events = proposals;
+        //     $timeout(function () {
+        //         swiperInit();
+        //     });
+        // });
+        dbService.eventGetCurrent().then(function(proposals){
             $scope.events = proposals;
             $timeout(function () {
                 swiperInit();
             });
         });
+
 
         function swiperInit() {
             swiper = new Swiper('#swiper-container', {
@@ -34,8 +37,12 @@
         }
         //}
 
-        mainMenuService.get().then(function (result) {
-            $scope.menuItems = result;
+        // mainMenuService.get().then(function (result) {
+        //     $scope.menuItems = result;
+        // });
+
+        dbService.systemSettingGetMenuItems().then(i=>{
+            $scope.menuItems = i;
         });
 
         $scope.getImage = function (i) {
@@ -102,6 +109,6 @@
                 swiper.destroy();
         });
     };
-    controller.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', '$timeout', 'mainMenuService' ,'eventService'];
+    controller.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', '$timeout', 'mainMenuService' ,'eventService','dbService'];
     angular.module('app').controller('sideMenuController', controller);
 })();

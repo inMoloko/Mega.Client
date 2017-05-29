@@ -3,8 +3,11 @@
  */
 (function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $state, $rootScope, mainMenuService, $stateParams) {
-        mainMenuService.get().then(function (result) {
+    var controller = function ($scope, $http, settings, $state, $rootScope, mainMenuService, $stateParams, dbService) {
+        // mainMenuService.get().then(function (result) {
+        //     $scope.menuItems = result;
+        // });
+        dbService.systemSettingGetMenuItems().then(result=>{
             $scope.menuItems = result;
         });
         function getClass(route, params) {
@@ -99,6 +102,6 @@
             locationChangeHandler();
         });
     };
-    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'mainMenuService', '$stateParams'];
+    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'mainMenuService', '$stateParams', 'dbService'];
     angular.module('app').controller('navigationController', controller);
 })();
