@@ -14,9 +14,12 @@
         deltaDistanceTouchMoveAsClick: 100,
         customerID: queryDict.CustomerID,
         terminalID: queryDict.TerminalID,
+        serialNumber: queryDict.SerialNumber,
+        token:queryDict.Token,
         displayKeyboard: true,
         autoReset: true,
         mapScale: 4,
-        resourceFolder:'Content/Backup'
+        resourceFolder:'Content/Backup',
+        dbPath: `Content/Backup/db/${queryDict.SerialNumber}.json`
     });
 })();

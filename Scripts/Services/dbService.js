@@ -16,7 +16,7 @@
 
         getData() {
             let self = this;
-            return self.$http.get(`Content/Backup/db/${self.settings.serialNumber}.json`, {cache: true}).then(i => i.data);
+            return self.$http.get(self.settings.dbPath, {cache: true}).then(i => i.data);
         }
 
         getOrganizationTypeSync(data, organization) {
@@ -55,6 +55,28 @@
             if (type === 'Магазины' || type === 'shop') {
                 return data.Categories[setting['Магазины']];
             }
+        }
+
+        /**
+         * Получить тип MapObject
+         * @param data
+         * @param organizationMapObject
+         */
+        mapObjectGetTypeSync(data, organizationMapObject) {
+            let self = this;
+            if(organizationMapObject.MapObject.Params && organizationMapObject.MapObject.Params.SignPointRadius){
+                return 'zooming';
+            }
+            if(organizationMapObject.Organization.ServiceCategoryType !== null){
+                if(organizationMapObject.Organization.Categories[0] === data.SystemSettings.TERMINAL_SERVICE_CATEGORIES.toilet){
+                    return 'toilet';
+                }
+                return 'serviceObject';
+            }
+            if (organizationMapObject.Organization.Categories.length === 0){
+                return 'none';
+            }
+            return self.getOrganizationTypeSync(data, organizationMapObject.Organization);
         }
 
         organizationGetFilter(filter = '', categoryID = '') {

@@ -15,11 +15,17 @@ L.Marker.IconShowMarker = L.Marker.extend({
 
         let self = this;
 
+        if (!self._options.title) {
+            self._options.title = self._organization.Name;
+        }
+
         let options = {icon: icon, title: self._options.title};
 
-        L.Marker.prototype.initialize.call(this, map.unproject([this._mapObject.Longitude, this._mapObject.Latitude], map.getMaxZoom()), options);
-        //L.Marker.prototype.initialize.call(this, L.latLng(-this._mapObject.Latitude, -this._mapObject.Longitude ), options);
+        if (!self._options.threshold) {
+            self._options.threshold = map.getMaxZoom() - 1;
+        }
 
+        L.Marker.prototype.initialize.call(this, map.unproject([this._mapObject.Longitude, this._mapObject.Latitude], map.getMaxZoom()), options);
 
         L.Marker.prototype.onAdd.call(this, map);
 

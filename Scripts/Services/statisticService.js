@@ -4,17 +4,18 @@
 (function () {
     'use strict';
     class StatisticService {
-        constructor($q, $indexedDB, $http) {
+        constructor($q, $indexedDB, $http, settings) {
             this.$q = $q;
             this.$indexedDB = $indexedDB;
             this.$http = $http;
+            this.settings = settings;
         }
 
         addStatistic(statics) {
             let self = this;
             self.$indexedDB.openStore('statistics', (store) => {
                 store.insert(statics).then(() => {
-                    console.log('insert');
+                    console.log('insert, ' + statics.Date);
                 }, err => {
                     console.error(err);
                 });
@@ -32,32 +33,79 @@
             return deferred.promise;
         }
 
-        sendStatistics() {
+        delete(statistic) {
             let self = this;
+            let deferred = self.$q.defer();
             self.$indexedDB.openStore('statistics', (store) => {
-                store.getAll().then(statistics => {
-                    //TODO Сделать по нормальному
-                    $http({
-                        method: 'POST',
-                        url: settings.webApiBaseUrl + '/Statistic',
-                        data: statistics,
-                        headers: {'Content-type': 'application/json'}
-                    }).then(function (response) {
-                        statistics.forEach(st => {
-                            store.delete(st.Date);
-                        });
-                    }, function (response) {
-                        //$rootScope.addStatistics('SendStatistics', '{"Param":"Not sended"}');
-                        console.error("При отправке статистики произошла ошибка");
-                    });
+                store.delete(statistic.Date).then(function () {
+                    deferred.resolve();
+                }, function (err) {
+                    deferred.reject(err);
                 });
             });
+            return deferred.promise;
+        }
 
+        executeRequest(statistics, token) {
+            let self = this;
+            return self.$http({
+                method: 'POST',
+                url: self.settings.webApiBaseUrl + '/TerminalService/SendStatistics',
+                data: {
+                    ClientTime: new Date(),
+                    Statistics: statistics.map(j => {
+                        return {
+                            Action: j.Action,
+                            Date: j.Date,
+                            ParamsAsJson: angular.toJson(j.ParamsAsJson)
+                        }
+                    })
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
+        getToken() {
+            let self = this;
+            return self.$http({
+                method: 'POST',
+                url: self.settings.authUrl + `/Token`,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: `grant_type=password&username=${self.settings.serialNumber}&password=${self.settings.token}`
+            }).then(response => response.data.access_token);
+        }
+
+        sendStatistics() {
+            let self = this;
+            if (!self.settings.token)
+                return;
+            let promise = self.getAll().then(statistics => {
+                if (statistics.length === 0) {
+                    console.log('нет записей статистики');
+                    return statistics;
+                }
+                return self.getToken().then(token => {
+                    return self.executeRequest(statistics, token).then(result => statistics)
+                });
+            });
+            promise.then(statistics => {
+                self.$indexedDB.openStore('statistics', (store) => {
+                    statistics.forEach(st => {
+                        store.delete(st.Date);
+                    });
+                });
+            }, err => {
+                console.error(err);
+            });
         }
     }
     angular
         .module('app')
         .service('statisticService', StatisticService);
 
-    StatisticService.$inject = ['$q', '$indexedDB', '$http'];
-})();
+    StatisticService.$inject = ['$q', '$indexedDB', '$http', 'settings'];
+})
+();

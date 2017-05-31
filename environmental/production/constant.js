@@ -22,6 +22,7 @@
         displayKeyboard: true,
         autoReset: true,
         mapScale: 4,
-        resourceFolder: 'Content/Backup'
+        resourceFolder: 'Content/Backup',
+        dbPath: `api/api/Backup/GetByCustomer?CustomerID=${queryDict.CustomerID}`
     });
 })();

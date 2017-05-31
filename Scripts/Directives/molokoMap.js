@@ -94,24 +94,24 @@
                         }
                         return;
 
-                        let filtered = $linq.Enumerable().From($scope.mapFloors[floorID].floorMapObjects).Select(i => {
-                            return {
-                                OrganizationID: i.Key,
-                                MapObject: $linq.Enumerable().From(i.Value).Select(j => {
-                                    return {
-                                        Distance: currentPoint.distanceTo(map.project(j.position)),
-                                        MapObjectID: j.mapObjectID
-                                    };
-                                }).OrderBy(j => j.Distance).FirstOrDefault()
-                            };
-                        }).Where(i => i.MapObject.Distance <= 50).OrderBy(i => i.MapObject.Distance).ToArray();
-
-                        if (filtered[0] !== undefined) {
-                            if ($rootScope.currentOrganization && $rootScope.currentOrganization.OrganizationID === filtered[0].OrganizationID || filtered[0].OrganizationID === $rootScope.currentTerminal.OrganizationID) {
-                                return;
-                            }
-                            clickToOrganization(filtered[0].OrganizationID, filtered[0].MapObject.MapObjectID);
-                        }
+                        // let filtered = $linq.Enumerable().From($scope.mapFloors[floorID].floorMapObjects).Select(i => {
+                        //     return {
+                        //         OrganizationID: i.Key,
+                        //         MapObject: $linq.Enumerable().From(i.Value).Select(j => {
+                        //             return {
+                        //                 Distance: currentPoint.distanceTo(map.project(j.position)),
+                        //                 MapObjectID: j.mapObjectID
+                        //             };
+                        //         }).OrderBy(j => j.Distance).FirstOrDefault()
+                        //     };
+                        // }).Where(i => i.MapObject.Distance <= 50).OrderBy(i => i.MapObject.Distance).ToArray();
+                        //
+                        // if (filtered[0] !== undefined) {
+                        //     if ($rootScope.currentOrganization && $rootScope.currentOrganization.OrganizationID === filtered[0].OrganizationID || filtered[0].OrganizationID === $rootScope.currentTerminal.OrganizationID) {
+                        //         return;
+                        //     }
+                        //     clickToOrganization(filtered[0].OrganizationID, filtered[0].MapObject.MapObjectID);
+                        // }
                     });
                     function calculateBounds(offset) {
                         map.setMaxBounds($scope.currentMapFloor.layer.getBounds());
@@ -237,76 +237,68 @@
                                 mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
 
                                 let position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
-                                //let position = L.latLng(-mapObject.MapObject.Latitude, -mapObject.MapObject.Longitude);
-                                if (mapObject.MapObject.Params && mapObject.MapObject.Params.SignPointRadius) {
-                                    mapObject.MapObject.Params.SignPointRadius = mapObject.MapObject.Params.SignPointRadius * scale;
-                                    let markerText = L.Marker.zoomingMarker(mapObject.MapObject);
-                                    markerText.on("click", function (e) {
-                                        clickToOrganization(mapObject.Organization.OrganizationID);
-                                    });
-                                    $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(markerText);
-                                } else if (mapObject.Organization.ServiceCategoryType !== null) {
-                                    let category = mapObject.Organization.Categories[0];
-                                    let cls = category.CategoryID === i.SystemSettings.TERMINAL_SERVICE_CATEGORIES.toilet ? 'marker__wc' : '';
-                                    let marker = L.marker(position, {
-                                        icon: L.divIcon({
-                                            className: 'marker',
-                                            html: `<div><img class="marker__image ${cls}" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
-                                            iconSize: [16, 16]
-                                        }),
-                                        title: mapObject.Organization.Name,
-                                        iconSize: [16, 16],
-                                        zIndexOffset: 10
-                                    });
-                                    marker._organization = mapObject.Organization;
-                                    marker._mapObject = mapObject.MapObject;
-                                    $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker);
-                                    // if (mapObject.MapObject.FloorID) {
-                                    //     $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker);
-                                    //     if (!$scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[mapObject.Organization.OrganizationID])
-                                    //         $scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[mapObject.Organization.OrganizationID] = [];
-                                    //
-                                    //     $scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[mapObject.Organization.OrganizationID].push({
-                                    //         position: position,
-                                    //         mapObjectID: mapObject.MapObject.MapObjectID
-                                    //     });
-                                    // }
-                                } else if (mapObject.Organization.Categories.length === 0) {
-                                    console.warn('Для MapObjectID: ', mapObject.MapObject.MapObjectID, ' нет категорий');
-                                }
-                                else {
-                                    let categoryID = mapObject.Organization.Categories[0].CategoryID;
-                                    let type;
-                                    switch (dbService.getOrganizationTypeSync(i, mapObject.Organization)) {
-                                        case "entertainment":
-                                        case "service":
-                                            type = 'Content/images/card_enterteinment_logo_holder.png';
-                                            break;
-                                        case "shop":
-                                            type = 'Content/images/card_shop_logo_holder.png';
-                                            break;
-                                        case "restaurant":
-                                            type = 'Content/images/card_food_logo_holder.png';
-                                            break;
-                                    }
 
-                                    let marker = L.Marker.iconShowMarker(mapObject.MapObject, mapObject.Organization, {
-                                        src: type,
-                                        threshold: map.getMaxZoom() - 1,
-                                        title: mapObject.Organization.Name
-                                    });
-                                    $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker);
-                                    // if (mapObject.MapObject.FloorID) {
-                                    //     $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker, {pane: 'tilePane'});
-                                    //     if (!$scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[mapObject.Organization.OrganizationID])
-                                    //         $scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[mapObject.Organization.OrganizationID] = [];
-                                    //
-                                    //     $scope.mapFloors[mapObject.MapObject.FloorID].floorMapObjects[mapObject.Organization.OrganizationID].push({
-                                    //         position: position,
-                                    //         mapObjectID: mapObject.MapObject.MapObjectID
-                                    //     });
-                                    // }
+                                let mapObjectType = dbService.mapObjectGetTypeSync(i, mapObject);
+                                let marker;
+                                let category;
+                                switch (mapObjectType) {
+                                    case 'zooming':
+                                        mapObject.MapObject.Params.SignPointRadius = mapObject.MapObject.Params.SignPointRadius * scale;
+                                        marker = L.Marker.zoomingMarker(mapObject.MapObject);
+                                        marker.on("click", function (e) {
+                                            clickToOrganization(mapObject.Organization.OrganizationID);
+                                        });
+                                        break;
+                                    case 'toilet':
+                                        category = mapObject.Organization.Categories[0];
+                                        marker = L.marker(position, {
+                                            icon: L.divIcon({
+                                                className: 'marker',
+                                                html: `<div><img class="marker__image marker__wc}" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
+                                                iconSize: [16, 16]
+                                            }),
+                                            title: mapObject.Organization.Name,
+                                            iconSize: [16, 16],
+                                            zIndexOffset: 10
+                                        });
+                                        marker._organization = mapObject.Organization;
+                                        marker._mapObject = mapObject.MapObject;
+                                        break;
+                                    case 'serviceObject':
+                                        category = mapObject.Organization.Categories[0];
+                                        marker = L.marker(position, {
+                                            icon: L.divIcon({
+                                                className: 'marker',
+                                                html: `<div><img class="marker__image" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
+                                                iconSize: [16, 16]
+                                            }),
+                                            title: mapObject.Organization.Name,
+                                            iconSize: [16, 16],
+                                            zIndexOffset: 10
+                                        });
+                                        marker._organization = mapObject.Organization;
+                                        marker._mapObject = mapObject.MapObject;
+                                        break;
+                                    case "entertainment":
+                                    case "service":
+                                        marker = L.Marker.iconShowMarker(mapObject.MapObject, mapObject.Organization, {
+                                            src: 'Content/images/card_enterteinment_logo_holder.png'
+                                        });
+                                        break;
+                                    case "shop":
+                                        marker = L.Marker.iconShowMarker(mapObject.MapObject, mapObject.Organization, {
+                                            src: 'Content/images/card_shop_logo_holder.png'
+                                        });
+                                        break;
+                                    case "restaurant":
+                                        marker = L.Marker.iconShowMarker(mapObject.MapObject, mapObject.Organization, {
+                                            src: 'Content/images/card_food_logo_holder.png'
+                                        });
+                                        break;
                                 }
+                                if (marker)
+                                    $scope.mapFloors[mapObject.MapObject.FloorID].layerGroup.addLayer(marker);
+
                                 $scope.mapObjects[mapObject.MapObject.MapObjectID] = mapObject.MapObject;
                             });
 

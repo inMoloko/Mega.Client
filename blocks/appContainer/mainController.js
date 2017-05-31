@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $state, $rootScope, arrayHelper, $q, Idle, $location, $stateParams, $timeout, categoryService, statisticService, dbService, $linq) {
+    var controller = function ($scope, $http, settings, $state, $rootScope, arrayHelper, $q, Idle, $location, $stateParams, $timeout, categoryService, statisticService, dbService, $linq, $indexedDB) {
         //Обработка простоя
         $scope.$on('IdleTimeout', function () {
             $state.go('navigation', {});
@@ -9,7 +9,22 @@
             Idle.watch();
         });
 
-        statisticService.getAll().then(i => console.log(i));
+        // statisticService.getAll().then(i => {
+        //     console.log(i);
+        //     i.forEach(j => {
+        //         statisticService.delete(j);
+        //     });
+        // });
+        // $indexedDB.openStore('statistics', (store) => {
+        //     store.getAll().then(statistics => {
+        //         console.log(statistics);
+        //         statistics.forEach(st => {
+        //             store.delete(st.Date);
+        //         });
+        //
+        //     });
+        // });
+        //statisticService.sendStatistics();
 
         //$scope.formatThemesMain = [];
         $rootScope.orientation;
@@ -109,13 +124,15 @@
                         Date: new Date()
                     });
                 }
-                statisticService.addStatistic({
-                    Action: 'Command',
-                    ParamsAsJson: {
-                        url: $location.url()
-                    },
-                    Date: new Date()
-                });
+                else {
+                    statisticService.addStatistic({
+                        Action: 'Command',
+                        ParamsAsJson: {
+                            url: $location.url()
+                        },
+                        Date: new Date()
+                    });
+                }
             });
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
             console.log('');
@@ -222,6 +239,6 @@
 
         $rootScope.filters = {};
     };
-    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'arrayHelper', '$q', 'Idle', '$location', '$stateParams', '$timeout', 'categoryService', 'statisticService', 'dbService', '$linq'];
+    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'arrayHelper', '$q', 'Idle', '$location', '$stateParams', '$timeout', 'categoryService', 'statisticService', 'dbService', '$linq','$indexedDB'];
     angular.module('app').controller('mainController', controller);
 })();
