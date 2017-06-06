@@ -25,7 +25,7 @@ L.Marker.IconShowMarker = L.Marker.extend({
             self._options.threshold = map.getMaxZoom() - 1;
         }
 
-        L.Marker.prototype.initialize.call(this, map.unproject([this._mapObject.Longitude, this._mapObject.Latitude], map.getMaxZoom()), options);
+        L.Marker.prototype.initialize.call(this, map.convertPosition(this._mapObject)/*map.unproject([this._mapObject.Longitude, this._mapObject.Latitude], map.getMaxZoom())*/, options);
 
         L.Marker.prototype.onAdd.call(this, map);
 

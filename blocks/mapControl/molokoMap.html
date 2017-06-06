@@ -20,13 +20,10 @@
 				</div>
 			</div>
 			<div class="floor__label floor__label_right" ng-if="getCount(fl.FloorID)>0" ng-bind="getCount(fl.FloorID)">>
-				<!--<div style="width: 20px;height: 20px;text-align: center;font-size: 10px;padding-top: 4px;font-weight: bold;" ng-bind="getCount(fl.FloorID)"></div>-->
 			</div>
 			<button class="btn floor__floor" ng-click="setFloor(fl.FloorID)"
 					ng-class="{'selected':currentMapFloor.Number == fl.Number}"
 					style="background-image: url('Content/images/icn_map_{{fl.Number}}_floor{{currentMapFloor.Number == fl.Number?'_selected':''}}.png')">
-				<!--<img ng-src="/Content/images/icn_map_{{fl.Number}}_floor.png">-->
-                <!--<span class="floor__number">{{fl.Number}}</span>-->
             </button>
 		</div>
 	</div>

@@ -10,7 +10,7 @@ L.Marker.ZoomingMarker = L.Marker.extend({
 
         let options = {icon: icon};
 
-        L.Marker.prototype.initialize.call(this, map.unproject([this._mapObject.Longitude, this._mapObject.Latitude], map.getMaxZoom()), options);
+        L.Marker.prototype.initialize.call(this, map.convertPosition(this._mapObject) /*map.unproject([this._mapObject.Longitude, this._mapObject.Latitude], map.getMaxZoom())*/, options);
 
         L.Marker.prototype.onAdd.call(this, map);
 
@@ -39,8 +39,8 @@ L.Marker.ZoomingMarker = L.Marker.extend({
         let zoom = 17 + (this._map.getMaxZoom() - zm);
 
         var text = ((item.Params.SignText !== undefined) && (item.Params.SignText !== null) && (item.Params.SignText.length !== 0)) ? item.Params.SignText : item.Name;
-        let position = this._map.unproject([item.Longitude, item.Latitude], zoom);
-        let radius = this._map.unproject([item.Longitude + item.Params.SignPointRadius * 1.25, item.Latitude], zoom).distanceTo(position);
+        let position = new L.latLng(item.Latitude, item.Longitude);//this._map.unproject([item.Longitude, item.Latitude], zoom);
+        let radius = (new L.latLng(item.Latitude, item.Longitude + item.Params.SignPointRadius * 1.25 / Math.pow(2, zoom))).distanceTo(position) * 7 ;  //this._map.unproject([item.Longitude + item.Params.SignPointRadius * 1.25, item.Latitude], zoom).distanceTo(position);
 
         var s = document.createElement("span");
         s.innerHTML = text;

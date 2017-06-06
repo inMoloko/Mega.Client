@@ -21,8 +21,22 @@
 
                     $scope.rootScope = $rootScope;
                     if (!$scope.options)
-                        $scope.options = {minZoom: 17, maxZoom: 23};
+                        $scope.options = {minZoom: 15, maxZoom: 21};
                     let elm = element[0].children[0];
+
+
+                    L.Map = L.Map.extend({
+                        convertPosition: function (mapObject) {
+                            let self = this;
+                            if (settings.useGeo) {
+                                return new L.LatLng(mapObject.Latitude, mapObject.Longitude);
+                            }
+                            else {
+                                return self.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], self.getMaxZoom());
+                            }
+                        }
+                    });
+
 
                     // Инициализируем карту Leaflet
                     let map = L.map(elm, {
@@ -32,14 +46,26 @@
                         zoomControl: false,
                         attributionControl: false,
                         markerZoomAnimation: false,
-                        crs: L.CRS.Simple,
+                        //crs: L.CRS.Simple,
                         //crs: L.CRS.Earth,
                         inertia: false,
                         bounceAtZoomLimits: true,
                         fadeAnimation: false,
                     });
 
-                    map.setView([55.655660, 37.845882], 17);
+                    //L.control.zoom({position: 'topright'}).addTo(map);
+                    map.setView([55.65903192, 37.8472988867064], 16);
+                    // L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    // // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                    //     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                    //     maxZoom: 18,
+                    //     //crs: L.CRS.Simple,
+                    //     //light-v9
+                    //     id: 'mapbox.streets',
+                    //     accessToken: 'pk.eyJ1IjoicGl0Y2hjb250cm9sIiwiYSI6ImNqM2gzMml2ajAwMXIzMm83bmgwY3g2Z2QifQ.UAogEsttp6b9eij_Qs5jZQ'
+                    // }).addTo(map);
+
+
                     //Сброс карты
                     $scope.options.reset = function (data) {
                         delete $scope.selectedOrganizations;
@@ -64,6 +90,7 @@
                         //return;
                         map.invalidateSize();
                         let bounds = $scope.currentMapFloor.layerGroup.getBounds(); // layer.getBounds();
+                        let s = $linq.Enumerable().From($scope.currentMapFloor.layerGroup._layers).Select(i => i.Value).Select(i => i._latlng.lat + ', ' + i._latlng.lng + ', ' + i._mapObject.MapObjectID + angular.toJson(i._mapObject.Params));
                         map.fitBounds(bounds, {
                             paddingTopLeft: [50, 50],
                             paddingBottomRight: [50, 50],
@@ -94,24 +121,6 @@
                         }
                         return;
 
-                        // let filtered = $linq.Enumerable().From($scope.mapFloors[floorID].floorMapObjects).Select(i => {
-                        //     return {
-                        //         OrganizationID: i.Key,
-                        //         MapObject: $linq.Enumerable().From(i.Value).Select(j => {
-                        //             return {
-                        //                 Distance: currentPoint.distanceTo(map.project(j.position)),
-                        //                 MapObjectID: j.mapObjectID
-                        //             };
-                        //         }).OrderBy(j => j.Distance).FirstOrDefault()
-                        //     };
-                        // }).Where(i => i.MapObject.Distance <= 50).OrderBy(i => i.MapObject.Distance).ToArray();
-                        //
-                        // if (filtered[0] !== undefined) {
-                        //     if ($rootScope.currentOrganization && $rootScope.currentOrganization.OrganizationID === filtered[0].OrganizationID || filtered[0].OrganizationID === $rootScope.currentTerminal.OrganizationID) {
-                        //         return;
-                        //     }
-                        //     clickToOrganization(filtered[0].OrganizationID, filtered[0].MapObject.MapObjectID);
-                        // }
                     });
                     function calculateBounds(offset) {
                         map.setMaxBounds($scope.currentMapFloor.layer.getBounds());
@@ -160,13 +169,12 @@
                                         document.querySelectorAll('[data-org-id="' + $state.params.OrganizationID + '"]').forEach(m => {
                                             m.classList.add('_selected');
                                         });
-                                        if (!$rootScope.organizations)
-                                            return;
-                                        mapObjects = $rootScope
-                                            .organizations
-                                            .find(i => i.OrganizationID == $state.params.OrganizationID)
-                                            .OrganizationMapObject
-                                            .map(i => i.MapObject);
+                                        // mapObjects = $rootScope
+                                        //     .organizations
+                                        //     .find(i => i.OrganizationID == $state.params.OrganizationID)
+                                        //     .OrganizationMapObject
+                                        //     .map(i => i.MapObject);
+                                        mapObjects = organization.MapObjects.map(i => $scope.mapObjects[i.MapObjectID]);
                                     }
                                     // $scope.mapOrganizations[$rootScope.currentOrganization.OrganizationID].marker.setIcon(markerIcon);
 
@@ -184,24 +192,27 @@
                                         $scope.setFloor(result.object.FloorID);
                                     }
                                 });
-                            }
-                            delete $rootScope.currentPath;
-                            if ($state.params.Organizations) {
-                                if ($scope.selectedOrganizations !== undefined) {
-                                    $scope.selectedOrganizations = undefined;
-                                }
-                                if ($state.params.Organizations !== undefined) {
-                                    $state.params.Organizations.forEach(org => {
-                                        document.querySelectorAll('[data-org-id="' + org.OrganizationID + '"]').forEach(m => {
-                                            m.classList.add('_selected');
+
+                            } else {
+                                delete $rootScope.currentPath;
+                                if ($state.params.Organizations) {
+                                    if ($scope.selectedOrganizations !== undefined) {
+                                        $scope.selectedOrganizations = undefined;
+                                    }
+                                    if ($state.params.Organizations !== undefined) {
+                                        $state.params.Organizations.forEach(org => {
+                                            document.querySelectorAll('[data-org-id="' + org.OrganizationID + '"]').forEach(m => {
+                                                m.classList.add('_selected');
+                                            });
                                         });
-                                    });
-                                    $scope.selectedOrganizations = $state.params.Organizations;
+                                        $scope.selectedOrganizations = $state.params.Organizations;
+                                    }
+                                    return;
                                 }
-                                return;
+                                if (!$state.params.OrganizationID && !$state.params.Organizations)
+                                    delete $scope.selectedOrganizations;
                             }
-                            if (!$state.params.OrganizationID && !$state.params.Organizations)
-                                delete $scope.selectedOrganizations;
+
                         });
 
                     dbService.getData().then(i => {
@@ -213,14 +224,30 @@
 
                         i.Floors.forEach(item => {
                             let size = map.getSize();
-                            let range = getZoomRange(item.Width, item.Height, size.x * 0.3, size.y);
-                            //TODO Тут надо подумать пока будем брать максимальный зум
-                            if (map.options.maxZoom < map.options.minZoom + range)
-                                map.options.maxZoom = map.options.minZoom + range;
+                            // let range = getZoomRange(item.Width, item.Height, size.x * 0.3, size.y);
+                            // //TODO Тут надо подумать пока будем брать максимальный зум
+                            // if (map.options.maxZoom < map.options.minZoom + range)
+                            //     map.options.maxZoom = map.options.minZoom + range;
 
                             let value = {width: item.Width, height: item.Height};
-                            let southWest = map.unproject([-value.width * scale / 2, value.height * scale / 2], map.getMaxZoom());
-                            let northEast = map.unproject([value.width * scale / 2, -value.height * scale / 2], map.getMaxZoom());
+                            let southWest;
+                            let northEast;
+                            if (settings.useGeo) {
+                                //55.660218, 37.841953
+                                //southWest = new L.LatLng(55.651865817248584, 37.840454578399665);
+                                southWest = new L.LatLng(item.SouthWest.Latitude * scale, item.SouthWest.Longitude* scale);
+
+                                //55.651641, 37.847854
+                                //northEast = new L.LatLng(55.65998866731282, 37.84931659698487);
+                                northEast = new L.LatLng(item.NorthEast.Latitude* scale, item.NorthEast.Longitude* scale);
+
+                            }
+                            else {
+                                southWest = map.unproject([-value.width * scale / 2, value.height * scale / 2], map.getMaxZoom());
+                                northEast = map.unproject([value.width * scale / 2, -value.height * scale / 2], map.getMaxZoom());
+                            }
+
+
                             let angle = $rootScope.currentTerminal.Params.LookDirectionAngleDegrees || 0;
 
                             angle = `${angle === 0 ? '' : 'D_' + angle}`;
@@ -236,7 +263,7 @@
                                 mapObject.MapObject.Latitude = mapObject.MapObject.Latitude * scale;
                                 mapObject.MapObject.Longitude = mapObject.MapObject.Longitude * scale;
 
-                                let position = map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
+                                let position = map.convertPosition(mapObject.MapObject); // map.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], map.getMaxZoom());
 
                                 let mapObjectType = dbService.mapObjectGetTypeSync(i, mapObject);
                                 let marker;
@@ -308,7 +335,7 @@
 
                         //map.setMaxBounds(item.layer.getBounds());
                         let terminalOrg = $rootScope.currentTerminal;
-                        let position = map.unproject([terminalOrg.Longitude * scale, terminalOrg.Latitude * scale], map.getMaxZoom());
+                        let position = map.convertPosition(terminalOrg);// map.unproject([terminalOrg.Longitude * scale, terminalOrg.Latitude * scale], map.getMaxZoom());
                         terminalOrg.marker = L.marker(position, {
                             icon: L.divIcon({
                                 className: 'marker',
@@ -396,7 +423,7 @@
                                         currentLines.set(currentFloor, currentLine);
                                     }
                                 }
-                                currentLine.push(map.unproject([path.x, path.y], maxZoom));
+                                currentLine.push(map.convertPosition({Longitude: path.x, Latitude: path.y})); // unproject([path.x, path.y], maxZoom));
 
                             });
                             //Теперь строим сами линии

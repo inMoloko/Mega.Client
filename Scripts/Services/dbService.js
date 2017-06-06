@@ -20,7 +20,7 @@
         }
 
         getOrganizationTypeSync(data, organization) {
-            if (organization.Categories.length === 0 || organization.Categories.length > 1)
+            if (organization.Categories.length === 0)
                 return 'shop';
 
             let setting = data.SystemSettings.TERMINAL_MENU_ITEMS;
@@ -64,16 +64,16 @@
          */
         mapObjectGetTypeSync(data, organizationMapObject) {
             let self = this;
-            if(organizationMapObject.MapObject.Params && organizationMapObject.MapObject.Params.SignPointRadius){
+            if (organizationMapObject.MapObject.Params && organizationMapObject.MapObject.Params.SignPointRadius) {
                 return 'zooming';
             }
-            if(organizationMapObject.Organization.ServiceCategoryType !== null){
-                if(organizationMapObject.Organization.Categories[0] === data.SystemSettings.TERMINAL_SERVICE_CATEGORIES.toilet){
+            if (organizationMapObject.Organization.ServiceCategoryType !== null) {
+                if (organizationMapObject.Organization.Categories[0] === data.SystemSettings.TERMINAL_SERVICE_CATEGORIES.toilet) {
                     return 'toilet';
                 }
                 return 'serviceObject';
             }
-            if (organizationMapObject.Organization.Categories.length === 0){
+            if (organizationMapObject.Organization.Categories.length === 0) {
                 return 'none';
             }
             return self.getOrganizationTypeSync(data, organizationMapObject.Organization);
@@ -90,7 +90,7 @@
                 }
                 if (filter) {
                     filter = filter.toLocaleLowerCase();
-                    result = result.Where(i => i.Name.toLowerCase().includes(filter) || i.KeyWords.toLowerCase().includes(filter))
+                    result = result.Where(i => (i.Name && i.Name.toLowerCase().includes(filter)) || (i.KeyWords && i.KeyWords.toLowerCase().includes(filter)))
                 }
                 return result.ToArray();
             });

@@ -157,7 +157,7 @@
                     }
                 })
                 .state(`navigation.${i}s.${i}`, {
-                    url: '/organization/:OrganizationID',
+                    url: `/${i}/:OrganizationID`,
                     views: {
                         'search@': {
                             templateUrl: `blocks/${i}Heading/${i}Heading.html`,
@@ -180,6 +180,19 @@
                         'searchResult@': {
                             templateUrl: 'blocks/proposalListControl/proposalListControl.html',
                             controller: 'proposalListController',
+                            controllerAs: 'controller'
+                        }
+                    }
+                })
+                .state(`navigation.${i}s.${i}.proposals.proposal`, {
+                    url: '/proposal/:ProposalID?OrganizationID',
+                    views: {
+                        'search@': {
+                            templateUrl: 'blocks/proposalsHeading/proposalsHeading.html'
+                        },
+                        'searchResult@': {
+                            templateUrl: 'blocks/proposal/proposal.html',
+                            controller: 'proposalController',
                             controllerAs: 'controller'
                         }
                     }

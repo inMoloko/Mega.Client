@@ -20,6 +20,7 @@
 
         $scope.$on('$destroy', function () {
             jsKeyboard.hide();
+            $('#keyboardHeader>span').text(null);
             $('#filter').unbind();
         });
 

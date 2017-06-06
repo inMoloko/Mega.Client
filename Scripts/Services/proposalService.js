@@ -38,9 +38,9 @@
             result = result.Where(i => (moment(i.DateBegin).isBefore(date)) && (moment(i.DateEnd).isAfter(date)));
             if (term) {
                 term = term.toLowerCase();
-                result = result.Where(i => i.Name.toLowerCase().includes(term) || i.Summary.toLowerCase().includes(term) || i.KeyWords.toLowerCase().includes(term))
+                result = result.Where(i => (i.Name && i.Name.toLowerCase().includes(term)) || (i.Summary && i.Summary.toLowerCase().includes(term)) || (i.KeyWords && i.KeyWords.toLowerCase().includes(term)))
             }
-            return result.ToArray();
+            return result.OrderBy(i=>i.DateEnd).ToArray();
         });
     };
     service.prototype.getByOrganization = function (id) {
@@ -59,14 +59,18 @@
             let date = new Date();
             result = result.Where(i => (moment(i.DateBegin).isBefore(date)) && (moment(i.DateEnd).isAfter(date))).Where(i => i.Organization.OrganizationID == id);
 
-            return result.ToArray();
+            return result.OrderBy(i=>i.DateEnd).ToArray();
         });
     };
     service.prototype.getDetailFilter = function (filter) {
         //return this.$http.post(this.settings.webApiBaseUrl + '/Proposal/DetailFilter', data, {cache: true}).then(i => i.data);
         let self = this;
         return self.dbService.getData().then(data => {
-            return self.$linq.Enumerable().From(data.Proposals).Select(i=>i.Value).Where(i => self.$linq.Enumerable().From(i.Organization.Categories).Intersect(filter.Categories).Count() !== 0).ToArray();
+            return self.$linq.Enumerable().From(data.Proposals)
+                .Select(i => i.Value)
+                .Where(i => (moment(i.DateBegin).isBefore()) && (moment(i.DateEnd).isAfter()))
+                .Where(i => self.$linq.Enumerable().From(i.Organization.Categories).Intersect(filter.Categories).Count() !== 0)
+                .OrderBy(i=>i.DateEnd).ToArray();
         });
     };
     angular

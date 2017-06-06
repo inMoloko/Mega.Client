@@ -9,7 +9,7 @@
         webApiBaseUrl: 'http://localhost:5555/api',
         webApiODataUrl: 'http://localhost:5555/odata',
         //Скорость человечка
-        manVelocity: 30,
+        manVelocity: 10,
         //Дельта смещения точки прикосновения. Если смещение меньше дельты - срабатывает событие клик
         deltaDistanceTouchMoveAsClick: 100,
         customerID: queryDict.CustomerID,
@@ -18,8 +18,9 @@
         token:queryDict.Token,
         displayKeyboard: true,
         autoReset: true,
-        mapScale: 4,
+        mapScale: 1,
         resourceFolder:'Content/Backup',
-        dbPath: `Content/Backup/db/${queryDict.SerialNumber}.json`
+        dbPath: `Content/Backup/db/${queryDict.SerialNumber}.json`,
+        useGeo:true
     });
 })();

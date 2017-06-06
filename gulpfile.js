@@ -166,6 +166,6 @@ gulp.task('server', ['less-serve', 'js-serve'], function () {
         }
     });
     gulp.watch(['./blocks/**/*.{css,less}','./style.less','./Scripts/Keyboard/jsKeyboard.css'], ['less-serve']);
-    gulp.watch(['app.js', './Scripts/**/*.js', './blocks/**/*.js'], ['js-serve']);
+    gulp.watch(['app.js', './Scripts/**/*.js', './blocks/**/*.js','./environmental/development/**/*.js'], ['js-serve']);
     browserSync.watch(['./Scripts/**/*.{html}', './blocks/**/*.{html}']).on('change', browserSync.reload);
 });
