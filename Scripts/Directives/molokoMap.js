@@ -34,13 +34,25 @@
                             else {
                                 return self.unproject([mapObject.MapObject.Longitude, mapObject.MapObject.Latitude], self.getMaxZoom());
                             }
+                        },
+                        offsetLng(latlng, dist) {
+                            let R = 6371000; //earth’s radius in metres
+                            let brng = Math.PI / 2;
+                            let d = dist; //Distance in m
+
+                            let lat1 = latlng.lat * Math.PI / 180;
+                            let lng1 = latlng.lng * Math.PI / 180;
+                            let lat2 = Math.asin(Math.sin(lat1) * Math.cos(d / R) + Math.cos(lat1) * Math.sin(d / R) * Math.cos(brng));
+                            let lng2 = (lng1 + Math.atan2(Math.sin(brng) * Math.sin(d / R) * Math.cos(lat1), Math.cos(d / R) - Math.sin(lat1) * Math.sin(lat2))) * 180 / Math.PI;
+
+                            return L.latLng(latlng.lat, lng2);
                         }
                     });
 
-
+                    //Поворот https://github.com/fnicollet/Leaflet/tree/rotate-master
                     // Инициализируем карту Leaflet
                     let map = L.map(elm, {
-                        //rotate: true,
+                        rotate: true,
                         minZoom: $scope.options.minZoom,
                         maxZoom: $scope.options.maxZoom,
                         zoomControl: false,
@@ -55,6 +67,7 @@
 
                     //L.control.zoom({position: 'topright'}).addTo(map);
                     map.setView([55.65903192, 37.8472988867064], 16);
+                    //map.setBearing(90);
                     // L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     // // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
                     //     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
