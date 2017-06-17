@@ -329,31 +329,3 @@ class Graph {
         }
     }
 }
-
-//let graph = new Graph();
-//var layer1 = graph.addLayer(1);
-//var layer2 = graph.addLayer(2);
-
-////пути
-//layer1.addSegment(0, 0, 200, 0);
-//layer1.addSegment(200, 0, 200, 200);
-//layer1.addSegment(0, 0, 200, 200);
-//layer2.addSegment(200, 200, 200, 400);
-
-
-////переходы
-//var x = 200;
-//var y = 200;
-
-//var vertex1 = layer1.getVertex(x, y) || layer1.addVertexWithShortestSegment(x, y).vertex;
-//var vertex2 = layer2.getVertex(x, y) || layer2.addVertexWithShortestSegment(x, y).vertex;
-
-//if (vertex1 && vertex2) {
-//    var segment1 = layer1.addSegment1(vertex1, vertex2);
-//    layer2.addSegment1(vertex1, vertex2);
-//}
-
-////начальная точка
-//layer1.addVertexWithShortestSegment(100, -100);
-
-//document.write(graph.findPath(100, -100, 1, 300, 300, 2));

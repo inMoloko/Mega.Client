@@ -11,8 +11,8 @@
     "angular-qrcode": "monospaced/angular-qrcode#^6.2.1",
     "swiper": "^3.4.2",
     "leaflet": "^1.0.3",
-    "angular-ui-router": "^0.4.2",
-    "angular-indexedDB": "angular-indexed-db#^1.1.4"
+    "angular-indexedDB": "angular-indexed-db#^1.1.4",
+    "angular-ui-router": "^1.0.4"
   },
   "resolutions": {
     "angular": "^1.0.8"

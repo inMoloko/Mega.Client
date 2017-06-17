@@ -3,14 +3,10 @@
         <img src="" alt="" class="proposal__logo-container__img"
              file-system-image="Proposals/{{controller.item.ProposalID + '_WideLogo.' + controller.item.WideLogoExtension}}"
              default="Content/images/card_sales_cover_holder.png">
-        <!--moloko-image-api="controller.item.ProposalID"-->
-        <!--url="/Proposal/:id/WideLogo"-->
         <img src="" alt="" class="proposal__logo-container__organization-image"
              ui-sref="navigation.shops.shop({OrganizationID:controller.item.Organization.OrganizationID, CategoryID: menuItems['Магазины']})"
              default="Content/images/card_sales_logo_holder.png"
              file-system-image="Organizations/{{controller.item.Organization.OrganizationID + '_Logo.' + controller.item.Organization.LogoExtension}}">
-        <!--moloko-image-api="controller.item.Organization.OrganizationID"-->
-        <!--url="/Organization/:id/Logo">-->
         <img class="proposal__logo-container__megacard" src="Content/images/megacard2.png"
              ng-if="controller.item.Organization.Megacard">
     </div>
@@ -18,7 +14,6 @@
     <div class="proposal__container">
         <div class="proposal__container__remain" ng-if="controller.item.DateEnd"
              ng-class="{'expired':controller.item.RemainDays==0}">
-            <!--<img src="/Content/images/icn_alarm_red.png">-->
             <div></div>
             <span ng-bind="controller.item.DateEnd|remainDays"></span>
         </div>

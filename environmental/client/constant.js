@@ -3,7 +3,7 @@
     let app = angular.module('app');
     let queryDict = {};
     location.search.substr(1).split("&").forEach(function (item) {
-        queryDict[item.split("=")[0]] = item.split("=")[1];
+        queryDict[item.split("=")[0]] = decodeURI(item.split("=")[1]);
     });
     app.constant('settings', {
         webApiBaseUrl: 'http://localhost:5555/api',
