@@ -239,6 +239,7 @@
             //=====================Proposal=====================
             .state('navigation.proposals', {
                 url: '/proposals/:OrganizationID',
+                params: {OrganizationID: null},
                 views: {
                     'search@': {
                         templateUrl: 'blocks/proposalsHeading/proposalsHeading.html'

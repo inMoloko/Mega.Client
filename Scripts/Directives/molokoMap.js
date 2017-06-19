@@ -248,11 +248,11 @@
                             if (settings.useGeo) {
                                 //55.660218, 37.841953
                                 //southWest = new L.LatLng(55.651865817248584, 37.840454578399665);
-                                southWest = new L.LatLng(item.SouthWest.Latitude * scale, item.SouthWest.Longitude* scale);
+                                southWest = new L.LatLng(item.SouthWest.Latitude * scale, item.SouthWest.Longitude * scale);
 
                                 //55.651641, 37.847854
                                 //northEast = new L.LatLng(55.65998866731282, 37.84931659698487);
-                                northEast = new L.LatLng(item.NorthEast.Latitude* scale, item.NorthEast.Longitude* scale);
+                                northEast = new L.LatLng(item.NorthEast.Latitude * scale, item.NorthEast.Longitude * scale);
 
                             }
                             else {
@@ -294,7 +294,7 @@
                                         marker = L.marker(position, {
                                             icon: L.divIcon({
                                                 className: 'marker',
-                                                html: `<div><img class="marker__image marker__wc}" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
+                                                html: `<div><img class="marker__image marker__wc}" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension||'png'}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
                                                 iconSize: [16, 16]
                                             }),
                                             title: mapObject.Organization.Name,
@@ -309,7 +309,7 @@
                                         marker = L.marker(position, {
                                             icon: L.divIcon({
                                                 className: 'marker',
-                                                html: `<div><img class="marker__image" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
+                                                html: `<div><img class="marker__image" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension||'png'}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
                                                 iconSize: [16, 16]
                                             }),
                                             title: mapObject.Organization.Name,

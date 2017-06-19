@@ -84,9 +84,10 @@
             return self.getData().then(data => {
                 let result = self.$linq.Enumerable().From(data.Organizations).Select(i => i.Value);
                 if (categoryID) {
-                    let category = data.Categories[categoryID];
-                    let ln = self.$linq.Enumerable().From(category.ChildIds);
-                    result = result.Where(i => ln.Intersect(i.Categories.map(j => j.CategoryID)).Count() !== 0);
+                    categoryID = +categoryID;
+                    //let category = data.Categories[categoryID];
+                    //let ln = self.$linq.Enumerable().From(category.ChildIds);
+                    result = result.Where(i => i.Categories.map(j => j.CategoryID).includes(categoryID));
                 }
                 if (filter) {
                     filter = filter.toLocaleLowerCase();

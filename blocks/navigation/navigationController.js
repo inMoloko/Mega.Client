@@ -93,7 +93,7 @@
                 return;
             }
             if (obj == 'proposals') {
-                $state.go('navigation.proposals', {CategoryID: value});
+                $state.go('navigation.proposals');
                 return;
             }
         };
