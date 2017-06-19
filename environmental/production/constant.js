@@ -2,8 +2,9 @@
     "use strict";
     let app = angular.module('app');
     let queryDict = {};
-    location.search.substr(1).split("&").forEach(function (item) {
-        queryDict[item.split("=")[0]] = item.split("=")[1];
+    let encoded = location.search.replace(/&amp;/g, '&');
+    encoded.substr(1).split("&").forEach(function (item) {
+        queryDict[item.split("=")[0]] = decodeURI(item.split("=")[1]);
     });
     app.constant('settings', {
         webApiBaseUrl: 'api/api',
@@ -19,6 +20,7 @@
         deltaDistanceTouchMoveAsClick: 100,
         customerID: queryDict.CustomerID,
         terminalID: queryDict.TerminalID,
+        token: queryDict.Token,
         displayKeyboard: true,
         autoReset: true,
         mapScale: 4,
