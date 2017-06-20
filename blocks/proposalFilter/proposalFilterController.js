@@ -68,6 +68,9 @@
             return result == 0 ? '' : '(' + result + ')';
         };
 
+        /**
+         * Выбрать все категории/снять выделение  во вкладке
+         */
         selectAll() {
             let self = this;
             if (!self.categories)
@@ -83,66 +86,36 @@
                 });
             }
             self.allSelected = !self.allSelected;
+            self.resetCollections();
             self.filter();
         }
-
+        resetCollections() {
+            let self = this;
+            let items = ['shopFilter', 'restaurantFilter', 'entertainmentFilter'];
+            items.forEach(i => {
+                let tmp = self.$state.params.proposalFilter[i];
+                if (tmp) {
+                    if (!self.$state.params.proposalFilter[i].Categories.some(j => j.select == true)) {
+                        self.$state.params.proposalFilter[i].Proposals = [];
+                    }
+                }
+            });
+        }
         select(category) {
             let self = this;
             category.select = !category.select;
             if (category.select)
                 self.allSelected = true;
-            let items = ['shopFilter', 'restaurantFilter', 'entertainmentFilter'];
-
-            //Выбранна хотя бы одна то умолчания надо сбросить.
-            if (category.select == true) {
-                items.forEach(i => {
-                    let tmp = self.$state.params.proposalFilter[i];
-                    if (tmp) {
-                        if (!self.$state.params.proposalFilter[i].Categories.some(j => j.select == true)) {
-                            self.$state.params.proposalFilter[i].Proposals = [];
-                        }
-                    }
-                });
-
-                self.filter();
-            }
-            else {
-                let promises = [];
-                // items.splice(items.indexOf(self.filterName), 1);
-                // items.forEach(i => {
-                //     let tmp = self.$state.params.proposalFilter[i];
-                //     if (tmp) {
-                //         if (self.$state.params.proposalFilter[i].Categories.every(j => j.select != true) && self.$state.params.proposalFilter[i].Proposals.length == 0) {
-                //             promises.push(self.initCategory(i));
-                //         }
-                //     }
-                // });
-                if (self.emptyAll(self.filterName)) {
-                    items.splice(items.indexOf(self.filterName), 1);
-                    items.forEach(i => {
-                        let tmp = self.$state.params.proposalFilter[i];
-                        if (tmp) {
-                            promises.push(self.initCategory(i));
-                        }
-                    });
-                }
-                if (promises.length != 0) {
-                    self.$q.all(promises).then(function () {
-                        self.filter();
-                    });
-                }
-                else {
-                    self.filter();
-                }
-            }
-
+            self.resetCollections();
+            self.filter();
         }
 
         emptyAll(filterName) {
             let self = this;
             let tmp = self.$state.params.proposalFilter;
             let items = ['shopFilter', 'restaurantFilter', 'entertainmentFilter'];
-            items.splice(items.indexOf(filterName), 1);
+            if (filterName)
+                items.splice(items.indexOf(filterName), 1);
             return self.$linq.Enumerable().From(items).SelectMany(i => tmp[i] ? tmp[i].Categories : []).All(i => i.select != true);
         }
 
@@ -152,6 +125,11 @@
             self.limmited = !self.full ? self.$linq.Enumerable().From(self.categories).Take(20).ToArray() : self.categories;
         }
 
+        /**
+         * Заполняет колекцию название фильтра, категории, спецпредложения
+         * @param filterName - название фильтра 'shopFilter', 'restaurantFilter', 'entertainmentFilter'
+         * @returns {Promise}
+         */
         initCategory(filterName) {
             let self = this;
             let deferred = self.$q.defer();
@@ -193,8 +171,15 @@
                     proposalFilter: proposalFilter
                 }, {reload: true});
             }
-
-
+            else if (self.emptyAll()) {
+                self.$q.all([self.initCategory('restaurantFilter'), self.initCategory('entertainmentFilter'), self.initCategory('shopFilter')]).then(function () {
+                    let proposalFilter = self.$state.params.proposalFilter || {};
+                    proposalFilter.filterName = self.filterName;
+                    self.$state.go(".", {
+                        proposalFilter: proposalFilter
+                    }, {reload: true});
+                });
+            }
             else {
                 self.proposalService.getDetailFilter({
                     Categories: categories.length == 0 ? self.categories.map(i => i.CategoryID) : categories.map(i => i.CategoryID)
