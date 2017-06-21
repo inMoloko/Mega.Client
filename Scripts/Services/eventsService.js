@@ -19,9 +19,10 @@
     service.prototype.getFilter = function (term) {
         let self = this;
         //return this.$http.get(this.settings.webApiBaseUrl + '/Event/GetFilter?CustomerID=' + this.settings.customerID + '&term=' + (term || '')).then(i => i.data);
+        let futureDate = moment().add(14, 'days');
         return self.dbService.getData().then(data => {
             let result = self.$linq.Enumerable().From(data.Events).Select(i => i.Value)
-                .Where(i => (i.DateBegin === null && i.DateEnd === null) || (moment(i.DateBegin).isBefore()) && (moment(i.DateEnd).isAfter()));
+                .Where(i => (i.DateBegin === null && i.DateEnd === null) || (moment(i.DateBegin).isBefore(futureDate)) && (moment(i.DateEnd).isAfter()));
             if (term) {
                 term = term.toLowerCase();
                 result = result.Where(i => (i.Name && i.Name.toLocaleLowerCase().includes(term))

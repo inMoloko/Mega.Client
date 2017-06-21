@@ -83,7 +83,7 @@
             let categories = self.categories.filter(i => i.select == true);
             self.organizationService.getDetailFilter({
                 HasProposals: self.proposals,
-                Categories: categories.length == 0 ? self.categories.map(i => i.CategoryID) : categories.map(i => i.CategoryID)
+                Categories: categories.length == 0 ? [+self.$state.params.CategoryID] /*self.categories.map(i => i.CategoryID) */ : categories.map(i => i.CategoryID)
             }).then(i => {
                 self.$state.go(".", {
                     Organizations: i.Result,

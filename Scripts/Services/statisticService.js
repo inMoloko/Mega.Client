@@ -4,11 +4,12 @@
 (function () {
     'use strict';
     class StatisticService {
-        constructor($q, $indexedDB, $http, settings) {
+        constructor($q, $indexedDB, $http, settings, $linq) {
             this.$q = $q;
             this.$indexedDB = $indexedDB;
             this.$http = $http;
             this.settings = settings;
+            this.$linq = $linq;
         }
 
         addStatistic(statics) {
@@ -87,6 +88,9 @@
                     console.log('нет записей статистики');
                     return statistics;
                 }
+                //Нужно ограничивать пакеты
+                statistics = self.$linq.Enumerable().From(statistics).Take(1000).ToArray();
+
                 return self.getToken().then(token => {
                     return self.executeRequest(statistics, token).then(result => statistics)
                 });
@@ -106,6 +110,6 @@
         .module('app')
         .service('statisticService', StatisticService);
 
-    StatisticService.$inject = ['$q', '$indexedDB', '$http', 'settings'];
+    StatisticService.$inject = ['$q', '$indexedDB', '$http', 'settings', '$linq'];
 })
 ();

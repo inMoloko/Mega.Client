@@ -7,9 +7,9 @@
         queryDict[item.split("=")[0]] = decodeURI(item.split("=")[1]);
     });
     app.constant('settings', {
-        webApiBaseUrl: 'http://localhost:5555/api',
+        webApiBaseUrl: 'http://lk.inmoloko.ru/api',
         webApiODataUrl: 'http://localhost:5555/odata',
-        authUrl: 'http://localhost:51147',
+        authUrl: 'http://lk.inmoloko.ru',
         //Скорость человечка
         manVelocity: 10,
         //Дельта смещения точки прикосновения. Если смещение меньше дельты - срабатывает событие клик
