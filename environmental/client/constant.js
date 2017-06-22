@@ -8,7 +8,6 @@
     });
     app.constant('settings', {
         webApiBaseUrl: 'http://lk.inmoloko.ru/api',
-        webApiODataUrl: 'http://localhost:5555/odata',
         authUrl: 'http://lk.inmoloko.ru',
         //Скорость человечка
         manVelocity: 10,

@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $state, $rootScope, arrayHelper, $q, Idle, $location, $stateParams, $timeout, categoryService, statisticService, dbService, $linq, $indexedDB) {
+    var controller = function ($scope, $http, settings, $state, $rootScope, arrayHelper, $q, Idle, $location, $stateParams, $timeout, categoryService, statisticService, dbService, $linq, $indexedDB, dbVersionService) {
         //Обработка простоя
         $scope.$on('IdleTimeout', function () {
             $state.go('navigation', {});
@@ -238,7 +238,9 @@
         });
 
         $rootScope.filters = {};
+
+        dbVersionService.checkDb();
     };
-    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'arrayHelper', '$q', 'Idle', '$location', '$stateParams', '$timeout', 'categoryService', 'statisticService', 'dbService', '$linq','$indexedDB'];
+    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'arrayHelper', '$q', 'Idle', '$location', '$stateParams', '$timeout', 'categoryService', 'statisticService', 'dbService', '$linq','$indexedDB','dbVersionService'];
     angular.module('app').controller('mainController', controller);
 })();
