@@ -14,6 +14,8 @@
 
         addStatistic(statics) {
             let self = this;
+            if(self.settings.preventStatistic === true)
+                return;
             self.$indexedDB.openStore('statistics', (store) => {
                 store.insert(statics).then(() => {
                     console.log('insert, ' + statics.Date);
@@ -111,5 +113,4 @@
         .service('statisticService', StatisticService);
 
     StatisticService.$inject = ['$q', '$indexedDB', '$http', 'settings', '$linq'];
-})
-();
+})();

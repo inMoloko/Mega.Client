@@ -26,7 +26,7 @@
             let setting = data.SystemSettings.TERMINAL_MENU_ITEMS;
             let restaurantCategories = data.Categories[setting['Рестораны и кафе']].ChildIds;
             let entertainmentCategories = data.Categories[setting['Развлечения и услуги']].ChildIds;
-            let serviceCategories = data.Categories[setting['Сервисы']].ChildIds;
+            let serviceCategories = data.Categories[setting['Сервисы']]? data.Categories[setting['Сервисы']].ChildIds : [];
             let categoryID = organization.Categories[0].CategoryID;
             let type;
             if (serviceCategories.includes(categoryID)) {
@@ -127,7 +127,7 @@
             return self.getData().then(data => {
                 let result = self.$linq.Enumerable().From(data.Events).Select(i => i.Value);
                 let date = new Date();
-                result = result.Where(i => (moment(i.DateBegin).isBefore(date)) && (moment(i.DateEnd).isAfter(date)))
+                result = result.Where(i => (moment(i.DateBegin).isBefore(date)) && (moment(i.DateEnd).isAfter(date)) && i.WideLogoExtension)
                     .OrderBy(i => i.DateEnd)
                     .Take(2);
                 return result.Select(i => i.EventID).ToArray();

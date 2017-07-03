@@ -3,105 +3,118 @@
  */
 (function () {
     "use strict";
-    var controller = function ($scope, $http, settings, $state, $rootScope, mainMenuService, $stateParams, dbService) {
-        // mainMenuService.get().then(function (result) {
-        //     $scope.menuItems = result;
-        // });
-        dbService.systemSettingGetMenuItems().then(result=>{
-            $scope.menuItems = result;
-        });
-        function getClass(route, params) {
-            if (!route) {
-                $scope.themClass = 'main';
-                return;
-            }
-            if (route.includes('shop') || route == "navigation.organization") {
-                $scope.themClass = 'shops';
-                return;
-            }
-            if (route.includes('restaurant')) {
-                $scope.themClass = 'food';
-                return;
-            }
-            if (route.includes('proposal')) {
-                $scope.themClass = 'proposals';
-                return;
-            }
-            if (route.includes('entertainment')) {
-                $scope.themClass = 'entertainment';
-                return;
-            }
-            if (route.includes('service')) {
-                $scope.themClass = 'service';
-                return;
-            }
-            if (route.includes('more') || route.includes('event')) {
-                $scope.themClass = 'more';
-                return;
-            }
-            $scope.themClass = 'main';
-            return;
+    class NavigationController {
+        constructor($scope, $http, settings, $state, $rootScope, mainMenuService, $stateParams, dbService) {
+            // mainMenuService.get().then(function (result) {
+            //     $scope.menuItems = result;
+            // });
+            let self = this;
+            self.$state = $state;
 
-            switch (route) {
-                case "navigation":
-                    $scope.themClass = 'main';
-                    break;
-                case "navigation.shops":
-                case "navigation.organization":
-                    $scope.themClass = 'shops';
-                    break;
-                case "navigation.searchResult":
-                    if (params.CategoryID == $scope.menuItems['Магазины']) {
-                        $scope.themClass = 'shops';
-                    }
-                    if (params.CategoryID == $scope.menuItems['Рестораны и кафе']) {
-                        $scope.themClass = 'food';
-                    }
-                    break;
-                case "navigation.restaurants":
-                    $scope.themClass = 'food';
-                    break;
-                case "navigation.proposals":
-                    $scope.themClass = 'proposals';
-                    break;
-                default:
-                    $scope.themClass = 'main';
-                    break;
+            dbService.systemSettingGetMenuItems().then(result => {
+                self.menuItems = result;
+            });
 
-            }
-        }
 
-        getClass($state.current.name, $stateParams);
+            this.getClass($state.current.name, $stateParams);
 
-        let locationChangeHandler = $rootScope.$on('$locationChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            getClass($state.current.name, $stateParams);
-        });
-        $scope.selectItem = function (obj) {
-            if (obj == 'shops') {
-                var value = $scope.menuItems['Магазины'];
-                $state.go('navigation.shops', {CategoryID: value});
+            let locationChangeHandler = $rootScope.$on('$locationChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                self.getClass($state.current.name, $stateParams);
+            });
+
+
+            $scope.$on('$destroy', function () {
+                locationChangeHandler();
+            });
+        };
+
+        selectItem(obj) {
+            let self = this;
+
+            if (obj === 'shops') {
+                var value = self.menuItems['Магазины'];
+                self.$state.go('navigation.shops', {CategoryID: value});
                 return;
             }
-            if (obj == 'restaurants') {
-                var value = $scope.menuItems['Рестораны и кафе'];
-                $state.go('navigation.restaurants', {CategoryID: value});
+            if (obj === 'restaurants') {
+                var value = self.menuItems['Рестораны и кафе'];
+                self.$state.go('navigation.restaurants', {CategoryID: value});
                 return;
             }
-            if (obj == 'entertainments') {
-                var value = $scope.menuItems['Развлечения и услуги'];
-                $state.go('navigation.searchResult', {CategoryID: value});
+            if (obj === 'entertainments') {
+                var value = self.menuItems['Развлечения и услуги'];
+                self.$state.go('navigation.searchResult', {CategoryID: value});
                 return;
             }
-            if (obj == 'proposals') {
-                $state.go('navigation.proposals');
+            if (obj === 'proposals') {
+                self.$state.go('navigation.proposals');
                 return;
             }
         };
 
-        $scope.$on('$destroy', function () {
-            locationChangeHandler();
-        });
-    };
-    controller.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'mainMenuService', '$stateParams', 'dbService'];
-    angular.module('app').controller('navigationController', controller);
+        getClass(route, params) {
+            let self = this;
+
+            if (!route) {
+                self.themClass = 'main';
+                return;
+            }
+            if (route.includes('shop') || route == "navigation.organization") {
+                self.themClass = 'shops';
+                return;
+            }
+            if (route.includes('restaurant')) {
+                self.themClass = 'food';
+                return;
+            }
+            if (route.includes('proposal')) {
+                self.themClass = 'proposals';
+                return;
+            }
+            if (route.includes('entertainment')) {
+                self.themClass = 'entertainment';
+                return;
+            }
+            if (route.includes('service')) {
+                self.themClass = 'service';
+                return;
+            }
+            if (route.includes('more') || route.includes('event')) {
+                self.themClass = 'more';
+                return;
+            }
+            self.themClass = 'main';
+            return;
+
+            switch (route) {
+                case "navigation":
+                    self.themClass = 'main';
+                    break;
+                case "navigation.shops":
+                case "navigation.organization":
+                    self.themClass = 'shops';
+                    break;
+                case "navigation.searchResult":
+                    if (params.CategoryID == $scope.menuItems['Магазины']) {
+                        self.themClass = 'shops';
+                    }
+                    if (params.CategoryID == $scope.menuItems['Рестораны и кафе']) {
+                        self.themClass = 'food';
+                    }
+                    break;
+                case "navigation.restaurants":
+                    self.themClass = 'food';
+                    break;
+                case "navigation.proposals":
+                    self.themClass = 'proposals';
+                    break;
+                default:
+                    self.themClass = 'main';
+                    break;
+
+            }
+        }
+    }
+    NavigationController.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'mainMenuService', '$stateParams', 'dbService'];
+    angular.module('app').controller('navigationController', NavigationController);
 })();

@@ -47,21 +47,8 @@
 
         $scope.getImage = function (i) {
             //return `${settings.webApiBaseUrl}/Event/${i}/WideLogo`;
-            return `Content/Backup/Events/${i}_WideLogo.jpg`
+            return `${settings.resourceFolder}/Events/${i}_WideLogo.jpg`
         };
-        // $scope.sizeMenuItem = function () {
-        //     if ($('#sideMenu').height() > 600)
-        //         return "menuItemFull";
-        //     else if ($('#sideMenu').height() > 420)
-        //         return "menuItemSmall";
-        //     else
-        //         return "menuItemVerrySmall";
-        // };
-        //
-        // $scope.visibleMenuItemName = function () {
-        //     if ($('#sideMenu').height() < 420)
-        //         return true;
-        // };
 
         $scope.listAnchorLength = "Empty";
 

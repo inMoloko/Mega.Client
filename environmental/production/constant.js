@@ -23,8 +23,11 @@
         token: queryDict.Token,
         displayKeyboard: true,
         autoReset: true,
-        mapScale: 4,
+        mapScale: 1,
         resourceFolder: 'Content/Backup',
-        dbPath: `api/api/Backup/GetByCustomer?CustomerID=${queryDict.CustomerID}`
+        dbPath: `Content/Backup/db/${queryDict.SerialNumber}.json`,
+        preventStatistic: true,
+        useGeo:true
+        // dbPath: `http://lk.inmoloko.ru/api/Backup/GetByCustomer?CustomerID=${queryDict.CustomerID}`
     });
 })();

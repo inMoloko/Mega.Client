@@ -54,7 +54,7 @@ gulp.task('bower-build', function () {
 });
 
 gulp.task('js-prod', function () {
-    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/production/**/*.js'])
+    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/production/**/*.js','!Scripts/bowser/bowser.js'])
         .pipe(concat('script.js'))
         .pipe(babel({
             presets: ['es2015']
@@ -63,7 +63,7 @@ gulp.task('js-prod', function () {
         .pipe(gulp.dest('dist'));
 });
 gulp.task('js-client', function () {
-    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/client/**/*.js'])
+    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/client/**/*.js','!Scripts/bowser/bowser.js'])
         .pipe(concat('script.js'))
         .pipe(babel({
             presets: ['es2015']

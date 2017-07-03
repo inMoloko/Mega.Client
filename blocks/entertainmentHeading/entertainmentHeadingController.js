@@ -1,9 +1,6 @@
 /**
  * Created by Nekrasov on 07.04.2017.
  */
-/**
- * Created by Nekrasov on 22.03.2017.
- */
 (function () {
     "use strict";
     class EntertainmentHeadingController{

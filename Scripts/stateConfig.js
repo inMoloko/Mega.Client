@@ -59,7 +59,8 @@
                         },
                         'searchResult@': {
                             templateUrl: 'blocks/organizationsList/organizationsList.html',
-                            controller: 'organizationsListController'
+                            controller: 'organizationsListController',
+                            controllerAs: 'controller'
                         }
                     }
                 })

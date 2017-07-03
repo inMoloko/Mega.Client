@@ -305,7 +305,14 @@
                                         marker._mapObject = mapObject.MapObject;
                                         break;
                                     case 'serviceObject':
-                                        category = mapObject.Organization.Categories[0];
+                                        if(mapObject.Organization.Categories.length === 1)
+                                        {
+                                            category =   mapObject.Organization.Categories[0];
+                                        }
+                                        else {
+                                           let service = i.SystemSettings.TERMINAL_MENU_ITEMS['Сервисы']||-1;
+                                           category = mapObject.Organization.Categories.find(j=>j.CategoryID !== service);
+                                        }
                                         marker = L.marker(position, {
                                             icon: L.divIcon({
                                                 className: 'marker',

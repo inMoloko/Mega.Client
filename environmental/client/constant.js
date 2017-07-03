@@ -20,8 +20,8 @@
         displayKeyboard: true,
         autoReset: true,
         mapScale: 1,
-        resourceFolder:'Content/Backup',
-        dbPath: `Content/Backup/db/${queryDict.SerialNumber}.json`,
+        resourceFolder: 'C:/MOLOKO.Content', //'Content/Backup',
+        dbPath: `C:/MOLOKO.Content/db/${queryDict.SerialNumber}.json`,
         useGeo:true
     });
 })();
