@@ -5,9 +5,9 @@
     "use strict";
     class FilterListController {
 
-        constructor($scope, $http, settings, $state, $rootScope) {
+        constructor($scope, $http, settings, $state, $rootScope, dbService) {
             let self = this;
-
+            self.dbService = dbService;
             self.$state = $state;
 
             self.currentOrganizations = $state.params.Organizations;
@@ -44,11 +44,22 @@
             }
         }
 
+        select(item) {
+            let self = this;
+            self.dbService.getData().then(data => {
+                //let type = self.dbService.getOrganizationTypeSync(data, item);
+                self.$state.go(`.organization`, {
+                    OrganizationID: item.OrganizationID
+                });
+            });
+            return;
+        };
+
         clean() {
             let self = this;
             self.$state.go(self.list, {[self.filterName]: null});
         }
     }
-    FilterListController.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope'];
+    FilterListController.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'dbService'];
     angular.module('app').controller('filterListController', FilterListController);
 })();
