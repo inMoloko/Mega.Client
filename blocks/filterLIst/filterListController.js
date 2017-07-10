@@ -10,7 +10,7 @@
 
             self.$state = $state;
 
-            $rootScope.currentOrganizations = $state.params.Organizations;
+            self.currentOrganizations = $state.params.Organizations;
 
             $scope.select = function (item) {
                 $state.go(".organization", {OrganizationID: item.OrganizationID});
