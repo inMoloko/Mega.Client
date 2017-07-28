@@ -33,14 +33,22 @@
         // });
         let self = this;
         return self.dbService.getData().then(data => {
+            console.log('ddd');
             let result = self.$linq.Enumerable().From(data.Proposals).Select(i => i.Value);
             let date = new Date();
-            result = result.Where(i => (moment(i.DateBegin).isBefore(date)) && (moment(i.DateEnd).isAfter(date)));
+            result = result.Where(i => {
+                if (i.PublishDateBegin !== null && i.PublishDateEnd !== null) {
+                    if (moment(date).isSameOrAfter(i.PublishDateBegin, 'day') && moment(date).isSameOrBefore(i.PublishDateEnd, 'day') && (i.DateEnd === null || moment(date).isSameOrBefore(i.DateEnd, 'day'))) {
+                        return true;
+                    }
+                }
+                return false;
+            });
             if (term) {
                 term = term.toLowerCase();
                 result = result.Where(i => (i.Name && i.Name.toLowerCase().includes(term)) || (i.Summary && i.Summary.toLowerCase().includes(term)) || (i.KeyWords && i.KeyWords.toLowerCase().includes(term)))
             }
-            return result.OrderBy(i=>i.DateEnd).ToArray();
+            return result.OrderBy(i => i.DateEnd).ToArray();
         });
     };
     service.prototype.getByOrganization = function (id) {
@@ -57,9 +65,16 @@
         return self.dbService.getData().then(data => {
             let result = self.$linq.Enumerable().From(data.Proposals).Select(i => i.Value);
             let date = new Date();
-            result = result.Where(i => (moment(i.DateBegin).isBefore(date)) && (moment(i.DateEnd).isAfter(date))).Where(i => i.Organization.OrganizationID == id);
+            result = result.Where(i => {
+                if (i.PublishDateBegin !== null && i.PublishDateEnd !== null) {
+                    if (moment(date).isSameOrAfter(i.PublishDateBegin, 'day') && moment(date).isSameOrBefore(i.PublishDateEnd, 'day') && (i.DateEnd === null || moment(date).isSameOrBefore(i.DateEnd, 'day'))) {
+                        return true;
+                    }
+                }
+                return false;
+            }).Where(i => i.Organization.OrganizationID == id);
 
-            return result.OrderBy(i=>i.DateEnd).ToArray();
+            return result.OrderBy(i => i.DateEnd).ToArray();
         });
     };
     service.prototype.getDetailFilter = function (filter) {
@@ -70,7 +85,7 @@
                 .Select(i => i.Value)
                 .Where(i => (moment(i.DateBegin).isBefore()) && (moment(i.DateEnd).isAfter()))
                 .Where(i => self.$linq.Enumerable().From(i.Organization.Categories).Intersect(filter.Categories).Count() !== 0)
-                .OrderBy(i=>i.DateEnd).ToArray();
+                .OrderBy(i => i.DateEnd).ToArray();
         });
     };
     angular
