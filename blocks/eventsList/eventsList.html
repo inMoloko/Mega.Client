@@ -5,13 +5,14 @@
                 <img src="" alt="" class="event__logo-container__img"
                      file-system-image="Events/{{item.EventID + '_WideLogo.' + item.WideLogoExtension}}"
                      default="Content/images/card_event_cover_holder.png">
-                     <!--moloko-image-api="item.EventID" url="/Event/:id/WideLogo" default="Content/images/card_event_cover_holder.png">-->
+                <!--moloko-image-api="item.EventID" url="/Event/:id/WideLogo" default="Content/images/card_event_cover_holder.png">-->
             </div>
             <div class="event__item__container">
-                <div class="event__item__container__remain" ng-if="item.DateEnd">
-                    <img src="Content/images/icn_alarm_red.png">
-                    <span ng-bind="::item.DateEnd|remainDays"></span>
-                </div>
+                <remain-component start="item.DateBegin" stop="item.DateEnd" class="event__item__container__remain"></remain-component>
+                <!--<div class="event__item__container__remain" ng-if="item.DateEnd">-->
+                <!--<img src="Content/images/icn_alarm_red.png" >-->
+                <!--<span ng-bind="::item.DateBegin|calcRemainPeriod:item.DateEnd"></span>-->
+                <!--</div>-->
                 <div class="event__container__organization" ng-bind="::item.Name">
 
                 </div>
@@ -20,7 +21,8 @@
     </ul>
     <div ng-show="controller.items.length==0">
         <div class="errorHeaderBlock organizationsSearchResultItem__errorHeaderBlock">
-            По запросу <strong>"{{controller.filter| limitTo: 150 }}{{controller.filter.length > 150 ? '...' : ''}}" </strong>
+            По запросу <strong>"{{controller.filter| limitTo: 150 }}{{controller.filter.length > 150 ? '...' :
+            ''}}" </strong>
             ничего не найдено.
         </div>
         <div class="errorBlock organizationsSearchResultItem__errorBlock">

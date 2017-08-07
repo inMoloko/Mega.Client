@@ -12,11 +12,12 @@
     </div>
 
     <div class="proposal__container">
-        <div class="proposal__container__remain" ng-if="controller.item.DateEnd"
-             ng-class="{'expired':controller.item.RemainDays==0}">
-            <div></div>
-            <span ng-bind="controller.item.DateEnd|remainDays"></span>
-        </div>
+        <remain-component start="controller.item.DateBegin" stop="controller.item.DateEnd" class="proposal__container__remain"></remain-component>
+        <!--<div class="proposal__container__remain" ng-if="controller.item.DateEnd"-->
+             <!--ng-class="{'expired':controller.item.RemainDays==0}">-->
+            <!--<div></div>-->
+            <!--<span ng-bind="controller.item.PublishDateBegin|calcRemainPeriod:controller.item.PublishDateEnd"></span>-->
+        <!--</div>-->
         <div class="proposal__container__organization"
              ui-sref="navigation.shops.shop({OrganizationID:controller.item.Organization.OrganizationID, CategoryID: menuItems['Магазины']})">
             <span ng-bind="controller.item.Organization.Name"></span>

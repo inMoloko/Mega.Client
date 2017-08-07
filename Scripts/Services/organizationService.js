@@ -27,7 +27,7 @@
             if (filter.HasProposals == true) {
                 result = result.Where(i => i.Proposals.length !== 0)
             }
-            return {Result: result.ToArray()};
+            return {Result: result.OrderBy(i => i.Name ? i.Name.toLowerCase() : '').ToArray()};
         });
     };
     angular

@@ -19,7 +19,7 @@
         serialNumber: queryDict.SerialNumber,
         token: queryDict.Token,
         displayKeyboard: true,
-        autoReset: true,
+        autoReset: false,
         mapScale: 1,
         resourceFolder: 'Content/Backup',
         dbPath: `Content/Backup/db/${queryDict.SerialNumber}.json`,

@@ -38,7 +38,9 @@ gulp.task('inject', function () {
 gulp.task('bower-build', function () {
     var jsFilter = gulpFilter('**/*.js', {restore: true});  //отбираем только  javascript файлы
     var cssFilter = gulpFilter('**/*.css');  //отбираем только css файлы
-    return gulp.src(mainBowerFiles())
+    var source = mainBowerFiles();
+    source.push('./bower_components/moment/locale/ru.js');
+    return gulp.src(source)
     // собираем js файлы , склеиваем и отправляем в нужную папку
         .pipe(jsFilter)
         .pipe(concat('vendor.min.js'))

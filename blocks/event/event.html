@@ -3,14 +3,15 @@
         <img src="" alt="" class="event__logo-container__img"
              file-system-image="Events/{{controller.item.EventID + '_WideLogo.' + controller.item.WideLogoExtension}}"
              default="Content/images/card_event_cover_holder.png">
-             <!--moloko-image-api="controller.item.EventID" url="/Event/:id/WideLogo" -->
+        <!--moloko-image-api="controller.item.EventID" url="/Event/:id/WideLogo" -->
     </div>
 
     <div class="event__container">
-        <div class="event__container__remain" ng-if="controller.item.DateEnd">
-            <img src="Content/images/icn_alarm_red.png">
-            <span ng-bind="controller.item.DateEnd|remainDays"></span>
-        </div>
+        <remain-component start="controller.item.DateBegin" stop="controller.item.DateEnd" class="event__container__remain"></remain-component>
+        <!--<div class="event__container__remain" ng-if="controller.item.DateEnd">-->
+            <!--<img src="Content/images/icn_alarm_red.png">-->
+            <!--<span ng-bind="controller.item.DateStart|calcRemainPeriod:controller.item.DateEnd"></span>-->
+        <!--</div>-->
         <div class="event__container__organization" ng-bind="controller.item.Organization.Name">
 
         </div>
@@ -20,6 +21,6 @@
         <div class="event__container__description" ng-bind="controller.item.Description">
 
         </div>
-        <br />
+        <br/>
     </div>
 </div>

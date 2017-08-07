@@ -1,5 +1,7 @@
 ﻿(function () {
     "use strict";
+    moment.locale('ru');
+
     let app = angular.module('app', ['ui.router', 'ngIdle', 'angular-linq', 'ngScrollbars', 'indexedDB']);
     app.config(['$indexedDBProvider', '$httpProvider', function ($indexedDBProvider, $httpProvider) {
         $indexedDBProvider.connection('localDb')
