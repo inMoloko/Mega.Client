@@ -33,7 +33,6 @@
         // });
         let self = this;
         return self.dbService.getData().then(data => {
-            console.log('ddd');
             let result = self.$linq.Enumerable().From(data.Proposals).Select(i => i.Value);
             let date = new Date();
             result = result.Where(i => {
@@ -48,7 +47,7 @@
                 term = term.toLowerCase();
                 result = result.Where(i => (i.Name && i.Name.toLowerCase().includes(term)) || (i.Summary && i.Summary.toLowerCase().includes(term)) || (i.KeyWords && i.KeyWords.toLowerCase().includes(term)))
             }
-            return result.OrderBy(i => i.PublishDateBegin).ToArray();
+            return result.OrderByDescending(i => i.PublishDateBegin).ToArray();
         });
     };
     service.prototype.getByOrganization = function (id) {
@@ -74,7 +73,7 @@
                 return false;
             }).Where(i => i.Organization.OrganizationID == id);
 
-            return result.OrderBy(i => i.PublishDateBegin).ToArray();
+            return result.OrderByDescending(i => i.PublishDateBegin).ToArray();
         });
     };
     service.prototype.getDetailFilter = function (filter) {
@@ -85,7 +84,7 @@
                 .Select(i => i.Value)
                 .Where(i => (moment(i.DateBegin).isBefore()) && (moment(i.DateEnd).isAfter()))
                 .Where(i => self.$linq.Enumerable().From(i.Organization.Categories).Intersect(filter.Categories).Count() !== 0)
-                .OrderBy(i => i.PublishDateBegin).ToArray();
+                .OrderByDescending(i => i.PublishDateBegin).ToArray();
         });
     };
     angular

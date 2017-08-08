@@ -38,7 +38,7 @@
                 || (i.Summary && i.Summary.toLocaleLowerCase().includes(term))
                 || (i.Description && i.Description.toLocaleLowerCase().includes(term)))
             }
-            return result.OrderBy(i => i.PublishDateBegin).ToArray();
+            return result.OrderByDescending(i => i.PublishDateBegin).ToArray();
         });
     };
     service.prototype.get = function (id) {
