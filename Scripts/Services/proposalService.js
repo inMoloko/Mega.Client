@@ -20,6 +20,9 @@
             return data.Proposals[id];
         });
     };
+    service.prototype.sort = function (date) {
+        return date ? moment(date).unix() : 0;
+    };
     service.prototype.getAll = function () {
         let dt = new Date().toISOString();
         var filter = `(DateEnd ge DateTime'${dt}' or DateEnd eq null) and (DateBegin le DateTime'${dt}' or DateBegin eq null)`;
@@ -47,7 +50,7 @@
                 term = term.toLowerCase();
                 result = result.Where(i => (i.Name && i.Name.toLowerCase().includes(term)) || (i.Summary && i.Summary.toLowerCase().includes(term)) || (i.KeyWords && i.KeyWords.toLowerCase().includes(term)))
             }
-            return result.OrderByDescending(i => i.DateBegin).ToArray();
+            return result.OrderByDescending(i => self.sort(i.DateBegin)).ToArray();
         });
     };
     service.prototype.getByOrganization = function (id) {
@@ -73,7 +76,7 @@
                 return false;
             }).Where(i => i.Organization.OrganizationID == id);
 
-            return result.OrderByDescending(i => i.DateBegin).ToArray();
+            return result.OrderByDescending(i => self.sort(i.DateBegin)).ToArray();
         });
     };
     service.prototype.getDetailFilter = function (filter) {
@@ -84,7 +87,7 @@
                 .Select(i => i.Value)
                 .Where(i => (moment(i.DateBegin).isBefore()) && (moment(i.DateEnd).isAfter()))
                 .Where(i => self.$linq.Enumerable().From(i.Organization.Categories).Intersect(filter.Categories).Count() !== 0)
-                .OrderByDescending(i => i.DateBegin).ToArray();
+                .OrderByDescending(i => self.sort(i.DateBegin)).ToArray();
         });
     };
     angular

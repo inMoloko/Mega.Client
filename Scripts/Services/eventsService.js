@@ -10,6 +10,10 @@
         this.dbService = dbService;
         this.$linq = $linq;
     };
+    service.prototype.sort = function (date) {
+        return date ? moment(date).unix() : 0;
+    };
+
     service.prototype.getCurrent = function () {
         if (this.promise)
             return this.promise;
@@ -34,11 +38,11 @@
             if (term) {
                 term = term.toLowerCase();
                 result = result.Where(i => (i.Name && i.Name.toLocaleLowerCase().includes(term))
-                || (i.KeyWords && i.KeyWords.toLocaleLowerCase().includes(term))
-                || (i.Summary && i.Summary.toLocaleLowerCase().includes(term))
-                || (i.Description && i.Description.toLocaleLowerCase().includes(term)))
+                    || (i.KeyWords && i.KeyWords.toLocaleLowerCase().includes(term))
+                    || (i.Summary && i.Summary.toLocaleLowerCase().includes(term))
+                    || (i.Description && i.Description.toLocaleLowerCase().includes(term)))
             }
-            return result.OrderByDescending(i => i.DateBegin).ToArray();
+            return result.OrderByDescending(i => self.sort(i.DateBegin)).ToArray();
         });
     };
     service.prototype.get = function (id) {

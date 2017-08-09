@@ -20,26 +20,40 @@
             position: relative;
         }
 
-            .h_iframe iframe {
-                -webkit-transform-origin: top left;
-            }
+        .h_iframe iframe {
+            -webkit-transform-origin: top left;
+            // width: 100%;
+            // height: 100%;
+        }
+
+        #fullscreen {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: 20px;
+            top: 20px;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="h_iframe">
-            <iframe id="my_iframe" src="/index.html" frameborder="0" allowfullscreen></iframe>
-        </div>
+<div class="wrapper">
+    <div class="h_iframe">
+        <iframe id="my_iframe" src="/index.html" frameborder="0" allowfullscreen></iframe>
     </div>
+</div>
+<img id="fullscreen" src="Content/images/fullscreen.svg">
 </body>
 <script>
-    var test = (bowser.opera && +bowser.version >= 40) ||(bowser.msedge && +bowser.version >= 14) || (bowser.yandexbrowser && +bowser.version >= 16) || (bowser.firefox && +bowser.version >= 49) || (bowser.chrome && +bowser.version >= 53);
+    var test = (bowser.opera && +bowser.version >= 40) || (bowser.msedge && +bowser.version >= 14) || (bowser.yandexbrowser && +bowser.version >= 16) || (bowser.firefox && +bowser.version >= 49) || (bowser.chrome && +bowser.version >= 53);
     if (!test) {
         window.location.href = "/error.html";
         //console.log(bowser.version, bowser.opera);
     }
     var queryDict = {};
-    location.search.substr(1).split("&").forEach(function (item) { queryDict[item.split("=")[0]] = item.split("=")[1] });
+    location.search.substr(1).split("&").forEach(function (item) {
+        queryDict[item.split("=")[0]] = item.split("=")[1]
+    });
     //var url = '/index.html?CustomerID=' + (queryDict.CustomerID || 8);
     var url = '/index.html?SerialNumber=DESKTOP-I9AOT8J';
     document.getElementById('my_iframe').src = url;
@@ -59,39 +73,98 @@
             else
                 element.style.transform = 'scale(' + window.innerWidth / 1600 + ')';
         }
-    }
+    };
     window.addEventListener("resize", function () {
         getScale();
     });
     getScale();
+
+    if (bowser.ios || bowser.android) {
+
+        document.getElementById('fullscreen').style.display = 'block';
+
+        function errorHandler() {
+            alert('mozfullscreenerror');
+        }
+
+        document.documentElement.addEventListener('mozfullscreenerror', errorHandler, false);
+        document.documentElement.addEventListener("webkitfullscreenchange", fullScreenChange);
+        document.documentElement.addEventListener("mozfullscreenchange", fullScreenChange);
+        document.documentElement.addEventListener("fullscreenchange", fullScreenChange);
+        document.documentElement.addEventListener("MSFullscreenChange", fullScreenChange);
+
+        function fullScreenChange(event) {
+            if (!document.fullscreenElement &&    // alternative standard method
+                !document.mozFullScreenElement && !document.webkitFullscreenElement) {
+                document.getElementById('fullscreen').style.display = 'block';
+            } else {
+                document.getElementById('fullscreen').style.display = 'none';
+            }
+        };
+
+        // toggle full screen
+        function toggleFullScreen() {
+            if (!document.fullscreenElement &&    // alternative standard method
+                !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+
+            } else {
+
+                if (document.cancelFullScreen) {
+                    document.cancelFullScreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                }
+            }
+        }
+
+        document.getElementById('fullscreen').addEventListener('click', function (e) {
+            toggleFullScreen();
+        }, false);
+    }
 </script>
 <!— Yandex.Metrika counter —>
 <script type="text/javascript">
     (function (d, w, c) {
-        (w[c] = w[c] || []).push(function() {
+        (w[c] = w[c] || []).push(function () {
             try {
                 w.yaCounter41154154 = new Ya.Metrika({
-                    id:41154154,
-                    clickmap:true,
-                    trackLinks:true,
-                    accurateTrackBounce:true,
-                    webvisor:true
+                    id: 41154154,
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true,
+                    webvisor: true
                 });
-            } catch(e) { }
+            } catch (e) {
+            }
         });
 
         var n = d.getElementsByTagName("script")[0],
             s = d.createElement("script"),
-            f = function () { n.parentNode.insertBefore(s, n); };
+            f = function () {
+                n.parentNode.insertBefore(s, n);
+            };
         s.type = "text/javascript";
         s.async = true;
         s.src = "https://mc.yandex.ru/metrika/watch.js";
 
         if (w.opera == "[object Opera]") {
             d.addEventListener("DOMContentLoaded", f, false);
-        } else { f(); }
+        } else {
+            f();
+        }
     })(document, window, "yandex_metrika_callbacks");
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/41154154" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/41154154" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
 <!— /Yandex.Metrika counter —>
 </html>
