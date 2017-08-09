@@ -54,13 +54,23 @@
                     return;
                 }
                 else {
-                    this.text = `${st.format('DD MMMM')} - ${end.format('DD MMMM')}`;
+                    if (st.isSame(end, 'day')) {
+                        this.text = `${st.format('DD MMMM')}`;
+                    }
+                    else {
+                        this.text = `${st.format('DD MMMM')} - ${end.format('DD MMMM')}`;
+                    }
                     this.alarm = false;
                     return;
                 }
             }
             if (st.isAfter() && stop != null) {
-                this.text = `${st.format('DD MMMM')} - ${end.format('DD MMMM')}`;
+                if (st.isSame(end, 'day')) {
+                    this.text = `${st.format('DD MMMM')}`;
+                }
+                else {
+                    this.text = `${st.format('DD MMMM')} - ${end.format('DD MMMM')}`;
+                }
                 this.alarm = false;
                 return;
             }
