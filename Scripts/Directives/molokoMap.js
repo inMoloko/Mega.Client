@@ -67,7 +67,7 @@
 
                     //L.control.zoom({position: 'topright'}).addTo(map);
                     map.setView([55.65903192, 37.8472988867064], 16);
-                    //map.setBearing(90);
+                    // map.setBearing(180);
                     // L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     // // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
                     //     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -135,6 +135,7 @@
                         return;
 
                     });
+
                     function calculateBounds(offset) {
                         map.setMaxBounds($scope.currentMapFloor.layer.getBounds());
                     }
@@ -235,6 +236,8 @@
 
                         $rootScope.currentTerminal = i.Floors.find(j => j.TerminalMapObject).TerminalMapObject;
 
+                        map.setBearing($rootScope.currentTerminal.Params.LookDirectionAngleDegrees || 0);
+
                         i.Floors.forEach(item => {
                             let size = map.getSize();
                             // let range = getZoomRange(item.Width, item.Height, size.x * 0.3, size.y);
@@ -265,7 +268,7 @@
 
                             angle = `${angle === 0 ? '' : 'D_' + angle}`;
 
-                            item.layer = L.imageOverlay(`${settings.resourceFolder}/Floors/${item.FloorID}${angle}.${item.FileExtension}`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
+                            item.layer = L.imageOverlay(`${settings.resourceFolder}/Floors/${item.FloorID}.${item.FileExtension}`, new L.LatLngBounds(southWest, northEast)/*[southWest, northEast]*/);
 
                             item.layerGroup = L.featureGroup();
                             item.pathGroup = L.layerGroup();
@@ -294,7 +297,7 @@
                                         marker = L.marker(position, {
                                             icon: L.divIcon({
                                                 className: 'marker',
-                                                html: `<div><img class="marker__image marker__wc}" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension||'png'}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
+                                                html: `<div><img class="marker__image marker__wc}" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension || 'png'}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
                                                 iconSize: [16, 16]
                                             }),
                                             title: mapObject.Organization.Name,
@@ -305,18 +308,17 @@
                                         marker._mapObject = mapObject.MapObject;
                                         break;
                                     case 'serviceObject':
-                                        if(mapObject.Organization.Categories.length === 1)
-                                        {
-                                            category =   mapObject.Organization.Categories[0];
+                                        if (mapObject.Organization.Categories.length === 1) {
+                                            category = mapObject.Organization.Categories[0];
                                         }
                                         else {
-                                           let service = i.SystemSettings.TERMINAL_MENU_ITEMS['Сервисы']||-1;
-                                           category = mapObject.Organization.Categories.find(j=>j.CategoryID !== service);
+                                            let service = i.SystemSettings.TERMINAL_MENU_ITEMS['Сервисы'] || -1;
+                                            category = mapObject.Organization.Categories.find(j => j.CategoryID !== service);
                                         }
                                         marker = L.marker(position, {
                                             icon: L.divIcon({
                                                 className: 'marker',
-                                                html: `<div><img class="marker__image" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension||'png'}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
+                                                html: `<div><img class="marker__image" src="${settings.resourceFolder}/Categories/${category.CategoryID}.${category.LogoExtension || 'png'}" data-org-id="${mapObject.Organization.OrganizationID}" data-map-id="${mapObject.MapObject.MapObjectID}"/></div>`,
                                                 iconSize: [16, 16]
                                             }),
                                             title: mapObject.Organization.Name,
@@ -384,6 +386,7 @@
                         else
                             return $linq.Enumerable().From($scope.selectedOrganizations).SelectMany(i => i.Floors).Where(i => i.Number === floor.Number).Count();
                     };
+
                     function getOptimalPath(array) {
                         let paths = {};
                         let mapObject = $rootScope.currentTerminal;

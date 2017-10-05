@@ -17,7 +17,16 @@
 
         getData() {
             let self = this;
-            return self.$http.get(self.settings.dbPath, {cache: true}).then(i => i.data);
+            if (self.cache)
+                return self.$q.resolve(self.cache);
+
+            return self.$http.get(self.settings.dbPath, {cache: true}).then(i => {
+                Object.values(i.data.Organizations).forEach(j => {
+                    j.CategoriesList = self.$linq.Enumerable().From(j.Categories).Take(6).Select(k => k.Name).ToArray().join(', ');
+                });
+                self.cache = i.data;
+                return self.cache;
+            });
         }
 
         getOrganizationTypeSync(data, organization) {

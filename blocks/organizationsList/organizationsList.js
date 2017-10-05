@@ -1,7 +1,8 @@
 ﻿(function () {
     "use strict";
+
     class OrganizationsListController {
-        constructor($scope, $http, settings, $rootScope, $state, $stateParams, $linq, organizationService, mainMenuService, dbService) {
+        constructor($scope, $http, settings, $rootScope, $state, $stateParams, $linq, organizationService, mainMenuService, dbService, $timeout) {
             let self = this;
             self.$state = $state;
             self.dbService = dbService;
@@ -16,20 +17,7 @@
             dbService.systemSettingGetMenuItems().then(i => {
                 $scope.menuItems = i;
             });
-            // $scope.home = function () {
-            //     $state.go('navigation.mainMenu');
-            // };
-            //
-            // $scope.hide = function () {
-            //     $rootScope.currentStateName = $state.current.name;
-            //     $rootScope.currentStateParam = $state.params;
-            //     $rootScope.closeResultTitle = 'Найдено ' + $scope.currentOrganizations.length;
-            //     $state.go("navigation.closedResult", {
-            //         CategoryID: $stateParams.CategoryID,
-            //         Filter: $stateParams.Filter,
-            //         OrganizationType: $stateParams.OrganizationType
-            //     });
-            // };
+
             let stateChangeHandler = $rootScope.$on('$stateChangeSuccess',
                 function (event, toState, toParams, fromState, fromParams) {
                     if (toState.name === 'navigation.searchResult' && fromState.name === 'navigation.searchResult.organization') {
@@ -44,20 +32,23 @@
             let locationChangeHandler = $scope.$on('$locationChangeSuccess', function () {
                 self.executeFilter();
             });
-            // $scope.getFloors = function (item) {
-            //     if (!item)
-            //         return;
-            //     //return $linq.Enumerable().From(item.OrganizationMapObject).Select(i => $rootScope.floorsDic[i.MapObject.FloorID].Number).Distinct().ToArray().join(',');
-            //     return item.Floors.map(i => i.Number).join(',');
-            // };
+            // $timeout(()=>{
+            //    $("ul.list-group.organizationsList__organizationsSearchResultBlock").mCustomScrollbar({callbacks:{
+            //        whileScrolling:function(e){
+            //            console.log("Scrolling...", e);
+            //        }
+            //    }});
+            // });
         }
 
         executeFilter() {
+            console.time('executeFilter');
             let self = this;
             self.searchText = self.$state.params.Filter;
             self.dbService.organizationGetFilter(self.$state.params.Filter, self.$state.params.CategoryID).then(i => {
                 self.currentOrganizations = i;
                 self.$state.go(self.$state.current.name, {Organizations: i, CategoryID: self.$state.params.CategoryID});
+                console.timeEnd('executeFilter');
             });
         }
 
@@ -73,6 +64,7 @@
             return;
         };
     }
-    OrganizationsListController.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', '$linq', 'organizationService', 'mainMenuService', 'dbService'];
+
+    OrganizationsListController.$inject = ['$scope', '$http', 'settings', '$rootScope', '$state', '$stateParams', '$linq', 'organizationService', 'mainMenuService', 'dbService','$timeout'];
     angular.module('app').controller('organizationsListController', OrganizationsListController);
 })();
