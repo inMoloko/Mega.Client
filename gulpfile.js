@@ -54,7 +54,15 @@ gulp.task('bower-build', function () {
         .pipe(minifyCss({processImport: false}))
         .pipe(gulp.dest('dist'));
 });
-
+gulp.task('js-tablet', function () {
+    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/tablet/**/*.js','!Scripts/bowser/bowser.js'])
+        .pipe(concat('script.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(uglify({outSourceMap: true}))
+        .pipe(gulp.dest('dist'));
+});
 gulp.task('js-prod', function () {
     return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/production/**/*.js','!Scripts/bowser/bowser.js'])
         .pipe(concat('script.js'))
@@ -125,6 +133,10 @@ gulp.task('prod', function (callback) {
 gulp.task('client', function (callback) {
     runSequence('build:clean', ['template', 'js-client', 'less-prod', 'bower-build', 'build:content', 'build:index'], callback);
 });
+gulp.task('tablet', function (callback) {
+    runSequence('build:clean', ['template', 'js-tablet', 'less-prod', 'bower-build', 'build:content', 'build:index'], callback);
+});
+
 gulp.task('build', function (callback) {
     runSequence('bower', 'inject', callback);
 });

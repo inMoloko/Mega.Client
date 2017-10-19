@@ -234,7 +234,7 @@
                         $scope.mapOrganizations = {};
                         $scope.mapObjects = {};
 
-                        $rootScope.currentTerminal = i.Floors.find(j => j.TerminalMapObject).TerminalMapObject;
+                        $scope.currentTerminal = $rootScope.currentTerminal = i.Floors.find(j => j.TerminalMapObject).TerminalMapObject;
 
                         map.setBearing($rootScope.currentTerminal.Params.LookDirectionAngleDegrees || 0);
 

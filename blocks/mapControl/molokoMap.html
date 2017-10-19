@@ -14,7 +14,7 @@
 	</div>
 	<div class="mapControl__btnContainer mapControl__btnContainer_right mapControl__btnContainer_bottom btnContainer">
 		<div ng-repeat="fl in mapFloors" class="floor">
-			<div class="floor__label floor__label_left" ng-show="$parent.$parent.currentTerminal.TerminalMapObject[0].MapObject.FloorID===fl.FloorID">
+			<div class="floor__label floor__label_left" ng-show="currentTerminal.FloorID===fl.FloorID">
 				<div style="width: 16px;height: 16px;text-align: center;font-size: 9px;padding-top: 2px;font-weight: bold;">
 					Вы
 				</div>
