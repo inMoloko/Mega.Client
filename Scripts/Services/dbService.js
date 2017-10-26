@@ -119,7 +119,11 @@
                 }
                 if (filter) {
                     filter = filter.toLocaleLowerCase();
-                    result = result.Where(i => (i.Name && i.Name.toLowerCase().includes(filter)) || (i.KeyWords && i.KeyWords.toLowerCase().includes(filter)))
+                    result = result.Where(i =>
+                        (i.Name && i.Name.toLowerCase().includes(filter)) ||
+                        (i.KeyWords && i.KeyWords.toLowerCase().includes(filter)) ||
+                        (i.Name && i.Name.toLowerCase().replace(/[\.\s]/g,'').includes(filter))
+                    )
                 }
                 return result.OrderBy(i => i.Name ? i.Name.toLowerCase() : '').ToArray();
             });
