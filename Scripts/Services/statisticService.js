@@ -73,18 +73,38 @@
 
         getToken() {
             let self = this;
-            return self.$http({
-                method: 'POST',
-                url: self.settings.authUrl + `/Token`,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                data: `grant_type=password&username=${self.settings.serialNumber}&password=${self.settings.token}`
-            }).then(response => response.data.access_token);
+            if (self.settings.token) {
+                return self.$http({
+                    method: 'POST',
+                    url: self.settings.authUrl + `/Token`,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    data: `grant_type=password&username=${self.settings.serialNumber}&password=${encodeURIComponent(self.settings.token)}`
+                }).then(response => response.data.access_token);
+            }
+            else {
+                return self.dbService.getData().then(i => {
+                    let floor = i.Floors.find(j => j.TerminalMapObject);
+                    if (!floor || !floor.TerminalMapObject.Token) {
+                        console.error('Нет терминала или в базе отсутствует токен');
+                        return;
+                    }
+                    self.settings.token = floor.TerminalMapObject.Token;
+
+                    return self.$http({
+                        method: 'POST',
+                        url: self.settings.authUrl + `/Token`,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        data: `grant_type=password&username=${encodeURIComponent(self.settings.serialNumber)}&password=${encodeURIComponent(self.settings.token)}`
+                    }).then(response => {
+                        localStorage.setItem('auth_token', angular.toJson(response.data));
+                        return response.data.access_token;
+                    });
+                });
+            }
         }
 
         sendStatistics() {
             let self = this;
-            if (!self.settings.token)
-                return;
             let promise = self.getAll().then(statistics => {
                 if (statistics.length === 0) {
                     console.log('нет записей статистики');
