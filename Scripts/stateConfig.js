@@ -490,7 +490,9 @@
                         templateUrl: 'blocks/scheduleHeading/scheduleHeading.html'
                     },
                     'searchResult@': {
-                        templateUrl: 'blocks/schedule/schedule.html'
+                        templateUrl: 'blocks/schedule/schedule.html',
+                        controller: 'scheduleController',
+                        controllerAs: 'controller'
                     }
                 },
             })

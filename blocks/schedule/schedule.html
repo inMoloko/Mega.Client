@@ -1,11 +1,11 @@
 ﻿<div class="schedule">
     <div class="schedule__main">
         <img src="Content/images/icn_clock.png">
-        <h2 class="schedule__main_title" ng-bind="customer.Name"></h2>
-        <div class="schedule__main_title">Сегодня с {{::customer.ScheduleFrom}} до {{::customer.ScheduleTo}}</div>
+        <h2 class="schedule__main_title" ng-bind="controller.Customer.Name"></h2>
+        <div class="schedule__main_title">Сегодня с {{::controller.Schedule.From}} до {{::controller.Schedule.To}}</div>
     </div>
     <ul class="schedule__list">
-        <li class="schedule__list__item" ng-repeat="org in anchorOrganizations" ui-sref="navigation.shop({OrganizationID: org.OrganizationID})">
+        <li class="schedule__list__item" ng-repeat="org in controller.anchorOrganizations" ui-sref="navigation.shop({OrganizationID: org.OrganizationID})">
             <span ng-bind="org.Name"></span>
             <div>
                 <div class="schedule-item">
