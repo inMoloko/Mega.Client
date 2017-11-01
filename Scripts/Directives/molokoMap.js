@@ -61,7 +61,7 @@
                         //crs: L.CRS.Simple,
                         //crs: L.CRS.Earth,
                         inertia: false,
-                        bounceAtZoomLimits: true,
+                        bounceAtZoomLimits: false,
                         fadeAnimation: false,
                     });
 
@@ -82,7 +82,8 @@
                     //Сброс карты
                     $scope.options.reset = function (data) {
                         delete $scope.selectedOrganizations;
-                        $scope.setFloor($rootScope.currentTerminal.FloorID);
+                        if ($rootScope.currentTerminal !== undefined && $rootScope.currentTerminal.FloorID !== undefined)
+                            $scope.setFloor($rootScope.currentTerminal.FloorID);
                         setBounds(data);
                     };
 
@@ -374,6 +375,16 @@
 
 
                         $scope.setFloor($rootScope.currentTerminal.FloorID);
+
+                        if (i.SystemSettings.TERMINAL_SETTINGS) {
+                            const settings = i.SystemSettings.TERMINAL_SETTINGS;
+                            if (settings.minZoom) {
+                                map.setMinZoom(settings.minZoom);
+                            }
+                            if (settings.maxZoom) {
+                                map.setMaxZoom(settings.maxZoom);
+                            }
+                        }
                     });
 
                     $scope.getCount = function (floorID) {

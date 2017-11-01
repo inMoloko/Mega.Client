@@ -71,41 +71,50 @@
                     layer2.addSegment1(vertex1, vertex2);
                 }
             });
-            $rootScope.anchorOrganizations = $linq.Enumerable().From(data.Organizations).Select(i => i.Value).Where(o => o.IsAnchor == 1 && o.Schedule != null).ToArray();
-            $rootScope.anchorOrganizations.forEach(i => {
-                try {
-                    var schedule = JSON.parse(i.Schedule);
-
-                    var listPeriod = [];
-                    schedule.forEach(s => {
-                        if (s.isUse != true) {
-                            var period = {};
-                            period.fromTime = s.From;
-                            period.toTime = s.To;
-                            period.listDays = [];
-                            schedule.forEach(ss => {
-                                if (ss.From == s.From && ss.To == s.To) {
-                                    period.listDays.push({num: schedule.indexOf(ss), day: ss.Name});
-                                    ss.isUse = true;
-                                }
-                            });
-                            listPeriod.push(period);
-                        }
-                    });
-
-                    listPeriod.sort(function (a, b) {
-                        return b.listDays.length > 3;
-                    });
-                    i.displaySchedule = [];
-                    listPeriod.forEach(lp => {
-                        i.displaySchedule.push($scope.getDisplaySchedule(lp));
-                    });
+            if(data.SystemSettings.TERMINAL_SETTINGS){
+                const settings = data.SystemSettings.TERMINAL_SETTINGS;
+                if(settings.idle){
+                    Idle.setIdle(settings.idle);
                 }
-                catch (exc) {
-                    console.error('Ошибка формирования расписания');
+                if(settings.idleTimeout){
+                    Idle.setTimeout(settings.idleTimeout);
                 }
-            });
-            $rootScope.anchorOrganizations = $rootScope.anchorOrganizations.filter(a => a.displaySchedule != undefined);
+            }
+            // $rootScope.anchorOrganizations = $linq.Enumerable().From(data.Organizations).Select(i => i.Value).Where(o => o.IsAnchor == 1 && o.Schedule != null).ToArray();
+            // $rootScope.anchorOrganizations.forEach(i => {
+            //     try {
+            //         var schedule = JSON.parse(i.Schedule);
+            //
+            //         var listPeriod = [];
+            //         schedule.forEach(s => {
+            //             if (s.isUse != true) {
+            //                 var period = {};
+            //                 period.fromTime = s.From;
+            //                 period.toTime = s.To;
+            //                 period.listDays = [];
+            //                 schedule.forEach(ss => {
+            //                     if (ss.From == s.From && ss.To == s.To) {
+            //                         period.listDays.push({num: schedule.indexOf(ss), day: ss.Name});
+            //                         ss.isUse = true;
+            //                     }
+            //                 });
+            //                 listPeriod.push(period);
+            //             }
+            //         });
+            //
+            //         listPeriod.sort(function (a, b) {
+            //             return b.listDays.length > 3;
+            //         });
+            //         i.displaySchedule = [];
+            //         listPeriod.forEach(lp => {
+            //             i.displaySchedule.push($scope.getDisplaySchedule(lp));
+            //         });
+            //     }
+            //     catch (exc) {
+            //         console.error('Ошибка формирования расписания');
+            //     }
+            // });
+            // $rootScope.anchorOrganizations = $rootScope.anchorOrganizations.filter(a => a.displaySchedule != undefined);
         });
 
 
@@ -134,9 +143,9 @@
                     });
                 }
             });
-        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
-            console.log('');
-        });
+        // $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
+        //     console.log('');
+        // });
 
         $rootScope.scrollConfig = {
             autoHideScrollbar: false,
@@ -197,45 +206,45 @@
                 return schedule.fromTime.substring(0, 5) + "-" + schedule.toTime.substring(0, 5);
         };
 
-        $rootScope.$watch('organizations', function () {
-            if ($rootScope.organizations) {
-                $rootScope.anchorOrganizations = $rootScope.organizations.filter(o => o.IsAnchor == 1 && o.Schedule != null);
-                $rootScope.anchorOrganizations.forEach(i => {
-                    try {
-                        var schedule = JSON.parse(i.Schedule);
-
-                        var listPeriod = [];
-                        schedule.forEach(s => {
-                            if (s.isUse != true) {
-                                var period = {};
-                                period.fromTime = s.From;
-                                period.toTime = s.To;
-                                period.listDays = [];
-                                schedule.forEach(ss => {
-                                    if (ss.From == s.From && ss.To == s.To) {
-                                        period.listDays.push({num: schedule.indexOf(ss), day: ss.Name});
-                                        ss.isUse = true;
-                                    }
-                                });
-                                listPeriod.push(period);
-                            }
-                        });
-
-                        listPeriod.sort(function (a, b) {
-                            return b.listDays.length > 3;
-                        });
-                        i.displaySchedule = [];
-                        listPeriod.forEach(lp => {
-                            i.displaySchedule.push($scope.getDisplaySchedule(lp));
-                        });
-                    }
-                    catch (exc) {
-                        return;
-                    }
-                });
-                $rootScope.anchorOrganizations = $rootScope.anchorOrganizations.filter(a => a.displaySchedule != undefined);
-            }
-        });
+        // $rootScope.$watch('organizations', function () {
+        //     if ($rootScope.organizations) {
+        //         $rootScope.anchorOrganizations = $rootScope.organizations.filter(o => o.IsAnchor == 1 && o.Schedule != null);
+        //         $rootScope.anchorOrganizations.forEach(i => {
+        //             try {
+        //                 var schedule = JSON.parse(i.Schedule);
+        //
+        //                 var listPeriod = [];
+        //                 schedule.forEach(s => {
+        //                     if (s.isUse != true) {
+        //                         var period = {};
+        //                         period.fromTime = s.From;
+        //                         period.toTime = s.To;
+        //                         period.listDays = [];
+        //                         schedule.forEach(ss => {
+        //                             if (ss.From == s.From && ss.To == s.To) {
+        //                                 period.listDays.push({num: schedule.indexOf(ss), day: ss.Name});
+        //                                 ss.isUse = true;
+        //                             }
+        //                         });
+        //                         listPeriod.push(period);
+        //                     }
+        //                 });
+        //
+        //                 listPeriod.sort(function (a, b) {
+        //                     return b.listDays.length > 3;
+        //                 });
+        //                 i.displaySchedule = [];
+        //                 listPeriod.forEach(lp => {
+        //                     i.displaySchedule.push($scope.getDisplaySchedule(lp));
+        //                 });
+        //             }
+        //             catch (exc) {
+        //                 return;
+        //             }
+        //         });
+        //         $rootScope.anchorOrganizations = $rootScope.anchorOrganizations.filter(a => a.displaySchedule != undefined);
+        //     }
+        // });
 
         $rootScope.filters = {};
 
