@@ -122,10 +122,13 @@
             function (event, toState, toParams, fromState, fromParams) {
                 //console.log(fromState, toState);
                 //Начальное состояние ничего не выбранно
-                if (toState.name === 'navigation.mainMenu') {
-                    $rootScope.currentOrganizations = undefined;
-                    $rootScope.currentOrganization = undefined;
-                }
+                // if (toState.name === 'navigation.mainMenu') {
+                //     $rootScope.currentOrganizations = undefined;
+                //     $rootScope.currentOrganization = undefined;
+                // }
+                // if(toState.name === 'navigation'){
+                //
+                // }
                 if (toState.name.endsWith('shop') || toState.name.endsWith('restaurant') || toState.name.endsWith('service')) {
                     statisticService.addStatistic({
                         Action: 'SelectОрганизацияСхема',

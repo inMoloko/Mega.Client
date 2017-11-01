@@ -3,6 +3,7 @@
  */
 (function () {
     "use strict";
+
     class NavigationController {
         constructor($scope, $http, settings, $state, $rootScope, mainMenuService, $stateParams, dbService) {
             // mainMenuService.get().then(function (result) {
@@ -22,11 +23,15 @@
                 self.getClass($state.current.name, $stateParams);
             });
 
-
+            this.$rootScope = $rootScope;
             $scope.$on('$destroy', function () {
                 locationChangeHandler();
             });
         };
+
+        home() {
+            this.$rootScope.$emit('reset-map',{});
+        }
 
         selectItem(obj) {
             let self = this;
@@ -115,6 +120,7 @@
             }
         }
     }
+
     NavigationController.$inject = ['$scope', '$http', 'settings', '$state', '$rootScope', 'mainMenuService', '$stateParams', 'dbService'];
     angular.module('app').controller('navigationController', NavigationController);
 })();

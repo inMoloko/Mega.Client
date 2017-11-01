@@ -87,6 +87,10 @@
                         setBounds(data);
                     };
 
+                    $rootScope.$on('reset-map', function () {
+                        $scope.options.reset();
+                    });
+
                     function getZoomRange(widthMap, heightMap, widthArea, heightArea) {
                         let a = $rootScope.currentTerminal ? $rootScope.currentTerminal.LookDirectionAngleDegrees : 0;
                         let currentWidth = (a == 0 || a == 180) ? widthMap : heightMap;
