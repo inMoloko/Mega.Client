@@ -9,7 +9,7 @@
         //         swiperInit();
         //     });
         // });
-        dbService.eventGetCurrent().then(function(proposals){
+        eventService.eventGetCurrent().then(function(proposals){
             $scope.events = proposals;
             $timeout(function () {
                 swiperInit();
@@ -20,7 +20,7 @@
         function swiperInit() {
             swiper = new Swiper('#swiper-container', {
                 centeredSlides: true,
-                autoplay: 2000,
+                autoplay: 4000,
                 autoplayDisableOnInteraction: false,
                 loop: true
             });

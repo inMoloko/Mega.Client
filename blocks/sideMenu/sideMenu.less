@@ -73,7 +73,7 @@
 }
 
 .sideMenuItemBlock .sideMenuItemBlock__itemButton:nth-child(2) {
-  background-color:  @bronze;
+  background-color: @bronze;
 }
 
 .sideMenuItemBlock .sideMenuItemBlock__itemButton:nth-child(3) {
@@ -130,4 +130,23 @@
   background-size: contain;
   background-repeat: no-repeat;
   //background-position: center;
+  position: relative;
+  &__title {
+    position: absolute;
+    background-color: white;
+    padding: 5px;
+    font-size: 1.7em;
+    font-weight: bold;
+    color: black;
+    bottom: 50px;
+    right: 0;
+    height: 100px;
+    width: 300px;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .sideMenu__swiper {
+    display: none;
+  }
 }

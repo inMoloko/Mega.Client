@@ -81,8 +81,8 @@
         // вместо scope + bindToController: true
         // у нас появился более удобный способ объявлять биндинги
         bindings: {
-            'start': '=',
-            'stop': '=',
+            'start': '<',
+            'stop': '<',
         },
         template: `<img src="Content/images/icn_alarm_red.png" ng-if="$ctrl.alarm">
                    <span ng-bind="$ctrl.text" ng-class="{'_interval':!$ctrl.alarm}"></span>`,

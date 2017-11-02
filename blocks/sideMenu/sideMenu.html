@@ -1,9 +1,11 @@
 <div id="sideMenu" class="sideMenu" ng-controller="sideMenuController">
     <div class="sideMenu__swiper swiper-container" id="swiper-container">
         <div class="swiper-wrapper">
-            <a class="swiper-slide" ui-sref="navigation.more.events.event({EventID:event})"
-                 style="background-image:url('{{getImage(event)}}');"
-                 ng-repeat="event in events"></a>
+            <a class="swiper-slide" ui-sref="navigation.more.events.event({EventID:event.EventID})"
+               style="background-image:url('{{getImage(event.EventID)}}');"
+               ng-repeat="event in events track by event.EventID">
+                <!--<div class="swiper-slide__title" ng-bind="event.Name"></div>-->
+            </a>
             <!--<div class="swiper-slide"></div><div class="swiper-slide"></div><div class="swiper-slide"></div>-->
         </div>
 

@@ -45,6 +45,24 @@
             return result.OrderByDescending(i => self.sort(i.DateBegin)).ToArray();
         });
     };
+    service.prototype.eventGetCurrent = function () {
+        let self = this;
+        let futureDate = moment().add(14, 'days');
+        let date = new Date();
+        return self.dbService.getData().then(data => {
+            let result = self.$linq.Enumerable().From(data.Events).Select(i => i.Value)
+                .Where(i => {
+                    if (i.PublishDateBegin !== null && i.PublishDateEnd !== null) {
+                        if (moment(date).isSameOrAfter(i.PublishDateBegin, 'day') && moment(date).isSameOrBefore(i.PublishDateEnd, 'day') && (i.DateEnd === null || moment(date).isSameOrBefore(i.DateEnd, 'day'))) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+            return result.OrderByDescending(i => self.sort(i.DateBegin)).Take(2).ToArray();
+        });
+    };
+
     service.prototype.get = function (id) {
         //return this.$http.get(this.settings.webApiBaseUrl + '/Event/GetById/' + id + '?CustomerID=' + this.settings.customerID).then(i => i.data);
         let self = this;
