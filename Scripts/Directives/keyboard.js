@@ -22,7 +22,7 @@
                 //jsKeyboard.init("virtualKeyboard");
                 var event = function () {
                     jsKeyboard.currentElement = jElement;
-                    jsKeyboard.currentElementCursorPosition = jElement.val().length || 0;
+                    // jsKeyboard.currentElementCursorPosition = jElement.val().length || 0;
                     jsKeyboard.show();
                     console.log('event',jsKeyboard.currentElement);
                 }

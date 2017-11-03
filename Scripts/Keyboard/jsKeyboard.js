@@ -165,10 +165,11 @@ var jsKeyboard = {
 		jsKeyboard.currentElement.focus();
 		$('#keyboardHeader>span').text(jsKeyboard.currentElement.val());
     },
-    write: function (m) {       
+    write: function (m) {
+        jsKeyboard.currentElementCursorPosition = $(this).getCursorPosition();
         var a = jsKeyboard.currentElement.val(),
             b = String.fromCharCode(m),
-            pos = jsKeyboard.currentElement.val().length,
+            pos = jsKeyboard.currentElementCursorPosition,//jsKeyboard.currentElement.val().length,
             output = [a.slice(0, pos), b, a.slice(pos)].join('');
         jsKeyboard.updateCursor();
         jsKeyboard.currentElement.val(output);
@@ -176,9 +177,10 @@ var jsKeyboard = {
         jsKeyboard.updateCursor();
         jsKeyboard.currentElement.trigger("writeKeyboard");
     },
-    del: function () {        
+    del: function () {
+        jsKeyboard.currentElementCursorPosition = $(this).getCursorPosition();
         var a = jsKeyboard.currentElement.val(),
-            pos = jsKeyboard.currentElementCursorPosition;
+            pos =  jsKeyboard.currentElementCursorPosition;
 		var output = a;
         if (pos > 0) output = [a.slice(0, pos - 1), a.slice(pos)].join('');
         jsKeyboard.currentElement.val(output);
@@ -193,7 +195,8 @@ var jsKeyboard = {
 		//console.log("hide by enter");
 		jsKeyboard.hide();
     },
-    space: function () {        
+    space: function () {
+        jsKeyboard.currentElementCursorPosition = $(this).getCursorPosition();
         var a = jsKeyboard.currentElement.val(),
             b = " ",
             pos = jsKeyboard.currentElementCursorPosition,
@@ -331,24 +334,24 @@ var jsKeyboard = {
 
 // GET CURSOR POSITION
 jQuery.fn.getCursorPosition = function () {
-    if (this.lengh == 0) return -1;
+    if (this.length == 0) return -1;
     return $(this).getSelectionStart();
 }
 
 jQuery.fn.getSelectionStart = function () {
-    if (this.lengh == 0) return -1;
-    input = this[0];
+    if (this.length == 0) return -1;
+    var input = this[0];
 
-    var pos = input.value.length;
+    var pos = input.currentElement.val().length;
 
     if (input.createTextRange) {
         var r = document.selection.createRange().duplicate();
-        r.moveEnd('character', input.value.length);
+        r.moveEnd('character', input.currentElement.val().length);
         if (r.text == '')
-        pos = input.value.length;
-        pos = input.value.lastIndexOf(r.text);
-    } else if (typeof (input.selectionStart) != "undefined")
-    pos = input.selectionStart;
+        pos = input.currentElement.val().length;
+        pos = input.currentElement.val().lastIndexOf(r.text);
+    } else if (typeof (input.currentElement[0].selectionStart) != "undefined")
+    pos = input.currentElement[0].selectionStart;
 
     return pos;
 }

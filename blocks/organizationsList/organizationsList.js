@@ -42,13 +42,13 @@
         }
 
         executeFilter() {
-            console.time('executeFilter');
+            // console.time('executeFilter');
             let self = this;
             self.searchText = self.$state.params.Filter;
             self.dbService.organizationGetFilter(self.$state.params.Filter, self.$state.params.CategoryID).then(i => {
                 self.currentOrganizations = i;
                 self.$state.go(self.$state.current.name, {Organizations: i, CategoryID: self.$state.params.CategoryID});
-                console.timeEnd('executeFilter');
+                // console.timeEnd('executeFilter');
             });
         }
 

@@ -53,7 +53,7 @@
 
             jsKeyboard.currentElement = $firstInput;
             jsKeyboard.currentElement.val($state.params.Filter);
-            jsKeyboard.currentElementCursorPosition = $firstInput.val().length || 0;
+            // jsKeyboard.currentElementCursorPosition = $firstInput.val().length || 0;
             $firstInput.bind('writeKeyboard', function (event, a) {
                 $scope.currentFilter = $firstInput.val();
                 if (!$state.current.name.includes("searchResult")) {

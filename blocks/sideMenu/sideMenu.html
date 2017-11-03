@@ -4,7 +4,7 @@
             <a class="swiper-slide" ui-sref="navigation.more.events.event({EventID:event.EventID})"
                style="background-image:url('{{getImage(event.EventID)}}');"
                ng-repeat="event in events track by event.EventID">
-                <!--<div class="swiper-slide__title" ng-bind="event.Name"></div>-->
+                <div class="swiper-slide__title" ng-bind="event.Name"></div>
             </a>
             <!--<div class="swiper-slide"></div><div class="swiper-slide"></div><div class="swiper-slide"></div>-->
         </div>
