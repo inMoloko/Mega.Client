@@ -63,6 +63,7 @@
                         inertia: false,
                         bounceAtZoomLimits: false,
                         fadeAnimation: false,
+                        doubleClickZoom: false
                     });
 
                     //L.control.zoom({position: 'topright'}).addTo(map);
