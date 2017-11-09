@@ -105,6 +105,8 @@
 
         sendStatistics() {
             let self = this;
+            if(self.settings.preventStatistic === true)
+                return;
             let promise = self.getAll().then(statistics => {
                 if (statistics.length === 0) {
                     console.log('нет записей статистики');

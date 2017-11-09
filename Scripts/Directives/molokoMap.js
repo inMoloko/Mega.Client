@@ -108,6 +108,8 @@
                     function setBounds() {
                         //return;
                         map.invalidateSize();
+                        if(!$scope.currentMapFloor || !$scope.currentMapFloor.layerGroup)
+                            return;
                         let bounds = $scope.currentMapFloor.layerGroup.getBounds(); // layer.getBounds();
                         let s = $linq.Enumerable().From($scope.currentMapFloor.layerGroup._layers).Select(i => i.Value).Select(i => i._latlng.lat + ', ' + i._latlng.lng + ', ' + i._mapObject.MapObjectID + angular.toJson(i._mapObject.Params));
                         map.fitBounds(bounds, {

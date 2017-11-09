@@ -54,6 +54,25 @@ gulp.task('bower-build', function () {
         .pipe(minifyCss({processImport: false}))
         .pipe(gulp.dest('dist'));
 });
+gulp.task('bower-build-client-linux', function () {
+    var jsFilter = gulpFilter('**/*.js', {restore: true});  //отбираем только  javascript файлы
+    var cssFilter = gulpFilter('**/*.css');  //отбираем только css файлы
+    var source = mainBowerFiles();
+    source.push('./bower_components/moment/locale/ru.js');
+    return gulp.src(source)
+    // собираем js файлы , склеиваем и отправляем в нужную папку
+        .pipe(jsFilter)
+        .pipe(concat('vendor.min.js'))
+        .pipe(uglify({outSourceMap: true}))
+        .pipe(gulp.dest('dist-client-linux'))
+        .pipe(jsFilter.restore)
+        // собраем css файлы, склеиваем и отправляем их под синтаксисом css
+        .pipe(cssFilter)
+        .pipe(concat('vendor.min.css'))
+        //processImport - игонорировать @import
+        .pipe(minifyCss({processImport: false}))
+        .pipe(gulp.dest('dist-client-linux'));
+});
 gulp.task('js-tablet', function () {
     return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/tablet/**/*.js','!Scripts/bowser/bowser.js'])
         .pipe(concat('script.js'))
@@ -81,6 +100,15 @@ gulp.task('js-client', function () {
         .pipe(uglify({outSourceMap: true}))
         .pipe(gulp.dest('dist'));
 });
+gulp.task('js-client-linux', function () {
+    return gulp.src(['app.js', './Scripts/**/*.js', './blocks/**/*.js', './environmental/client-linux/**/*.js','!Scripts/bowser/bowser.js'])
+        .pipe(concat('script.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(uglify({outSourceMap: true}))
+        .pipe(gulp.dest('dist-client-linux'));
+});
 gulp.task('less-prod', function () {
     return gulp.src(['style.less', './blocks/**/*.less', './Scripts/Keyboard/jsKeyboard.css'])
         .pipe(concat('client.less'))
@@ -90,6 +118,16 @@ gulp.task('less-prod', function () {
             replace: ['Content', 'Content'],
         }))
         .pipe(gulp.dest('dist'));
+});
+gulp.task('less-client-linux', function () {
+    return gulp.src(['style.less', './blocks/**/*.less', './Scripts/Keyboard/jsKeyboard.css'])
+        .pipe(concat('client.less'))
+        .pipe(less({
+            paths: [path.join(__dirname, 'less', 'includes')]
+        })).pipe(urlAdjuster({
+            replace: ['Content', 'Content'],
+        }))
+        .pipe(gulp.dest('dist-client-linux'));
 });
 function log(error) {
     console.log([
@@ -109,9 +147,21 @@ gulp.task('template', function () {
         .pipe(gulp.dest('dist'))
         .on('error', log);
 });
+gulp.task('template-client-linux', function () {
+    return gulp.src(['./blocks/**/*.html', './Views/*.html'])
+        .pipe(minifyHTML({quotes: true}))
+        .pipe(templateCache({root: "blocks", module: "app", filename: "templates.js"}))
+        .pipe(gulp.dest('dist-client-linux'))
+        .on('error', log);
+});
 //Очистка - удаляет папку
 gulp.task('build:clean', function () {
     return gulp.src('./dist/', {read: false})
+        .pipe(rimraf({force: true}))
+        .on('error', log);
+});
+gulp.task('build:clean-client-linux', function () {
+    return gulp.src('./dist-client-linux/', {read: false})
         .pipe(rimraf({force: true}))
         .on('error', log);
 });
@@ -120,18 +170,31 @@ gulp.task('build:content', function () {
         .pipe(gulp.dest('dist'))
         .on('error', log);
 });
+gulp.task('build:content-client-linux', function () {
+    return gulp.src(['./Content/**/*.*', './web.config', './demoPage.html'], {read: true, base: '.'})
+        .pipe(gulp.dest('dist-client-linux'))
+        .on('error', log);
+});
 gulp.task('build:index', function () {
     return gulp.src('index.prod.html', {read: true})
         .pipe(rename('index.html'))
         .pipe(gulp.dest('dist'))
         .on('error', log);
 });
-
+gulp.task('build:index-client-linux', function () {
+    return gulp.src('index.prod.html', {read: true})
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest('dist-client-linux'))
+        .on('error', log);
+});
 gulp.task('prod', function (callback) {
     runSequence('build:clean', ['template', 'js-prod', 'less-prod', 'bower-build', 'build:content', 'build:index'], callback);
 });
 gulp.task('client', function (callback) {
     runSequence('build:clean', ['template', 'js-client', 'less-prod', 'bower-build', 'build:content', 'build:index'], callback);
+});
+gulp.task('client-linux', function (callback) {
+    runSequence('build:clean-client-linux', ['template-client-linux', 'js-client-linux', 'less-client-linux', 'bower-build-client-linux', 'build:content-client-linux', 'build:index-client-linux'], callback);
 });
 gulp.task('tablet', function (callback) {
     runSequence('build:clean', ['template', 'js-tablet', 'less-prod', 'bower-build', 'build:content', 'build:index'], callback);

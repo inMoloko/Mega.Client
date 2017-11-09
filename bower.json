@@ -13,7 +13,8 @@
     "leaflet": "^1.0.3",
     "angular-indexedDB": "angular-indexed-db#^1.1.4",
     "angular-ui-router": "^0.4.2",
-    "angular-vs-repeat": "^1.1.7"
+    "angular-vs-repeat": "^1.1.7",
+    "malihu-custom-scrollbar-plugin": "^3.1.5"
   },
   "resolutions": {
     "angular": "^1.0.8"

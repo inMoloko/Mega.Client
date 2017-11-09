@@ -3,6 +3,7 @@
  */
 (function () {
     'use strict';
+
     class DbVersionService {
         constructor($q, $http, settings, $linq, dbService) {
             this.$q = $q;
@@ -46,6 +47,8 @@
 
         checkDb() {
             let self = this;
+            if (self.settings.preventDbCheck === true)
+                return;
             self.dbService.getData().then(i => {
                 if (!i.CreationDate) {
                     console.error('Нет даты создания базы');
@@ -68,6 +71,7 @@
         }
 
     }
+
     angular
         .module('app')
         .service('dbVersionService', DbVersionService);
